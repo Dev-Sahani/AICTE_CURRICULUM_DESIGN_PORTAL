@@ -1,0 +1,31 @@
+{
+  "name": "aicte_curriculum_design_portal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL.git"
+  },
+  "keywords": [
+    "SIH2023",
+    "AICTE_CURRICULUM_DESIGN_PORTAL"
+  ],
+  "author": "8BIT_SQUAD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL/issues"
+  },
+  "homepage": "https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL#readme",
+  "dependencies": {
+    "dot-env": "^0.0.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1"
+  }
+}
