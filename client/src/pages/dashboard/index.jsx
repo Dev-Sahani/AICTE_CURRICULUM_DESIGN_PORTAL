@@ -4,7 +4,7 @@ import ExplorePage from "./ExplorePage";
 import NotificationPage from "./NotificationPage";
 import ProfilePage from "./ProfilePage";
 import ResourcesPage from "./ResourcesPage";
-import SideBar from "./SideBar";
+import SharedLayout from "./SharedLayout";
 import TemplatePage from "./TemplatePage";
 
 export {
@@ -14,6 +14,6 @@ export {
     NotificationPage,
     ProfilePage,
     ResourcesPage, 
-    SideBar, 
+    SharedLayout, 
     TemplatePage, 
 }

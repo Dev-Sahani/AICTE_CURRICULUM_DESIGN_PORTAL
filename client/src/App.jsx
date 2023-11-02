@@ -6,7 +6,7 @@ import {
     NotificationPage,
     ProfilePage,
     ResourcesPage, 
-    SideBar, 
+    SharedLayout, 
     TemplatePage,
 }  from "./pages/dashboard";
 import {
@@ -23,12 +23,12 @@ const App = ()=>{
                 <Route path="/"
                     element={
                         <ProtectedRoute>
-                            <SideBar/>
+                            <SharedLayout/>
                         </ProtectedRoute>
                     }
                 >   
-                    <Route index element={<ExplorePage />}/>
-                    <Route path="course-templates" element={<TemplatePage/>} />
+                    <Route index element={<TemplatePage/>} />
+                    <Route path="explore" element={<ExplorePage/>} />
                     <Route path="drafts" element={<DraftPage/>} />
                     <Route path="analytics" element={<AnalyticsPage/>} />
                     <Route path="notification" element={<NotificationPage />} />
