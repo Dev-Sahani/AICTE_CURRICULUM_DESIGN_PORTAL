@@ -1,7 +1,7 @@
-import React from 'react'
 import { useState } from 'react';
-import DoubleArrow from "./../assets/DoubleArrow.png";
-import SidebarList from './SidebarList';
+import SmallSidebar from './SmallSidebar';
+import BigSidebar from './BigSidebar';
+import { AnimatePresence } from "framer-motion";
 
 const Sidebar = ({className}) => {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -39,29 +39,27 @@ const Sidebar = ({className}) => {
       link: "profile",
     },
   ];
-  const arr = content.map((data) => {
-    return <SidebarList data={data}/>
-  });
+  
+  if(showSidebar) 
+    return (
+      <AnimatePresence
+        initial={false}
+        mode="wait"
+        onExitComplete={()=>null}
+      >
+        <BigSidebar className={className} content={content} toggleSidebar={toggleSidebar} />
+      </AnimatePresence>
+    );
 
   return (
-    <div className={className + " overflow-hidden "} >
-      <main  className="h-full relative min-w-full">
-        <header className="w-full mb-4 h-8 relative hover:cursor-pointer" onClick={toggleSidebar}>
-          <img 
-            className="h-8  absolute top-0 right-0"
-            src={DoubleArrow} 
-            alt="Arrow"
-          />
-        </header>
-        <div>
-          {arr}
-        </div>
-        <footer className="absolute bottom-6 right-1">
-          <div>Logout</div>
-        </footer>
-      </main>
-    </div>
-  );
+    <AnimatePresence
+      initial={false}
+      mode="wait"
+      onExitComplete={()=>null}
+    >
+      <SmallSidebar className={className} content={content} toggleSidebar={toggleSidebar} />
+    </AnimatePresence>
+  )
 }
 
 export default Sidebar;

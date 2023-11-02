@@ -8,7 +8,7 @@ const SharedLayout = () => {
     <main>
       <NavBar className="gap-x-4 mx-6 my-2 mt-4 h-[10vh]" />
       <div className='flex'>
-        <Sidebar className={`basis-60 h-[86vh] overflow-hidden`} />
+        <Sidebar className={`basis-60 h-[86vh]`} />
         <Outlet className="h-[86vh]" />
       </div>
     </main>
