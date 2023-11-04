@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --primary-50: '#EFF9FF';
+    --primary-100: '#DEF2FF';
+    --primary-200: '#B6E8FF';
+    --primary-300: "#75D8FF";
+    --primary-400: '#2CC4FF';
+    --primary-500: '#00A6ED';
+    --primary-600: '#008AD4';
+    --primary-700: '#006EAB';
+    --primary-800: '#005D8D';
+    --primary-900: '#064D74';
+    --primary-950: "#04314D";
+    --secondary-50: '#FBFFE5';
+    --secondary-100: '#F3FFC7';
+    --secondary-200: '#E6FF95';
+    --secondary-300: "#D2FE58";
+    --secondary-400: '#BCF526';
+    --secondary-500: '#9DDC06';
+    --secondary-600: '#7FB800';
+    --secondary-700: '#5B8506';
+    --secondary-800: '#4A690B';
+    --secondary-900: '#3E580F';
+    --secondary-950: "#1F3201";
+    --accent-50: '#FFFEEA';
+    --accent-100: '#FFF9C5';
+    --accent-200: '#FFF285';
+    --accent-300: "#FFE546";
+    --accent-400: '#FFD51B';
+    --accent-500: '#FFB400';
+    --accent-600: '#E28A00';
+    --accent-700: '#BB6002';
+    --accent-800: '#984A08';
+    --accent-900: '#7C3D0B';
+    --accent-950: "#481F00";
+  }

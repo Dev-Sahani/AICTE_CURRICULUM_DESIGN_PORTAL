@@ -1,15 +1,31 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const SidebarList = ({data}) => {
+  const location = useLocation();
+  const active = (location.pathname === data.link);
+  const color = active ? "#BB6002" : data.color;
   return (
     <Link 
-      className={'h-12 ml-4 flex gap-4 items-center' + data.className} 
+      className={`h-12 ml-3 flex gap-4 items-center`} 
       to={data.link}
       {...data}
     >
-        <img className="h-6 w-6" src={data.icon} alt={data.name}/>
-        <h2 style={{textWrap: "nowrap"}} >{data.name}</h2>
+        {
+          data.svg(color)
+        }
+
+        <h2 
+          style={{
+            color: `${color}`,
+            textWrap: "nowrap", 
+          }} 
+        >
+          {data.name}
+        </h2>
+        {
+          active && 
+          <div className="h-6 border-[3px] border-accent-700 rounded absolute right-0"></div>
+        }
     </Link>
   )
 }
