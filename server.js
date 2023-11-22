@@ -1,16 +1,10 @@
-require("express-async-errors");
 require("dotenv").config();
 
-const express = require("express");
-const app = express();
+const app = require('./app')
+
 const connectDB = require("./db/connect");
-const errorHandlerMiddleware = require("./middlewares/errorHandler");
-
-
-
-app.use(errorHandlerMiddleware);
-
 const port = process.env.PORT || 8080;
+
 
 const start = ()=>{
     try{
