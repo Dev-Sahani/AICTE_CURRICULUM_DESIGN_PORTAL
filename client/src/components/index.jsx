@@ -1,9 +1,9 @@
 import NavBar from "./NavBar";
-import Sidebar from "./Sidebar";
 import SidebarList from "./SidebarList";
+import Sidebar from "./Sidebar";
 
 export {
     NavBar,
-    Sidebar,
     SidebarList,
+    Sidebar,
 }
