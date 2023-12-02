@@ -6,7 +6,7 @@ const NavBar = ({className}) => {
       <main 
         className={
             className + 
-            " flex justify-start bg-gradient-to-r from-primary-700 to-primary-400"
+            " flex justify-start bg-gradient-to-r from-primary-700 to-primary-400 "
         }
       >
           <img className="h-12" src={logo} alt="AICTE_LOGO" />
