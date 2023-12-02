@@ -1,13 +1,48 @@
 import { useState } from 'react';
-import SmallSidebar from './SmallSidebar';
-import BigSidebar from './BigSidebar';
-import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import SidebarList from './SidebarList';
+import DoubleArrow from "./../assets/DoubleArrow.png";
+import LogoutBtnSidebar from './LogoutBtnSidebar';
 
 const Sidebar = ({className}) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const toggleSidebar = ()=>{
     setShowSidebar(!showSidebar);
   }
+
+  const arr = loadData();
+
+  return (
+    <motion.div 
+        className={className + " overflow-hidden relative rounded-tr-3xl "} 
+        initial={{
+          flexBasis: `${!showSidebar?"15rem":"3.5rem"}`
+        }}
+        animate={{
+          flexBasis: `${showSidebar?"15rem":"3.5rem"}`
+        }}
+    >
+      <main  className="h-full min-w-[15rem] bg-primary-50">
+        <header className="w-full mb-4 h-8 hover:cursor-pointer">
+          <img 
+            className="h-8  absolute top-1 right-1"
+            src={DoubleArrow} 
+            alt="Arrow"
+            onClick={toggleSidebar}
+          />
+        </header>
+        <div>
+          {arr}
+        </div>
+        <footer className="absolute bottom-6 left-0">
+          <LogoutBtnSidebar />
+        </footer>
+      </main>
+    </motion.div>
+  );
+}
+
+function loadData(){
   const content = [
     {
       name: "Course Templates",
@@ -62,26 +97,12 @@ const Sidebar = ({className}) => {
     },
   ];
   
-  if(showSidebar) 
-    return (
-      <AnimatePresence
-        initial={false}
-        mode="wait"
-        onExitComplete={()=>null}
-      >
-        <BigSidebar className={className} content={content} toggleSidebar={toggleSidebar} />
-      </AnimatePresence>
-    );
+  const arr = content.map((data) => {
+    data.color = "#04314D";
+    return <SidebarList data={data}/>
+  });
 
-  return (
-    <AnimatePresence
-      initial={false}
-      mode="wait"
-      onExitComplete={()=>null}
-    >
-      <SmallSidebar className={className} content={content} toggleSidebar={toggleSidebar} />
-    </AnimatePresence>
-  )
+  return arr;
 }
 
 export default Sidebar;
