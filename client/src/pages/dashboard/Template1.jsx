@@ -1,33 +1,39 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Add from "../../assets/Add.png"
+import Template2 from "./Template2"
+import x from "react-dom"
+import Template4 from "./Template4"
+// import Template4 from "./Template4"
 function Template1(){
+  const [count,setcount]=useState([]);
+  function set(){
+   x.render(<Template4 />,document.getElementById("root"))
+    // setcount(prevValue=>{
+    //   return[...prevValue,""]
+    // } )
+  }
+  // function call(){
 
+  //  return  <Template2  subject={"Computer Science & Engineering"} about={content}/>
+
+  //  }
+  
+  
+  const content="Computer Science Engineering is a course that deals with the design, implementation, and management of information systems of both software and hardware processes."
 return (
-<div className= "flex flex-wrap  min-w-full bg-orange-400 ">
-
-
-
-
-<div className=" bg-slate-100 border-2 border-gray-200 rounded-[10px] flex flex-col justify-center items-center ">
-
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-  <path d="M18.8571 24H29.1429M24 18.8571V29.1429M36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12C30.6274 12 36 17.3726 36 24Z" stroke="#04314D" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-Start with a new curriculum
-</div>
-<div className=" bg-slate-100 border-2 border-gray-200 rounded-[10px]  flex-col   flex justify-center items-center ">
-
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-  <path d="M18.8571 24H29.1429M24 18.8571V29.1429M36 24C36 30.6274 30.6274 36 24 36C17.3726 36 12 30.6274 12 24C12 17.3726 17.3726 12 24 12C30.6274 12 36 17.3726 36 24Z" stroke="#04314D" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-Start with a new curriculum
+<div className= "flex flex-row  flex-wrap gap-[24px] w-[1054px]">
+<div className='flex flex-col w-[513px] rounded-2xl h-[206px]  shadow-md border-t-2 items-center justify-center '  >
+  <div className="h-[96px] w-[96px]"><img src={Add} alt="" onClick={set} /></div>
+  <div className="text-[16px]">Start with a new curriculum</div>
 </div>
 
-
+{count.map(() => (
+  <Template2  subject={"Computer Science & Engineering"} about={content}/>
+          ))}           
 
 
 </div>
-)
+)    
 }
 
 export default Template1; 
