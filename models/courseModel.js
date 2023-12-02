@@ -21,10 +21,10 @@ const courseSchema = new mongoose.Schema({
         activity:String, //like 'L', 'T', 'P' etc.
         overallCredits:Number
     }],
-    // rangeOfCredits:{
-    //     text:String,
-    //     credits:Number
-    // },
+    rangeOfCredits:{
+        text:String,
+        credits:Number
+    },
     guidlines : [String],
     codesAndDef : [{
         code:String,
@@ -32,7 +32,6 @@ const courseSchema = new mongoose.Schema({
     }],
     subjects:[{
         id:mongoose.SchemaTypes.ObjectId,
-
         category:String,
         code:String,
         semester:Number,
