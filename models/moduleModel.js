@@ -5,8 +5,16 @@ const moduleSchema = new mongoose.Schema({
         type:String,
         require:[true, "Subject's Title is Missing"]
     },
-    topics:[String]
+    topics:[String],
+    // version:{
+    //     type:Number,
+    //     default:1
+    // }
 })
+
+// moduleSchema.index(["_id","version"],{
+//     unique:true
+// })
 
 const Module = new mongoose.Model(moduleSchema)
 
