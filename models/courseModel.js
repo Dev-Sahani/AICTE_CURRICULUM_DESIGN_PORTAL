@@ -32,14 +32,32 @@ const courseSchema = new mongoose.Schema({
     }],
     subjects:[{
         id:mongoose.SchemaTypes.ObjectId,
+        title:String,
         category:String,
         code:String,
         semester:Number,
-        weeklyHours:Number
-    }]
+        weeklyHours:Number,
+        // version:{
+        //     type:Number,
+        //     default:1
+        // }
+    }],
+    // version:{
+    //     type:Number,
+    //     require:[true,"Version is Missing"],
+    //     default:1
+    // },
+    // dateOfCommit:{
+    //     type:Date,
+    //     default:Date.now()
+    // }
 },{
     virtuals:true
 })
+
+// courseSchema.index(["_id","version"],{
+//     unique:true
+// })
 
 courseSchema.virtual("Categories",()=>{
     
