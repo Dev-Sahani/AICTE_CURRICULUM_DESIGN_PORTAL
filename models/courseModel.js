@@ -66,6 +66,6 @@ courseSchema.virtual("Semester",()=>{
 
 })
 
-const Course = new mongoose.Model(courseSchema)
+const Course = new mongoose.Model("Course", courseSchema)
 
 module.exports = Course;

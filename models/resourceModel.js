@@ -21,6 +21,6 @@ const resourceSchema = new mongoose.Schema({
     url:String
 })
 
-const Resource = new mongoose.Model(resourceSchema)
+const Resource = new mongoose.Model("resources", resourceSchema)
 
 exports = Resource

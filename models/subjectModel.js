@@ -28,6 +28,6 @@ const subjectSchema = new mongoose.Schema({
 //     unique:true
 // })
 
-const Subject = new mongoose.Model(subjectSchema)
+const Subject = new mongoose.Model("Subject", subjectSchema)
 
 exports = Subject

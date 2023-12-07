@@ -1,8 +1,20 @@
-const express = require("express");
 require("express-async-errors");
+
+const express = require("express");
+const app = express();
+
+
+// Middlewares :
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 
-const app = express();
+// Libraries :
+app.use(express.json());
+
+// Importing Routes
+const feedbackRouter = require("./routes/feedbackRoute");
+
+// APIs
+app.use("/api/v1/feedback", feedbackRouter);
 
 
 app.use(errorHandlerMiddleware);
