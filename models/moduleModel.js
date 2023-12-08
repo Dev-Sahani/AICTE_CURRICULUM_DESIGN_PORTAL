@@ -1,21 +1,23 @@
-const mongoose = require('mongoose')
+//We are not implementing modules in subject schema
 
-const moduleSchema = new mongoose.Schema({
-    title:{
-        type:String,
-        require:[true, "Subject's Title is Missing"]
-    },
-    topics:[String],
-    // version:{
-    //     type:Number,
-    //     default:1
-    // }
-})
+// const mongoose = require('mongoose')
+
+// const moduleSchema = new mongoose.Schema({
+//     title:{
+//         type:String,
+//         require:[true, "Subject's Title is Missing"]
+//     },
+//     topics:[String],
+//     version:{
+//         type:Number,
+//         default:1
+//     }
+// })
 
 // moduleSchema.index(["_id","version"],{
 //     unique:true
 // })
 
-const Module = new mongoose.Model(moduleSchema)
+// const Module = new mongoose.Model(moduleSchema)
 
-exports = Module
+// exports = Module

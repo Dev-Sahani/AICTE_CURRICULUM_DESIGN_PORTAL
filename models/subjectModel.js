@@ -7,27 +7,35 @@ const subjectSchema = new mongoose.Schema({
     },
     objective:String,
     prerequisites:[String],
-    modules:[mongoose.SchemaTypes.ObjectId],
-    // modules:[{
-    //     id:mongoose.SchemaTypes.ObjectId,
-    //     version:{
-    //         type:Number,
-    //         default:1
-    //     }
-    // }],
+    modules:[{
+        title:{
+            type:String,
+            require:[true, "Subject's Title is Missing"]
+        },
+        topics:[String],
+        // versionId:{
+        //     type:String,
+        //     require:[true,"Module's versionId is missing"]
+        // }
+    }],
     referenceMaterial:[mongoose.SchemaTypes.ObjectId],
     outcomes:[String],
     // alternativeCourses:[]
-    // version:{
-    //     type:Number,
-    //     default:1
-    // }
+    versionId:{
+        type:String,
+        require:[true,"versionId is Missing"],
+        unique:[true,"subject with same version Id already exits"]
+    }
 })
 
 // subjectSchema.index(["_id","version"],{
 //     unique:true
 // })
-
-const Subject = new mongoose.Model(subjectSchema)
+courseSchema.pre("save",function (){
+    if(!this.isModified){
+        this.versionId = this._id.toString() + '.1'
+    }
+})
+const Subject = new mongoose.Model("subject",subjectSchema)
 
 exports = Subject

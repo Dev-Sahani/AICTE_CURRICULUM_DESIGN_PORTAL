@@ -37,35 +37,41 @@ const courseSchema = new mongoose.Schema({
         code:String,
         semester:Number,
         weeklyHours:Number,
-        // version:{
-        //     type:Number,
-        //     default:1
-        // }
+        versionId:{
+            type:String,
+            require:[true,"versionId is Missing"],
+        }
     }],
-    // version:{
-    //     type:Number,
-    //     require:[true,"Version is Missing"],
-    //     default:1
-    // },
-    // dateOfCommit:{
-    //     type:Date,
-    //     default:Date.now()
-    // }
+    versionId:{
+        type:String,    //_id+<version>
+        // require:[true,"Version is Missing"],
+        unique:[true,"course with same versionId already exits"],
+    },
+    dateOfCommit:{
+        type:Date,
+        default:Date.now()
+    }
 },{
     virtuals:true
 })
 
+
 // courseSchema.index(["_id","version"],{
 //     unique:true
 // })
-
+    
 courseSchema.virtual("Categories",()=>{
     
 })
 courseSchema.virtual("Semester",()=>{
-
+    
 })
 
-const Course = new mongoose.Model(courseSchema)
+courseSchema.pre("save",function (){
+    if(!this.isModified){
+        this.versionId = this._id.toString() + '.1'
+    }
+})
 
+const Course = new mongoose.Model("course",courseSchema)
 module.exports = Course;
