@@ -37,3 +37,9 @@
     --accent-900: '#7C3D0B';
     --accent-950: "#481F00";
   }
+/* 
+  ::-webkit-scrollbar {
+    height: auto;
+    width: 4px;
+    right: 4px;
+  } */

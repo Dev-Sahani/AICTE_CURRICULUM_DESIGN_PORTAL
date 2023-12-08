@@ -36,6 +36,7 @@ courseSchema.pre("save",function (){
         this.versionId = this._id.toString() + '.1'
     }
 })
-const Subject = new mongoose.Model("subject",subjectSchema)
+
+const Subject = new mongoose.Model("Subject", subjectSchema)
 
 exports = Subject

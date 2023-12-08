@@ -2,13 +2,13 @@ require("dotenv").config();
 
 const app = require('./app')
 
-const connectDB = require("./db/connect");
+const mongoose = require("mongoose");
 const port = process.env.PORT || 8080;
 
 
 const start = ()=>{
     try{
-        connectDB(process.env.MONGO_URL)
+        mongoose.connect(process.env.MONGO_URL)
 
         app.listen(port, ()=>{
             console.log("Server has started!")

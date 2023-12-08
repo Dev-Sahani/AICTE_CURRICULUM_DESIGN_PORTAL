@@ -16,16 +16,16 @@ const Sidebar = ({className}) => {
     <motion.div 
         className={className + " overflow-hidden relative rounded-tr-3xl "} 
         initial={{
-          flexBasis: `${!showSidebar?"15rem":"3.5rem"}`
+          width: `${!showSidebar?"22vw":"4vw"}`
         }}
         animate={{
-          flexBasis: `${showSidebar?"15rem":"3.5rem"}`
+          width: `${showSidebar?"22vw":"4vw"}`
         }}
     >
-      <main  className="h-full min-w-[15rem] bg-primary-50">
+      <section  className="h-full min-w-[18vw] bg-primary-50">
         <header className="w-full mb-4 h-8 hover:cursor-pointer">
           <img 
-            className="h-8  absolute top-1 right-1"
+            className="h-8  absolute top-1 right-[0.5px]"
             src={DoubleArrow} 
             alt="Arrow"
             onClick={toggleSidebar}
@@ -37,7 +37,7 @@ const Sidebar = ({className}) => {
         <footer className="absolute bottom-6 left-0">
           <LogoutBtnSidebar />
         </footer>
-      </main>
+      </section>
     </motion.div>
   );
 }

@@ -46,7 +46,7 @@ module.exports = {
           900: '#7C3D0B',
           950: "#481F00",
         },
-        white: "#FFFFFF",
+        default: "#F8FBFC",
       }
     },
   },

@@ -6,7 +6,7 @@ const SidebarList = ({data}) => {
   const color = active ? "#BB6002" : data.color;
   return (
     <Link 
-      className={`h-12 ml-3 flex gap-4 items-center`} 
+      className={`h-12 ml-[0.5vw] flex gap-4 items-center`} 
       to={data.link}
       {...data}
     >

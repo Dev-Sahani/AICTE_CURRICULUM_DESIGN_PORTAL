@@ -5,7 +5,7 @@ import NotificationPage from "./NotificationPage";
 import ProfilePage from "./ProfilePage";
 import ResourcesPage from "./ResourcesPage";
 import SharedLayout from "./SharedLayout";
-import TemplatePage from "./TemplatePage";
+import TemplatePage from "./TemplatesPage";
 
 export {
     AnalyticsPage, 
