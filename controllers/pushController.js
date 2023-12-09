@@ -1,7 +1,7 @@
 const Push = require("../models/pushModel.js")
 const Course = require("../models/courseModel.js")
 const Subject = require("../models/subjectModel.js")
-const BAD_REQUEST = require('../errors/index.js')
+const {BAD_REQUEST} = require('../errors/index.js')
 
 exports.pushChanges = async (req,res, next)=>{
     // req = {
@@ -10,10 +10,14 @@ exports.pushChanges = async (req,res, next)=>{
     //         subjects:[{}]
     //     }
     // }
-
+    new BAD_REQUEST()
+    const course = req.body.course
     const subjects = req.body.subjects
+    if(!course.common_id)
+        return next(new BAD_REQUEST("common_id is missing in course"))
+
     const pushChanges = await Push.create({
-        course: req.body.course,
+        course,
         subjects
         // by: req.user.id
     })

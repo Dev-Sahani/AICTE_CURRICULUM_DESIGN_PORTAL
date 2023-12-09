@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const courseSchema = new mongoose.Schema({
+    common_id:{
+        type:mongoose.SchemaTypes.ObjectId,
+        require:[true, "course's common_id is missing"],
+    },
     title:{
         type:String,
         unique: [true,"Course with same title already exists"],
@@ -31,22 +35,17 @@ const courseSchema = new mongoose.Schema({
         definition:String
     }],
     subjects:[{
-        id:mongoose.SchemaTypes.ObjectId,
+        common_id:mongoose.SchemaTypes.ObjectId,
+        version:{
+            type:Number,
+            require:[true, "course's subject.common_id is missin"]
+        },
         title:String,
         category:String,
         code:String,
         semester:Number,
         weeklyHours:Number,
-        versionId:{
-            type:String,
-            require:[true,"versionId is Missing"],
-        }
     }],
-    versionId:{
-        type:String,    //_id+<version>
-        // require:[true,"Version is Missing"],
-        unique:[true,"course with same versionId already exits"],
-    },
     dateOfCommit:{
         type:Date,
         default:Date.now()
@@ -55,11 +54,15 @@ const courseSchema = new mongoose.Schema({
     virtuals:true
 })
 
+//Indexes of database
+courseSchema.index("common_id",{
+    unique:false
+})
+courseSchema.index(["common_id","version"],{
+    unique:true
+})
 
-// courseSchema.index(["_id","version"],{
-//     unique:true
-// })
-    
+//Virtual props
 courseSchema.virtual("Categories",()=>{
     
 })

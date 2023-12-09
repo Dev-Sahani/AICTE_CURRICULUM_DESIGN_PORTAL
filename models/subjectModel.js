@@ -1,6 +1,14 @@
 const mongoose = require('mongoose')
 
 const subjectSchema = new mongoose.Schema({
+    common_id:{
+        type:mongoose.SchemaTypes.ObjectId,
+        require:[true,"subject's common_id is missing"]
+    },
+    version:{
+        type:Number,
+        require:[true,"subject's version is missing"]
+    },
     title:{
         type:String,
         require:[true, "Subject's Title is Missing"]
@@ -13,24 +21,21 @@ const subjectSchema = new mongoose.Schema({
             require:[true, "Subject's Title is Missing"]
         },
         topics:[String],
-        // versionId:{
-        //     type:String,
-        //     require:[true,"Module's versionId is missing"]
-        // }
     }],
     referenceMaterial:[mongoose.SchemaTypes.ObjectId],
     outcomes:[String],
     // alternativeCourses:[]
-    versionId:{
-        type:String,
-        require:[true,"versionId is Missing"],
-        unique:[true,"subject with same version Id already exits"]
-    }
 })
 
-// subjectSchema.index(["_id","version"],{
-//     unique:true
-// })
+
+//Indexes of database
+courseSchema.index("common_id",{
+    unique:false
+})
+subjectSchema.index(["common_id","version"],{
+    unique:true
+})
+
 courseSchema.pre("save",function (){
     if(!this.isModified){
         this.versionId = this._id.toString() + '.1'

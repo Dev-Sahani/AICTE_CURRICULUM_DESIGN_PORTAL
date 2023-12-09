@@ -3,15 +3,14 @@ const mongoose = require('mongoose')
 const pushSchema = new mongoose.Schema({
     course:{
         type:mongoose.Schema.Types.Mixed,
-        // type:mongoose.SchemaTypes.Subdocument,
         require:[true, "course is Missing"]
     },
     subjects:[
         mongoose.Schema.Types.Mixed
-        // mongoose.SchemaTypes.Subdocument
     ],
     by: {
         type:mongoose.SchemaTypes.ObjectId,
+        ref:"faculties",
         require:[true,"by is Missing! mention the user pushed changes"]
     },
     date:{
