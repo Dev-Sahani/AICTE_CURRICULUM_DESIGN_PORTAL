@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const feedbackSchema = new mongoose.Schema({
-  courseId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
-    required: true,
-  },
   subjectId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Subject",
@@ -15,21 +10,26 @@ const feedbackSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  isStudent: {
+  studentData: {
     type: Boolean,
     default: true,
   },
-  answers: [
-    {
-      question_no: Number,
-      type: {
-        type: String,
-      },
-      value: {
-        type: mongoose.Schema.Types.Mixed,
-      },
-    },
-  ],
+  questionNo: {
+    type: Number,
+    required: true
+  },
+  questionType: {
+    type: String,
+    required: true,
+    enum: ["descriptive", "rate", "true/false", "select"]
+  },
+  value: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+  year: {
+    type: Number,
+    default: () => new Date().getFullYear()
+  }
 });
 
 const FeedbackResponse = mongoose.model('Feedback_response', feedbackSchema);

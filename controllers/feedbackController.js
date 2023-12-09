@@ -3,83 +3,98 @@ const FeedbackQuestions = require("../models/feedbackQuestions");
 const FeedbackResponse = require("../models/feedbackResponse");
 const mongoose = require("mongoose");
 
+
 async function getAllQuestions(req, res) {
-    // Verifying User,
-    // If student => one student = one feedback for each subject
-    const result = await FeedbackQuestions.find({});
-    res.status(StatusCodes.OK).json({response: result});
+    // Verify user  -----------------------------------
+    // One student = one feedback per subject ---------
+
+    const {subjectId} = req.body;
+    // const data = FeedbackQuestions.find({$subjectId: {subjectId}});
+    const data = await FeedbackQuestions.find({});
+    
+    res.status(StatusCodes.OK).json({questions: data});
 }
 
-async function feedbackResponse(req, res) {
-    const {courseId, subjectId, by, answers} = req.body;
 
-    // check if valid id's
-    if(!mongoose.Types.ObjectId.isValid(courseId) || !mongoose.Types.ObjectId.isValid(subjectId)  || !mongoose.Types.ObjectId.isValid(by) ) 
-            return res.status(404).json({ msg: `No valid Ids` });
-    
-    // Getting isStudent variable from Token,
+async function postFeedback(req, res) {
+    const {subjectId, by, answers} = req.body;
+    // TO-DO ---------------------------------------------
     const isStudent = true;
 
-    const result = await FeedbackResponse.create({
-        courseId, 
-        subjectId,
-        by,
-        isStudent,
-        answers,
+    answers.forEach((ans, index, array) => {
+        array[index] = {
+          subjectId,
+          isStudent,
+          by,
+          questionNo: ans.questionNo,
+          questionType: ans.questionType,
+          value: ans.value,
+        };
     });
 
-    res.status(StatusCodes.CREATED).json({message: "Response Successefully received!"})
+    const result = await FeedbackResponse.insertMany(answers);
+    
+    // console.log(result); 
+    res.status(StatusCodes.CREATED).json({message: "Feedback Accepted", dataSent: req.body.answers})
 }
 
-
 async function getFeedbackAnalysis(req, res) {
-    // First Verify user -> either admin or developers
-    const {courseId, subjectId} = req.body;
+    // TO-DO -------------------------------
+    // Verify User 
+    const {subjectId, student} = req.body;
     
-    // Student analysis or educator analysis
-    const student = true;
-    
-    const feedbacks = await FeedbackResponse.find({
-        courseId,
-        subjectId,
-        isStudent: student,
-    });
-
-    const analysis = [];
-
-    feedbacks.forEach((data) => {
-        const n = 7;
-        for(let questionNo = 1; questionNo <= n; questionNo++) 
+    const data = await FeedbackResponse.aggregate([
         {
-            const answer = data.answers[questionNo-1];
-            if(!analysis[questionNo - 1]) 
-            {
-                if(answer.type === "rate" || answer.type === "true/false")
-                {
-                    analysis[questionNo - 1] = {
-                        value: answer.value,
-                        count : 1,
-                    }
-                } else 
-                {
-                    analysis[questionNo - 1] = [answer.value];
+            $match: {
+                subjectId: {$eq: new mongoose.Types.ObjectId(subjectId)},
+                // studentData: {$eq: student}, 
+            }
+        },
+        {
+            $project: {
+              year: 1,
+              questionNo: 1,
+              questionType: 1,
+              value: 1,
+              integersValues: {
+                $cond: {
+                  if: { $in: ["$questionType", ["rate", "true/false"]] },
+                  then: "$value",
+                  else: null
                 }
-            } 
-            else {
-                if(answer.type === "rate" || answer.type === "true/false")
-                {
-                    const ct = analysis[questionNo - 1].count;
-                    analysis[questionNo - 1].value = (analysis[questionNo-1].value*ct + answer.value) / (ct+1)
-                    analysis[questionNo - 1].count = ct + 1;
-                } else 
-                {
-                    analysis[questionNo - 1].push(answer.value);
+              },
+              nonIntegersValues: {
+                $cond: {
+                  if: { $in: ["$questionType", ["rate", "true/false"]] },
+                  then: null,
+                  else: "$value"
+                }
+              }
+            }
+          },
+          {
+            $group: {
+              _id: { year: "$year", questionNo: "$questionNo" , questionType: "$questionType"},
+              integersValues: { $avg: "$integersValues" },
+              nonIntegersValues: { $push: "$nonIntegersValues" }
+            }
+          },
+          { $project: {
+            _id: 0,
+            fields: "$_id",
+            integersValues: 1,
+            nonIntegersValues: {
+                $cond: {
+                    if: {$eq: ["$integersValues", null]},
+                    then: "$nonIntegersValues",
+                    else: null,
                 }
             }
-        }
-    });
+        }},
+    ]);
+    // console.log(data);
 
-    res.status(StatusCodes.OK).json({analyzedValues: analysis});
+    res.status(StatusCodes.OK).json({data,});
 }
 
 /* ------------- TO-DO's ------------------
@@ -90,6 +105,6 @@ async function getFeedbackAnalysis(req, res) {
 
 module.exports = {
     getAllQuestions,
-    feedbackResponse,
+    postFeedback,
     getFeedbackAnalysis,
 }

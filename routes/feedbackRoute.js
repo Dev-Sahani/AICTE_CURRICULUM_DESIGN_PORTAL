@@ -3,14 +3,14 @@ const router = express.Router();
 
 const {
     getAllQuestions,
-    feedbackResponse,
+    postFeedback,
     getFeedbackAnalysis,
 } = require("../controllers/feedbackController");
 
 
 router.route("/form")
     .get(getAllQuestions)
-    .post(feedbackResponse);
+    .post(postFeedback);
 
 router.route("/analysis").get(getFeedbackAnalysis);
 
