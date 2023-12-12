@@ -42,6 +42,6 @@ const facultySchema = new mongoose.Schema({
     viewerIn:[mongoose.SchemaTypes.ObjectId]
 })
 
-const Faculty = new mongoose.Model("Faculties", facultySchema)
+const Faculty = new mongoose.model("Faculties", facultySchema)
 
 module.exports = Faculty;

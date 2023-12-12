@@ -5,9 +5,12 @@ const courseSchema = new mongoose.Schema({
         type:mongoose.SchemaTypes.ObjectId,
         require:[true, "course's common_id is missing"],
     },
+    version:{
+        type:Number,
+        default:1
+    },
     title:{
         type:String,
-        unique: [true,"Course with same title already exists"],
         require:[true,"Course Title is Missing"]
     },
     message:String,
@@ -41,6 +44,7 @@ const courseSchema = new mongoose.Schema({
             require:[true, "course's subject.common_id is missin"]
         },
         title:String,
+        credits:Number,
         category:String,
         code:String,
         semester:Number,
@@ -55,9 +59,6 @@ const courseSchema = new mongoose.Schema({
 })
 
 //Indexes of database
-courseSchema.index("common_id",{
-    unique:false
-})
 courseSchema.index(["common_id","version"],{
     unique:true
 })
@@ -70,11 +71,9 @@ courseSchema.virtual("Semester",()=>{
     
 })
 
-courseSchema.pre("save",function (){
-    if(!this.isModified){
-        this.versionId = this._id.toString() + '.1'
-    }
+courseSchema.pre(/^find^/,function (next){
+    this.select({__v:0})
 })
 
-const Course = new mongoose.Model("course",courseSchema)
+const Course = new mongoose.model("course",courseSchema)
 module.exports = Course;

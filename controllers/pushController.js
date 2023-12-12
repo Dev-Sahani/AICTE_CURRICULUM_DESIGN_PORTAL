@@ -10,12 +10,15 @@ exports.pushChanges = async (req,res, next)=>{
     //         subjects:[{}]
     //     }
     // }
-    new BAD_REQUEST()
     const course = req.body.course
     const subjects = req.body.subjects
     if(!course.common_id)
-        return next(new BAD_REQUEST("common_id is missing in course"))
-
+        return next(new BAD_REQUEST("common_id or version is missing in course"))
+    for(let i=0;subjects && i<subjects.length; i++){
+        if(!subjects[i].common_id){
+            return next(new BAD_REQUEST("common_id or version is missing in subject"))
+        }
+    }
     const pushChanges = await Push.create({
         course,
         subjects

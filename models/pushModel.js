@@ -11,7 +11,7 @@ const pushSchema = new mongoose.Schema({
     by: {
         type:mongoose.SchemaTypes.ObjectId,
         ref:"faculties",
-        require:[true,"by is Missing! mention the user pushed changes"]
+        // require:[true,"by is Missing! mention the user pushed changes"]
     },
     date:{
         type:Date,
@@ -19,5 +19,5 @@ const pushSchema = new mongoose.Schema({
     }
 })
 
-const Push = new mongoose.model("push",pushSchema)
-exports = Push
+const Push = new mongoose.model("Push",pushSchema);
+module.exports = Push

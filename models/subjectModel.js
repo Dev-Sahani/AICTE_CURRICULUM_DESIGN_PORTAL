@@ -7,13 +7,13 @@ const subjectSchema = new mongoose.Schema({
     },
     version:{
         type:Number,
-        require:[true,"subject's version is missing"]
+        default:1
     },
     title:{
         type:String,
         require:[true, "Subject's Title is Missing"]
     },
-    objective:String,
+    objectives:[String],
     prerequisites:[String],
     modules:[{
         title:{
@@ -29,19 +29,11 @@ const subjectSchema = new mongoose.Schema({
 
 
 //Indexes of database
-courseSchema.index("common_id",{
-    unique:false
-})
 subjectSchema.index(["common_id","version"],{
     unique:true
 })
 
-courseSchema.pre("save",function (){
-    if(!this.isModified){
-        this.versionId = this._id.toString() + '.1'
-    }
-})
 
-const Subject = new mongoose.Model("Subject", subjectSchema)
+const Subject = new mongoose.model("Subject", subjectSchema)
 
-exports = Subject
+module.exports = Subject
