@@ -1,5 +1,5 @@
 import React from 'react'
-import Search from "../../assets/Search.png"
+import Search from "../../../assets/Search.png"
 
 function Explore4(){
 
@@ -13,7 +13,7 @@ function Explore4(){
         <div><img src={Search} alt="" className="w-[48px] h-[48px]"/></div>
         <div className='text-[#989898] text-[16px]'>
                <form className=' w-[368px]  h-[47px]'>
-                  <input  className='w-full h-full' type="text" id="lname" name="lname" placeholder='Search Topics, Curriculums etc.. '/>
+                  <input  className='w-full h-full focus:outline-none' type="text" id="lname" name="lname" placeholder='Search Topics, Curriculums etc.. '/>
                </form>
         </div>
        </div> 
