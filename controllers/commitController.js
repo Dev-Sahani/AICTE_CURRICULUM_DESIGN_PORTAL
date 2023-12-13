@@ -4,13 +4,35 @@ const Push = require('../models/pushModel')
 const mongoose = require('mongoose')
 const {BAD_REQUEST} = require('../errors/index')
 
+// class mongoTransaction{
+//     constructor(){
+//         this.session = undefined
+//         mongoose.startSession().then(_session=>{
+//             this.session = session
+//         })
+//     }
+//     atomic = async function(func){
+//         this.session = await mongoose.startSession();
+//         session.startTransaction()
+//         try {
+//             func()
+//             await session.commitTransaction();
+//             session.endSession();
+//         } catch (error) {
+      
+//             await session.abortTransaction();
+//             session.endSession();
+//             throw error;
+//         }
+//     }
+// }
+
 exports.postCommit = async (req, res, next)=>{
     const pushId = req.params.pushId
 
     const pushedChanges = await Push.findOne({_id:pushId})
-    if(!pushedChanges){
+    if(!pushedChanges)
         return next(new BAD_REQUEST("Invalid pushId"))
-    }
 
     const courseChanges = pushedChanges.course
     const courses = await Course.find({common_id:courseChanges.common_id})
@@ -20,7 +42,7 @@ exports.postCommit = async (req, res, next)=>{
     const course = courses?courses[0]:{}
 
     const subjectChanges = pushedChanges.subjects
-    const subjectsIds = courseChanges.subjects?courseChanges.subjects.map((val)=>{
+    const subjectsIds = subjectChanges?subjectChanges.map((val)=>{
         return new mongoose.Types.ObjectId(val.common_id)
     }) : []
     const subAggregate = await Subject.aggregate([
@@ -49,9 +71,23 @@ exports.postCommit = async (req, res, next)=>{
     ])
     
     const subjects = subAggregate.length!=0?subAggregate[0].doc : []
-
     for(const field in courseChanges){
-        if(field==='subjects')continue;
+        if(field==='subjects'){
+            for(let i in courseChanges.subjects){
+                const subChange = courseChanges.subjects[i]
+                let ind = course.subjects.findIndex(
+                    (val)=>val.common_id.toString()===subChange.common_id.toString())
+                if(ind === -1){
+                    course.subjects.push({})
+                    ind = course.subjects.length-1
+                }
+                for(let key2 in subChange){
+                    if(key2==="version" || key2==="common_id")continue;
+                    course.subjects[ind][key2] = subChange[key2]
+                }
+            }
+            continue;
+        }
         if(field==="commite")continue;
         
         course[field] = courseChanges[field]
@@ -59,46 +95,23 @@ exports.postCommit = async (req, res, next)=>{
     course.version ++
     course.dateOfCommit = Date.now()
 
-    console.log("commitController/subjects",subjects)
-    console.log("commitController/course.subjects",course.subjects)
-    console.log("commitController/courseChanges.subjects",courseChanges.subjects)
-    console.log("commitController/subjectsChange",subjectChanges)
-
-    for(let i=0; i<subjects.length; i++){
-        delete subjects[i]._id;
-        delete subjects[i].__v;
-
-        const courseSubInd = course.subjects.findIndex((val)=>val.common_id===subjects[i].common_id)
-        const courseChangeSubInd = courseChanges.subjects.findIndex((val)=>val.common_id===subjects[i].common_id)
-        const subChangeInd = (subjectChanges && subjectChanges.length>0)?
-            subjectChanges.findIndex((val)=>val.common_id===subjects[i].common_id)
-            :-1
-        if(subChangeInd === -1){
-            course.subjects.push({
-                ...courseChanges.subjects[courseChangeSubInd],
-                version:1
-            })
-            //remove ith element from subjects
-            subjects.splice(i,1)
-            i--;
-            continue;
+    for(const i in subjectChanges){
+        const curSub = subjectChanges[i]
+        const filter = (val)=>val.common_id.toString()===curSub.common_id.toString()
+        const subInd = subjects.findIndex(filter)
+        const courseInd = course.subjects.findIndex(filter)
+        if(courseInd === -1){
+            return next(new BAD_REQUEST("invalid push data - push.subjects"))
         }
-        
-        for(const key in courseChanges.subjects[courseChangeSubInd]){
-            course.subjects[courseSubInd][key] = courseChanges.subjects[courseChangeSubInd][key]
-        }
-        course.subjects[courseSubInd].version ++
-        subjects[i].version ++
-        
 
-        for(const field in subjectChanges[subChangeInd]){
-            if(field === "version" || field==="common_id")continue;
-            subjects[i][field] = subjectChanges[subChangeInd][field]
+        for(const key in curSub){
+            if(key==="version")continue;
+            subjects[subInd][key] = curSub[key]
         }
+        delete subjects[subInd]._id
+        subjects[subInd].version ++
+        course.subjects[courseInd].version = subjects[subInd].version
     }
-
-    console.log("commitController/subjects",subjects)
-    console.log("commitController/course.subjects",course.subjects)
     
     async function runAtomicTransaction() {
         const session = await mongoose.startSession();
@@ -111,19 +124,16 @@ exports.postCommit = async (req, res, next)=>{
 
             if(subjects.length != 0)
             await Subject.insertMany(subjects,{session})
-      
+            
             await Push.deleteOne({_id:pushId},{session})
       
-          // If all operations are successful, commit the transaction
             await session.commitTransaction();
             session.endSession();
         } catch (error) {
-          // If any operation fails, abort the transaction
-        //   console.log("\ncontroller/commitController/postCommit/catch\n")
-          await session.abortTransaction();
-          session.endSession();
       
-          throw error;
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
         }
     }
     await runAtomicTransaction()
@@ -155,5 +165,5 @@ exports.getCommit = async (req, res, next)=>{
 }
 
 exports.resetToCommit = async (req, res, next)=>{
-    
+
 }
