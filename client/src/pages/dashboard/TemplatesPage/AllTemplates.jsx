@@ -5,10 +5,10 @@ export default function AllTemplates() {
 
     const templates = getAllTemplates();
     
-    const CardsClasses = "bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03]"
+    const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03]"
 
     return (
-        <div className='w-full grid grid-cols-2 my-4 gap-6'>
+        <div className='w-full grid grid-cols-2 my-4 gap-6 min-w-fit'>
             <Link 
                 className={CardsClasses + " flex flex-col items-center justify-center"} 
                 to="/new-template"
@@ -21,7 +21,7 @@ export default function AllTemplates() {
                 return (
                     <Link 
                         key={template.course_id}
-                        className={CardsClasses}
+                        className={CardsClasses+"w-full min-w-fit "}
                         to={template.url} 
                     >
                         <h1 className='text-xl m-2'>{template.courseName}</h1>
