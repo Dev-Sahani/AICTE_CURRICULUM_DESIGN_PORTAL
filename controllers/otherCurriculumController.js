@@ -1,12 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const otherCurriculumModel = require("../models/otherCurriculumsModel");
 
-async function getAllCurriculum(req, res) {
+exports.getAllCurriculum = async function(req, res) {
     const data = await otherCurriculumModel.find({});
     res.status(StatusCodes.OK).json({data});
 }
 
-async function addOtherCurriculum(req, res) {
+exports.addOtherCurriculum = async function (req, res) {
     const { instituteName, courseName, url, level, program } = req.body;
     if(!instituteName || !courseName || !url || !level || !program) {
         res.status(StatusCodes.BAD_REQUEST).json({error:'Incomplete data provided'});
@@ -25,7 +25,7 @@ async function addOtherCurriculum(req, res) {
     }
 }
 
-async function deleteOtherCurriculum(req, res) {
+exports.deleteOtherCurriculum = async function (req, res) {
     const curriculumId = req.params.id;
     const deletedCurriculum = await otherCurriculumModel.findByIdAndDelete(curriculumId);
 

@@ -18,6 +18,6 @@
 //     unique:true
 // })
 
-// const Module = new mongoose.Model(moduleSchema)
+// const Module = new mongoose.model(moduleSchema)
 
 // exports = Module
