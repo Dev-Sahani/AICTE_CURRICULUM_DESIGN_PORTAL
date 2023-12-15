@@ -8,6 +8,8 @@ import {
     ResourcesPage, 
     SharedLayout, 
     TemplatePage,
+    CurriculumEditPageRoutes,
+    SharedNav,
 }  from "./pages/dashboard";
 import {
     ErrorPage, 
@@ -28,6 +30,12 @@ const App = ()=>{
                     }
                 >   
                     <Route index element={<TemplatePage/>} />
+                    <Route 
+                        path="curriculum/:courseName/" 
+                        element={<SharedNav />}
+                    >
+                        {CurriculumEditPageRoutes}
+                    </Route>
                     <Route path="explore" element={<ExplorePage/>} />
                     <Route path="drafts" element={<DraftPage/>} />
                     <Route path="analytics" element={<AnalyticsPage/>} />
