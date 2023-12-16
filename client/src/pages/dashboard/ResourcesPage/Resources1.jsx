@@ -16,7 +16,7 @@ function Resources1(props){
             <div className='flex flex-col space-y-4 justify-between  w-full'>
                  <div className='flex flex-col space-y-1'>
                     <div className='flex flex-row justify-between'>
-                       <div className='text-[28px] leading-none'>{x.subjectName}</div>
+                         <div className='text-[28px] leading-none'>{x.subjectName}</div>
                          <div className='flex flex-row space-x-2 '>
                            <div className='rounded-2xl bg-[#F3FFC7] px-4 py-1.5 font-medium text-[#5B8506] items-center justify-center content-center'>{x.type}</div>
                            <div className='rounded-2xl bg-[#FEDEEA] px-4 py-1.5 font-medium text-[#F8186E] items-center justify-center'>{x.title}</div>                          
