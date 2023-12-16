@@ -34,6 +34,7 @@ export default function FilterSearch({
           value={localSearch}
           onChange={optimizedDebounce}
           placeholder={placeholder?placeholder:"Enter..."}
+          
           className="focus:outline-none w-[24vw]"
       />
     </div>
