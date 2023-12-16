@@ -5,10 +5,10 @@ export default function AllTemplates() {
 
     const templates = getAllTemplates();
     
-    const CardsClasses = "bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03]"
+    const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03] "
 
     return (
-        <div className='w-full grid grid-cols-2 my-4 gap-6'>
+        <div className='w-full grid grid-cols-2 my-4 gap-6 min-w-fit'>
             <Link 
                 className={CardsClasses + " flex flex-col items-center justify-center"} 
                 to="/new-template"
