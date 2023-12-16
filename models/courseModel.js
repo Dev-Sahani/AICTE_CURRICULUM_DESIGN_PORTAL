@@ -13,6 +13,24 @@ const courseSchema = new mongoose.Schema({
         type:String,
         require:[true,"Course Title is Missing"]
     },
+
+    program:{
+        type:String,
+        enum:["undergraduate","postgraduate","diploma"],
+        require:[true,"program is missin"]
+    },
+    level:{
+        type:String,
+        enum:["Applied Arts and Crafts", "Architecture and Town Planning",
+            "Architecture", "Town Planning", "Engineering & Technology", 
+            "Hotel Management and Catering", "Management", "MCA", "Pharmacy"],
+        require:[true,"level is missin"]
+    },
+    description:String,
+    prerequisites:[String],
+    objectives:[String],
+    outcomes:[String],
+
     message:String,
     preface:String,
     acknowledgement:String,
@@ -45,6 +63,9 @@ const courseSchema = new mongoose.Schema({
         },
         title:String,
         credits:Number,
+        l:Number,
+        t:Number,
+        p:Number,
         category:String,
         code:String,
         semester:Number,
@@ -55,7 +76,8 @@ const courseSchema = new mongoose.Schema({
         default:Date.now()
     }
 },{
-    virtuals:true
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
 })
 
 //Indexes of database
@@ -64,11 +86,27 @@ courseSchema.index(["common_id","version"],{
 })
 
 //Virtual props
-courseSchema.virtual("Categories",()=>{
-    
+courseSchema.virtual("categories").get(function (next){
+    const categories = {}
+    // console.log("./courseModel/virtuals", this.get('subjects'))
+    if(this.subjects)
+    this.subjects.forEach((val)=>{
+        if(!categories[val.category])
+            categories[val.category] = []
+        categories[val.category].push(val)
+    })
+    return categories
 })
-courseSchema.virtual("Semester",()=>{
-    
+courseSchema.virtual("semesters").get(function(next){
+    const prop = {};
+    // console.log("./courseModel/virtuals", this.get('subjects'))
+    if(this.subjects)
+    this.subjects.forEach((val)=>{
+        if(!prop[val.semester])
+            prop[val.semester] = []
+        prop[val.semester].push(val)
+    })
+    return prop
 })
 
 courseSchema.pre(/^find^/,function (next){
