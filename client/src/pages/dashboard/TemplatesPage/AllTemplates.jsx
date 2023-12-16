@@ -51,49 +51,49 @@ const getAllTemplates = ()=>{
             about: "Computer Science Engineering is a course that deals with the design, implementation, and management of information systems of both software and hardware processes.",
             program: "Engineering and Technology",
             level: "Undergraduate",
-            url:""
+            url:"/curriculum/courseName"
         }, {
             course_id: "22432",
             courseName: "Electrical Engineering",
             about: "This involves the generation and distribution of electricity and the design of related devices. These engineers are involved in traditional nuclear & renewable energy solutions.",
             program: "Engineering and Technology",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }, {
-            course_id: "24552",
+            course_id: "24542",
             courseName: "Bachelor of Architecture",
             about: "The 5-year Bachelor of Architecture program is aimed at enabling the students to become responsive and sensitive architects. ",
             program: "Architecture",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }, {
             course_id: "24552",
             courseName: "Bachelor of Architecture II",
             about: "The 5-year Bachelor of Architecture program is aimed at enabling the students to become responsive and sensitive architects.",
             program: "Architecture",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }, {
             course_id: "57552",
             courseName: "Bachelor of Planning",
             about: "Bachelor of planning trains students in various fields related to urban human settlements such as designing, engineering, managing and overcoming challenges. ",
             program: "Town Planning",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }, {
             course_id: "24662",
             courseName: "Biotechnology",
             about: "Biotechnology is technology that utilizes biological systems, living organisms or parts of this to develop or create different products.",
             program: "Pharmacy",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }, {
             course_id: "33821",
             courseName: "Mechanical Engineering",
             about: "The core subjects in Mechanical Engineering include Solid Mechanics, Fluid Mechanics, Kinematics and Dynamics of Machines, Manufacturing Processes, Engineering Thermodynamics, Mechanical Engineering Drawing, Heat and Mass Transfer, and CAD and Finite Element Analysis.",
             program: "Engineering and Technology",
             level: "Undergraduate",  
-            url:""
+            url:"/curriculum/courseName"
         }
     ]
 }
