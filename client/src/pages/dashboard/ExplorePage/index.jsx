@@ -1,10 +1,10 @@
 import Card from "./Card"
-import TemplatePageFilter from "../TemplatesPage/TemplatePageFilter";
+import Searchbar from "./Searchbar";
 import Trending from "./Trending"
 const ExplorePage = ()=>{
     return(
     <>
-    <TemplatePageFilter />
+    <Searchbar />
     <Trending />
     <Card />
     </>

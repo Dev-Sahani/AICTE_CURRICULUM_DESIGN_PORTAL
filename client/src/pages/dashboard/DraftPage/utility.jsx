@@ -11,7 +11,7 @@ const Array=[
     courseId:"123",
     subject:"Computer Science and Engineering in Artificial Intelligence & Data Science (AI & DS)",
     Date:"10/12/2023",
-    message:"Last commit message",
+    message:"Last commit message  ",
     status:"completed",
   },
   { url:"error",

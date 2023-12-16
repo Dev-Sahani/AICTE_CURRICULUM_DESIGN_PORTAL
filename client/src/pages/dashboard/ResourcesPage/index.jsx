@@ -1,10 +1,10 @@
 import Resource from "./Resources1";
-import TemplatePageFilter from "../TemplatesPage/TemplatePageFilter";
+import Searchbar2 from "./Searchbar2";
 
 function ResourcesPage(){
     return(
         <>  
-            <TemplatePageFilter />
+            <Searchbar2 />
             <Resource />
         </>
     )
