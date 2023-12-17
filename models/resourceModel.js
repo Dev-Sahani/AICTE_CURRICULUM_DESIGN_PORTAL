@@ -18,8 +18,6 @@ const resourceSchema = new mongoose.Schema({
         type:String,
         require:[true,"Resource's Author is Missing"],
     },
-    publisher : [String],
-    distributer: [String],
     
     coverImageUrl:String,
     url:String
