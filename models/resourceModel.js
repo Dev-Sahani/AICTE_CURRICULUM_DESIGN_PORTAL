@@ -25,4 +25,4 @@ const resourceSchema = new mongoose.Schema({
 
 const Resource = new mongoose.Model(resourceSchema)
 
-export default Resource;
+module.exports = Resource;
