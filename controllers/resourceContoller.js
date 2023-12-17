@@ -11,7 +11,7 @@ exports.getAllResources = async function(req, res) {
 
 exports.addResource = async function (req, res) {
     const { title,description,type,author,coverImageUrl,url } = req.body;
-    if(!title || !description || !url || !type || !author || !coverImageUrl) {
+    if(!title || !description || !type || !author) {
         res.status(StatusCodes.BAD_REQUEST).json({error:'Incomplete data provided'});
     }
     else
@@ -29,4 +29,16 @@ exports.addResource = async function (req, res) {
     }
 }
 
+exports.deleteResource= async function(req,res){
+    const resourceId = req.params.id;
+    const deletedResource = await resourceModel.findByIdAndDelete(resourceId);
 
+    if (!deletedResource) {
+        res.status(StatusCodes.NOT_FOUND).json({error:'Resource not found'});
+    } else {
+        res.status(StatusCodes.NO_CONTENT).send({
+            status:"success",
+            data:deletedResource
+        });
+    }
+}
