@@ -1,13 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { NavList } from "../../../components";
 import ImageComponent from "../../../assets";
+import {useParams }  from "react-router-dom";
 
 export default function SharedNav() {
+  const {common_id} = useParams();
+  
   return (
     <div>
         <nav className="flex justify-between w-full">
             <NavList 
-                list={tempList()}
+                list={tempList(common_id)}
                 vertical={false}
             />
             <div className="flex gap-2">
@@ -22,20 +25,20 @@ export default function SharedNav() {
     </div>
   )
 }
-const tempList = ()=>{
+const tempList = (common_id)=>{
     return ([
         {
             innerHtml: "Basic Info",
-            to: "/curriculum/courseName",
+            to: `/curriculum/${common_id}`,
         }, {
             innerHtml: "Categories",
-            to: "/curriculum/courseName/categories",
+            to: `/curriculum/${common_id}/categories`,
         }, {
             innerHtml: "Subjects",
-            to: "/curriculum/courseName/subjects",
+            to: `/curriculum/${common_id}/subjects`,
         }, {
             innerHtml: "Semester",
-            to: "/curriculum/courseName/semesters",
+            to: `/curriculum/${common_id}/semesters`,
         }
     ])
 }

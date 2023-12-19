@@ -5,22 +5,24 @@ const resourceSchema = new mongoose.Schema({
         type:String,
         require:[true, "resources's Title is Missing"]
     },
+    description:{
+        type:String,
+        require:[true, "resources's description is Missing"]
+    },
     type:{
         type:String,
-        enum:['book','e-book','research-paper','notes','video','image'],
+        enum:['book','e-book','research-paper','notes','video','image','article'],
         require:[true,"Resource's Type is Missing"]
     },
     author:{
         type:String,
         require:[true,"Resource's Author is Missing"],
     },
-    publisher : [String],
-    distributer: [String],
-    
+    publisher: String,
     coverImageUrl:String,
     url:String
 })
 
-const Resource = new mongoose.model("resources", resourceSchema)
+const Resource = new mongoose.Model(resourceSchema)
 
-module.exports = Resource
+module.exports = Resource;

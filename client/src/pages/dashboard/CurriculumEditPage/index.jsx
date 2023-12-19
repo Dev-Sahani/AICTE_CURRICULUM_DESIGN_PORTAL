@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import SharedNav from "./SharedNav";
 import BasicInfoPage from "./BasicInfoPage";
 import CategoriesPage from "./CategoriesPage";

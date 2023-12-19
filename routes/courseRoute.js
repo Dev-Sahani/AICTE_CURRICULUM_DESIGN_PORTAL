@@ -9,6 +9,11 @@ router.get("/categories/:commonId", courseController.getCategory)
 router.get("/semesters/:commonId", courseController.getSemester)
 router.get("/subjects/:commonId", courseController.getSubjects)
 // router.route("/course").get()
-router.route("/get-developers") // including admins
+// router.route("/:commonId/designers")
+//     .get()
+//     .post()
+//     .patch()
+//     .delete()
+
 
 module.exports = router;

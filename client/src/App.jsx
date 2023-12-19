@@ -31,7 +31,7 @@ const App = ()=>{
                 >   
                     <Route index element={<TemplatePage/>} />
                     <Route 
-                        path="curriculum/:courseName/" 
+                        path="curriculum/:common_id" 
                         element={<SharedNav />}
                     >
                         {CurriculumEditPageRoutes}

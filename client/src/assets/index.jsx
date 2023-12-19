@@ -34,16 +34,7 @@ const imageMap = {
   SearchImage,
 };
 
-const ImageComponent = ({ imageName, alt, w, h, both}) => {
-  console.log(imageMap);
-  let width, height;
-  if(both) {
-    width = `w-${both}`; height = `h-${both}`
-  } else {
-    width = height = "w-auto";
-    if(w) width = `w-${w}`;
-    if(h) height = `h-${h}`;
-  }
+const ImageComponent = ({ imageName, alt, className, ...others}) => {
   const ImageSrc = imageMap[imageName];
 
   if (!ImageSrc) {
@@ -52,7 +43,7 @@ const ImageComponent = ({ imageName, alt, w, h, both}) => {
     return <img src='' alt='No Such Image' />
   }
 
-  return <img className={`${width} ${height}`} src={ImageSrc} alt={alt} />;
+  return <img className={className} src={ImageSrc} alt={alt} {...others} />;
 };
 
 export default ImageComponent;
