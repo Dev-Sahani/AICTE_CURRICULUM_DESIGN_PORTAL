@@ -1,7 +1,22 @@
 const User = require('../models/userModel');
+const Otp = require('../models/otpModel');
 const util = require('util')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 const { CustomAPIError, UNAUTHORIZED_USER, BAD_REQUEST ,NOT_FOUND } = require('../errors');
+const {sendEmailToUser, sendOTP} = require('../utils/email')
+
+function generateRandomKey(length) {
+    const charset = '0123456789abcdefghijklmlopqrtsuvwxyz';
+    let password = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+  
+    return password;
+  }
 
 const sendRes = (res,statusCode,token, user,msg)=>{
     if(token)
@@ -23,43 +38,62 @@ const createJWT = (user)=>jwt.sign({id:user._id, role:user.role},process.env.JWT
 })
 
 module.exports.register = async (req,res, next)=>{
-    const userId = req.body.userId;
-    const isUserIdExists = await User.findOne({
-        userId:userId
-    })
+    const userId = req.body;
     if(isUserIdExists){
         return next(new CustomAPIError(`user with userId ${userId} already exists`,409))
     }
     const newUser = await User.create({
-        userId:userId,
         name:req.body.name,
         email:req.body.email,
-        gender:req.body.gender,
-        dob:req.body.dob,
-        role:req.body.role,
-        areaOfSpecialization:req.body.areaOfSpecialization,
         password:req.body.password,
-        passwordChangedAt:req.body.passwordChangedAt,
-        adminIn:req.body.adminIn,
-        editorIn:req.body.editorIn,
-        viewerIn:req.body.viewerIn,
+        role:"administrator",
+        // gender:req.body.gender,
+        // dob:req.body.dob,
+        // areaOfSpecialization:req.body.areaOfSpecialization,
+        // password:req.body.password,
+        // passwordChangedAt:req.body.passwordChangedAt,
+        // adminIn:req.body.adminIn,
+        // editorIn:req.body.editorIn,
+        // viewerIn:req.body.viewerIn,
     });
-
     const token = createJWT(newUser)
-
     sendRes(res,201,token,newUser)
+}
+module.exports.registerUser = async (req,res, next)=>{
+    if(!(["expert","faculty"].includes(req.body.role))){
+        return next(new BAD_REQUEST("role can only include 'expert' or 'faculty'"))
+    }
+    const newPass = generateRandomKey(process.env.USER_PASSWORD_LEN)
+    console.log(newPass)
+    const newUser = new User({name:req.body.name, email:req.body.email,role:req.body.role})
+    newUser.userId = newUser._id
+    newUser.password = newPass
+    console.log(newUser.password)
+    await newUser.save()
+
+    //email the new user credentials to newUser.email
+    const user = {...newUser._doc,password:newPass}
+    // user.password = generateRandomKey(process.env.USER_PASSWORD_LEN)
+    await sendEmailToUser(user)
+
+
+    res.status(200).json({
+        status:"success",
+        message:"login credential has been send to user on provided email",
+        data:user
+    })
 }
 
 
-module.exports.login = async (req,res,next)=>{
-    const {userId,password} = req.body
-    if(!userId || !password)return next(new BAD_REQUEST('User userId or password not provide'));
+module.exports.loginAdmin = async (req,res,next)=>{
+    const {email,password} = req.body
+    if(!email || !password)return next(new BAD_REQUEST('User email or password not provide'));
 
-    const newUser = await User.findOne({userId}).select('+password')
-    if(!newUser)return next(new UNAUTHORIZED_USER("user userId or password does not match"));
+    const newUser = await User.findOne({email}).select('+password')
+    if(!newUser)return next(new UNAUTHORIZED_USER("user email or password does not match"));
     
     const isMatch = await newUser.checkPassword(password,newUser.password);
-    if(!isMatch)return next(new UNAUTHORIZED_USER("user userId or password does not match"));
+    if(!isMatch)return next(new UNAUTHORIZED_USER("user email or password does not match"));
 
     const token = createJWT(newUser)
     sendRes(res,200,token,newUser);
@@ -77,7 +111,7 @@ module.exports.protect = async (req, res, next)=>{
     //Verifying Token
     if(!token) return next(new UNAUTHORIZED_USER('User not logged in' ));
     const decoded = await util.promisify(jwt.verify)(token,process.env.JWT_SECRET)
-    
+    console.log(decoded)
     //Checking that user still exists.
     const freshUser = await User.findById(decoded.id);
     if(!freshUser)
@@ -94,7 +128,8 @@ module.exports.protect = async (req, res, next)=>{
 
 module.exports.restrictTo = function(...roles){
     return (req, res, next)=>{
-        if(!roles.includes(req.user.role)){
+        console.log(req.user)
+        if(!req.user || !roles.includes(req.user.role)){
             next(new CustomAPIError("You don't have acess to performe this action\nFORBIDDEN", 403))
         }
         next();
@@ -188,3 +223,53 @@ module.exports.updatePassword = async function (req,res, next){
     }
     sendRes(res,200,token,resUser)
 }
+
+module.exports.sendOTP = async (req, res, next)=>{
+    const OTP = generateRandomKey(process.env.OTP_LEN)
+    await sendOTP(req.body.email, OTP)
+    const otpObj = await Otp.create({
+        email:req.body.email,
+        otp:OTP
+    })
+    res.status(200).send({
+        stauts:"success",
+        message:"opt has send"
+    })
+}
+module.exports.verifyOtp = async (req, res, next)=>{
+    const OTP = req.body.otp
+    const otpObj = (await Otp.find({
+        email:req.body.email
+    }).sort({time:-1}).limit(1))[0]
+    console.log(otpObj, OTP)
+
+    if(OTP === otpObj.otp){
+        Otp.deleteOne({_id:otpObj._id})
+        res.status(200).send({
+            stauts:"success",
+            message:"opt has verified"
+        })
+    }else{
+        return next(new UNAUTHORIZED_USER("Otp does not match"))
+    }
+
+}
+module.exports.verifyAdministrator = async (req, res, next)=>{
+    
+}
+module.exports.verifyExperts = async (req, res, next)=>{
+    
+}
+module.exports.loginDev = async (req,res,next)=>{
+    const {userId,password} = req.body
+    if(!userId || !password)return next(new BAD_REQUEST('User userId or password not provide'));
+
+    const newUser = await User.findOne({userId}).select('+password')
+    if(!newUser)return next(new UNAUTHORIZED_USER("user userId or password does not match"));
+    
+    const isMatch = await newUser.checkPassword(password,newUser.password);
+    if(!isMatch)return next(new UNAUTHORIZED_USER("user userId or password does not match"));
+
+    const token = createJWT(newUser)
+    sendRes(res,200,token,newUser);
+};
