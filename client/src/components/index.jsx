@@ -11,6 +11,9 @@ import CourseInput from "./CourseInput";
 import CourseDropdown from "./CourseDropdown";
 import Label from "./Label";
 import AddCourseInput from "./AddCourseInput";
+import Instructions from "./Instructions";
+import Table from "./Table";
+import CardWrapper from "./CardWrapper"
 
 export {
     NavBar,
@@ -26,4 +29,7 @@ export {
     CourseDropdown,
     Label,
     AddCourseInput,
+    Instructions,
+    CardWrapper,
+    Table,
 }

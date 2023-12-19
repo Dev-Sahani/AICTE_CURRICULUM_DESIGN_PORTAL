@@ -19,7 +19,8 @@ export default function SharedNav() {
                 })}
             </div>
         </nav>
-        <main>
+        <hr className="border-t border-gray-300 mb-4"/>
+        <main className="w-full">
             <Outlet />
         </main>
     </div>

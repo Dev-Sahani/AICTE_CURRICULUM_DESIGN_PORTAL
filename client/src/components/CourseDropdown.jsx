@@ -3,7 +3,11 @@ import { useCourseContext } from "../context";
 
 const CourseDropdown = ({name, defaultValue, list, subjectId, className})=>
 {
-  if(!defaultValue || defaultValue==="") defaultValue = "Select";
+  const courseContext = useCourseContext();
+  if(!defaultValue || defaultValue==="") {
+    if(subjectId) defaultValue = courseContext[subjectId][name];
+    else defaultValue = courseContext[name];
+  }
   const [value, setValue] = useState(defaultValue);
 
   if(!name || !list || list.length === 0) {

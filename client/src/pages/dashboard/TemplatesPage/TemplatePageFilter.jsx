@@ -7,16 +7,16 @@ export default function TemplatePageFilter() {
   return (
     <nav className="w-full flex justify-evenly my-2">
         <FilterSearch 
-            name="search"
+            name="courseSearch"
             placeholder={"Enter Course Name"}
         />
         <FilterDropdown
-          name="level"
+          name="courseLevel"
           defaultValue="Select"
           list={getAllLevels}
         />
         <FilterDropdown
-          name="program"
+          name="courseProgram"
           defaultValue="Select"
           list={getAllProgrammes}
         />

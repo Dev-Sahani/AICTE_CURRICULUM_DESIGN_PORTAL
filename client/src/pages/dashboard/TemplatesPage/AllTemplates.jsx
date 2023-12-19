@@ -1,9 +1,28 @@
+import { useEffect, useState } from "react";
 import AddImage from "../../../assets/Add.png"
 import { Link } from 'react-router-dom';
-
+import { useFilterContext } from "../../../context/FilterContext";
 export default function AllTemplates() {
+    const {
+        getAllCourses, 
+        courseSearch, 
+        courseLevel, 
+        courseProgram
+    } = useFilterContext();
 
-    const templates = getAllTemplates();
+    const [templates, setTemplates] = useState([]);
+    useEffect(()=>{
+        const getCourses = async ()=>{
+            try{
+                const data = await getAllCourses();
+                setTemplates(data.data);
+            } catch(err) {
+                setTemplates([]);
+            }
+        }
+        getCourses();
+    }, [courseSearch, courseLevel, courseProgram]);
+    
     
     const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03] "
 
@@ -20,12 +39,12 @@ export default function AllTemplates() {
             templates.map((template) => {
                 return (
                     <Link 
-                        key={template.course_id}
+                        key={template.common_id}
                         className={CardsClasses}
-                        to={template.url()} 
+                        to={`/curriculum/${template.common_id}`} 
                     >
-                        <h1 className='text-xl m-2'>{template.courseName}</h1>
-                        <p className='text-xs mx-2 mb-2'>{template.about}</p>
+                        <h1 className='text-xl m-2'>{template.title}</h1>
+                        <p className='text-xs mx-2 mb-2'>{template.description}</p>
                         <div className='flex text-xs'>
                             <div className="bg-secondary-100 text-secondary-900 px-2 py-1 m-2 rounded-full">
                                 {template.level}

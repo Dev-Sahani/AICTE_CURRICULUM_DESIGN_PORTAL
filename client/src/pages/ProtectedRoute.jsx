@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProtectedRoute = ({children}) => {
+const ProtectedRoute = ({children}) => {  
   return children;
 }
 

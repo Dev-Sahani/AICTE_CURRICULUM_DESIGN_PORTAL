@@ -6,6 +6,7 @@ export default function FilterSearch({
     name, 
     defaultValue,
     placeholder,
+    className,
 }){
 
   const [localSearch, setLocalSearch] = useState(defaultValue?defaultValue:"");
@@ -25,8 +26,11 @@ export default function FilterSearch({
   // eslint-disable-next-line
   []);
 
+  let classes = " bg-white h-fit flex border-[1.4px] border-gray-500 rounded m-2 items-center";
+  if(className) classes = className + classes;
+
   return (
-    <div className="bg-white h-fit flex border-[1.4px] border-gray-500 rounded m-2 items-center">
+    <div className={classes}>
       <img src={Search} alt="search" className="w-[32px] h-[32px]"/>
       <input 
           type="text"

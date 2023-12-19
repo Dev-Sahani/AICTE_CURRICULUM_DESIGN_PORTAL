@@ -19,7 +19,7 @@ async function getAllQuestions(req, res) {
 async function postFeedback(req, res) {
     const {subjectId, by, answers} = req.body;
     // TO-DO ---------------------------------------------
-    const isStudent = true;
+    // const isStudent = true;
 
     answers.forEach((ans, index, array) => {
         array[index] = {
@@ -51,47 +51,47 @@ async function getFeedbackAnalysis(req, res) {
             }
         },
         {
-            $project: {
-              year: 1,
-              questionNo: 1,
-              questionType: 1,
-              value: 1,
-              integersValues: {
-                $cond: {
-                  if: { $in: ["$questionType", ["rate", "true/false"]] },
-                  then: "$value",
-                  else: null
-                }
-              },
-              nonIntegersValues: {
-                $cond: {
-                  if: { $in: ["$questionType", ["rate", "true/false"]] },
-                  then: null,
-                  else: "$value"
-                }
+          $project: {
+            year: 1,
+            questionNo: 1,
+            questionType: 1,
+            value: 1,
+            integersValues: {
+              $cond: {
+                if: { $in: ["$questionType", ["rate", "true/false"]] },
+                then: "$value",
+                else: null
+              }
+            },
+            nonIntegersValues: {
+              $cond: {
+                if: { $in: ["$questionType", ["rate", "true/false"]] },
+                then: null,
+                else: "$value"
               }
             }
-          },
-          {
-            $group: {
-              _id: { year: "$year", questionNo: "$questionNo" , questionType: "$questionType"},
-              integersValues: { $avg: "$integersValues" },
-              nonIntegersValues: { $push: "$nonIntegersValues" }
-            }
-          },
-          { $project: {
-            _id: 0,
-            fields: "$_id",
-            integersValues: 1,
-            nonIntegersValues: {
-                $cond: {
-                    if: {$eq: ["$integersValues", null]},
-                    then: "$nonIntegersValues",
-                    else: null,
-                }
-            }
-        }},
-    ]);
+          }
+        },
+        {
+          $group: {
+            _id: { year: "$year", questionNo: "$questionNo" , questionType: "$questionType"},
+            integersValues: { $avg: "$integersValues" },
+            nonIntegersValues: { $push: "$nonIntegersValues" }
+          }
+        },
+        { $project: {
+          _id: 0,
+          fields: "$_id",
+          integersValues: 1,
+          nonIntegersValues: {
+              $cond: {
+                  if: {$eq: ["$integersValues", null]},
+                  then: "$nonIntegersValues",
+                  else: null,
+              }
+          }
+        }
+    }]);
     // console.log(data);
 
     res.status(StatusCodes.OK).json({data,});
