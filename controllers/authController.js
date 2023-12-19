@@ -224,10 +224,11 @@ module.exports.updatePassword = async function (req,res, next){
 module.exports.sendOTP = async (req, res, next)=>{
     const OTP = generateRandomKey(process.env.OTP_LEN)
     await sendOTP(req.body.email, OTP)
-    const otpObj = await Otp.create({
-        email:req.body.email,
-        otp:OTP
-    })
+    const otpObj = await Otp.findOneAndUpdate(
+  { email: req.body.email}, 
+  { $set: { data: userData } },
+  { upsert: true, new: true }
+)
     res.status(200).send({
         stauts:"success",
         message:"opt has send"
