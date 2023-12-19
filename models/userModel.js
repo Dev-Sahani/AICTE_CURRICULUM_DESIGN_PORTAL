@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     gender:{
         type:String,
         enum:["male","female","other"],
-        require:[true,"User's gender is Missing"]
+        // require:[true,"User's gender is Missing"]
     },
     dob:Date,
     // profileImgUrl:
@@ -61,6 +61,10 @@ const userSchema = new mongoose.Schema({
     },
     passwordResetToken:String,
     passwordResetTokenExpire:Date,
+    otp:{
+        type:String,
+        select:false
+    },
     active:{
         type:Boolean,
         default:true,

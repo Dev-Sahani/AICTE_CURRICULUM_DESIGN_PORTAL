@@ -12,7 +12,8 @@ const resourceSchema = new mongoose.Schema({
     type:{
         type:String,
         enum:['book','e-book','research-paper','notes','video','image','article'],
-        require:[true,"Resource's Type is Missing"]
+        message: 'Invalid type value: only {"book","e-book","research-paper","notes","video","image","article"} is allowed',
+        require:[true,"Resource's Type is Missing"],
     },
     author:{
         type:String,
@@ -23,6 +24,6 @@ const resourceSchema = new mongoose.Schema({
     url:String
 })
 
-const Resource = new mongoose.Model(resourceSchema)
+const Resource = new mongoose.model("resources",resourceSchema)
 
 module.exports = Resource;
