@@ -235,9 +235,9 @@ module.exports.sendOTP = async (req, res, next)=>{
 }
 module.exports.verifyOtp = async (req, res, next)=>{
     const OTP = req.body.otp
-    const otpObj = (await Otp.find({
+    const otpObj = (await Otp.findOne({
         email:req.body.email
-    }).sort({time:-1}).limit(1))[0]
+    }))
     console.log(otpObj, OTP)
 
     if(OTP === otpObj.otp){
