@@ -36,3 +36,16 @@ exports.getByQuery = (Model)=>async (req, res, next)=>{
         data
     })
 }
+
+exports.deleteById = (Model)=>async function(req, res, next){
+    const id = req.params.id
+    const data = await Model.deleteOne({_id:id})
+    if (!data) {
+        return next(new BAD_REQUEST("data with given id not found"))
+    } else {
+        res.status(200).send({
+            status:"success",
+            data
+        });
+    }
+}

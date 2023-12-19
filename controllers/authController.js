@@ -39,9 +39,6 @@ const createJWT = (user)=>jwt.sign({id:user._id, role:user.role},process.env.JWT
 
 module.exports.register = async (req,res, next)=>{
     const userId = req.body;
-    if(isUserIdExists){
-        return next(new CustomAPIError(`user with userId ${userId} already exists`,409))
-    }
     const newUser = await User.create({
         name:req.body.name,
         email:req.body.email,
@@ -227,10 +224,11 @@ module.exports.updatePassword = async function (req,res, next){
 module.exports.sendOTP = async (req, res, next)=>{
     const OTP = generateRandomKey(process.env.OTP_LEN)
     await sendOTP(req.body.email, OTP)
-    const otpObj = await Otp.create({
-        email:req.body.email,
-        otp:OTP
-    })
+    const otpObj = await Otp.findOneAndUpdate(
+  { email: req.body.email}, 
+  { $set: { otp:OTP } },
+  { upsert: true, new: true }
+)
     res.status(200).send({
         stauts:"success",
         message:"opt has send"
@@ -238,9 +236,9 @@ module.exports.sendOTP = async (req, res, next)=>{
 }
 module.exports.verifyOtp = async (req, res, next)=>{
     const OTP = req.body.otp
-    const otpObj = (await Otp.find({
+    const otpObj = (await Otp.findOne({
         email:req.body.email
-    }).sort({time:-1}).limit(1))[0]
+    }))
     console.log(otpObj, OTP)
 
     if(OTP === otpObj.otp){

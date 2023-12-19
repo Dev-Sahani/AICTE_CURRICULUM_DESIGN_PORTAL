@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const otpSchema = new mongoose.Schema({
     email:{
         type:String,
-        require:[true, "email is missing"]
+        require:[true, "email is missing"], 
+        unique: [true, "otp's email must be unique"]
     },
     time:{
         type:Date,
