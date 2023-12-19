@@ -226,7 +226,7 @@ module.exports.sendOTP = async (req, res, next)=>{
     await sendOTP(req.body.email, OTP)
     const otpObj = await Otp.findOneAndUpdate(
   { email: req.body.email}, 
-  { $set: { data: userData } },
+  { $set: { otp:OTP } },
   { upsert: true, new: true }
 )
     res.status(200).send({
