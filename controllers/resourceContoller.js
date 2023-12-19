@@ -1,17 +1,12 @@
 const { StatusCodes } = require("http-status-codes");
 const resourceModel = require("../models/resourceModel.js");
+const factoryController = require('./factoryController')
 const { BAD_REQUEST, NOT_FOUND } = require("../errors/index.js");
+const { resourceUsage } = require("process");
 
 
 
-exports.getAllResources = async function(req, res) {
-    const data = await resourceModel.find();
-    res.status(StatusCodes.OK).json({
-        status:'success',
-        length:data.length,
-        data
-    });
-}
+exports.getAllResources = factoryController.getByQuery(resourceModel)
 
 exports.addResource = async function (req, res) {
     const { title,description,type,author,coverImageUrl,url } = req.body;
@@ -30,16 +25,8 @@ exports.addResource = async function (req, res) {
     });
 }
 
-exports.deleteResource= async function(req,res){
-    const resourceId = req.params.id;
-    const deletedResource = await resourceModel.findByIdAndDelete(resourceId);
+exports.deleteResource= factoryController.deleteById(resourceModel)
 
-    if (!deletedResource) {
-        return next(new BAD_REQUEST("recource with given id not found"))
-    } else {
-        res.status(StatusCodes.NO_CONTENT).send({
-            status:"success",
-            data:deletedResource
-        });
-    }
-}
+exports.updateResourceById = factoryController.patchOne(resourceModel)
+
+exports.getResourceById = factoryController.getOne(resourceModel)

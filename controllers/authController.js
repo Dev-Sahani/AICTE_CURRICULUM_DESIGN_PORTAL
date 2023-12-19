@@ -39,9 +39,6 @@ const createJWT = (user)=>jwt.sign({id:user._id, role:user.role},process.env.JWT
 
 module.exports.register = async (req,res, next)=>{
     const userId = req.body;
-    if(isUserIdExists){
-        return next(new CustomAPIError(`user with userId ${userId} already exists`,409))
-    }
     const newUser = await User.create({
         name:req.body.name,
         email:req.body.email,
