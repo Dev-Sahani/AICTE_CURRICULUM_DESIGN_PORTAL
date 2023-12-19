@@ -49,16 +49,23 @@ export const UserProvider = ({children})=>{
         loading(false);
     }
     const sendAdminOTP = async ({email})=>{
-        if(!email.endsWith("@aicte-india.org")) {
-            // return new Error("Not Valid Email")
+        if(
+            // !email.endsWith("@aicte-india.org") || 
+        !email || email === "") {
+            return null;
         }
+        let res;
         try{
-            const res = await axiosInstance.post("auth/send-otp", {email,});
-            if(res.status !== 200) throw Error(); 
+            console.log("check");
+            res = await axiosInstance.post("auth/send-otp", {email,});
+            // console.log(res);
+            if(res.status !== 200) return null;
                        
         } catch (err){
             alert("Cannot send OTP at the moment Sorry for the inconvenience");
+            return null;
         }
+        return res;
     }
 
     const setupAdminPassword = async ({name, password})=>{
@@ -82,23 +89,42 @@ export const UserProvider = ({children})=>{
         }
     }
 
-    const registerAdmin = async ({email, otp})=>{
-        loading(true);
-        try{
-            const response = await axiosInstance.post("/auth/verify-otp", {email, otp});
-            if(response.status !== 200) {
-                alert("Invalid Credentials");
-                return;
+    const verifyAdminOTP = async ({email, otp})=>{
+        // loading(true);
+        // let response = null;
+        // try{
+        //     console.log(email, otp)
+        //     response = await axiosInstance.post("auth/verify-otp", {email, otp});
+        //     console.log(response);
+        //     if(response && response.status !== 200) {
+        //         alert("Invalid Credentials");
+        //         return null;
+        //     }
+        //     dispatch({
+        //         type: SETUP_USER,
+        //         payload: response.data,
+        //     })
+        // } catch(err) {
+        //     alert("Cannot send OTP at the moment Sorry for the inconvenience");
+        //     return null;
+        // }
+        // loading(false);
+        // return response;
+        try {
+            const res = await axiosInstance("auth/verify-otp", {email, otp});
+            if(!res) {
+                alert("Invalid Credential");
+                return null;
             }
             dispatch({
                 type: SETUP_USER,
-                payload: response.data,
-            })
+                payload: res.data,
+            });
+            return res;
         } catch(err) {
-            alert("Cannot send OTP at the moment Sorry for the inconvenience");
+            alert("Cannot Verify")
+            return null;
         }
-
-        loading(false);
     }
 
     const loginDeveloper = async ({userId, password})=>{
@@ -146,7 +172,7 @@ export const UserProvider = ({children})=>{
                 loginAdmin,
                 sendAdminOTP,
                 setupAdminPassword,
-                registerAdmin,
+                verifyAdminOTP,
                 loginDeveloper,
                 createUser,
 

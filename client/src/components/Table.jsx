@@ -1,14 +1,15 @@
-export default function Table({ data, primaryHead }) {
+export default function Table({ data, primaryHead, head }) {
     let headClasses = "border-separate border-spacing-0 ";
     if (primaryHead) headClasses += " text-white bg-primary-600";
     else headClasses += " text-primary-900";
-  
+    if(head) data.unshift(head);
+    
     return (
       <table className="table-auto border-separate border-spacing-y-2">
         <thead>
           <tr className={headClasses}>
             {data[0].map((str) => (
-              <th className="px-5 py-2" key={str}>
+              <th className="px-5 py-2 capitalize" key={str}>
                 {str}
               </th>
             ))}

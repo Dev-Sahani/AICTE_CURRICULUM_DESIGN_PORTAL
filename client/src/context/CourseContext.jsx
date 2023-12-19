@@ -28,6 +28,52 @@ export const CourseProvider = ({children})=>{
         }
     }
 
+    const getCategoriesWiseSub = async(courseId)=>{
+        let res = null;
+        try{
+            const url = `courses/categories/${courseId}`;
+            console.log(url);
+            res = await axiosInstance.get(url);
+            if(res.status !== 200) {
+                alert("Cannot make Request");
+                return null;
+            }
+            return res.data
+        } catch(err) {
+            alert("Cannot make Request");
+            return null;
+        }
+    }
+
+    const getAllSubjects = async (courseId)=>{
+        try{
+            const url = `courses/subjects/${courseId}`;
+            const res = await axiosInstance.get(url);
+            if(res && res.status === 200) {
+                return res.data;
+            }
+            return null;
+        } catch(err) {
+            alert("Cannot Get Server");
+            return null;
+        }
+    }
+
+    const getSemestersWiseSub = async (courseId)=>{
+        try{
+            const url = `courses/semesters/${courseId}`;
+            console.log(url);
+            const res = await axiosInstance.get(url);
+            if(res.status !== 200) {
+                alert("Cannot make Request");
+                return null;
+            }
+            return res.data;
+        } catch(err) {
+            alert("Cannot make Request");
+            return null;
+        }
+    }
     const handleChange = (name, value, subjectId) => {
         const obj = {name, value};
         if(subjectId && subjectId !== "") {
@@ -48,6 +94,10 @@ export const CourseProvider = ({children})=>{
                 ...state,
                 handleChange,
                 getCourse,
+                getCategoriesWiseSub,
+                getSemestersWiseSub,
+                getAllSubjects,
+
             }}
         >
             {children}

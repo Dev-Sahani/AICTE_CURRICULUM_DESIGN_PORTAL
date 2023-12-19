@@ -1,41 +1,31 @@
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Table,
   CardWrapper
 } from "../../../components"
+import { useCourseContext } from "../../../context";
+
 export default function SemestersPage() {
-  const semesters = [
-    {
-      title: "I",
-      subjects: [
-        {
-          code: "evw32",
-          title: "jfla",
-          semester:2,
-          l:1,
-          t:2,
-          p:1,
-          credits: 2
-        }, {
-          code: "evw32",
-          title: "jfla",
-          semester:2,
-          l:1,
-          t:2,
-          p:1,
-          credits: 2
-        }, {
-          code: "evw32",
-          title: "jfla",
-          semester:2,
-          l:1,
-          t:2,
-          p:1,
-          credits: 2
-        },
-      ]
+  const { common_id } = useParams();
+  const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
+  const { getSemestersWiseSub } = useCourseContext();
+
+  const [semesters, setSemesters] = useState([]);
+
+  useEffect(()=>{
+    const data = async()=>{
+      const res = await getSemestersWiseSub(common_id);
+      return res;
     }
-  ]
-  const keyOrder = ["Code", "title", "semester", "l", "t", "p", "credits"];
+    data().then((res)=>{
+      if(res) {
+        // console.log(res);
+        setSemesters(convertIntoArray(res.data.semesters, keyOrder))
+      }
+    });
+  },[])
+
   return (
     <>
       {
@@ -54,17 +44,18 @@ export default function SemestersPage() {
                   semester.subjects.reduce((acc, curr)=>acc + curr.credits, 0)
                 }`}
               </h1>
-            </header>a-
+            </header>
             <hr className="h-4 border-t-2 border-gray-400 mb-6 mx-4"/>
             <Table
               data={
                 semester.subjects.map((sub)=>{
                   return keyOrder.map((key)=>{
+                    if(!sub[key]) return Math.round(Math.random()*3)
                     return sub[key];
                   })
                 })
-                // .unshift(["Code", "Subject Name", "Semester", "L","T","P", "Credits"])
               }
+              head={keyOrder}
             />
           </CardWrapper>
         )
@@ -74,3 +65,48 @@ export default function SemestersPage() {
   )
 }
   
+const convertIntoArray = (obj, head)=>{
+  const keys = Object.keys(obj);
+  const arr = [];
+  for(let k of keys) {
+    arr.push({
+      title: k,
+      subjects: obj[k],
+    })
+  }
+  // if(head) arr.unshift({subjects: head});
+  console.log("Array" ,arr);
+  return arr;
+}
+    // const semesters = [
+    //   {
+    //     title: "I",
+    //     subjects: [
+    //       {
+    //         code: "evw32",
+    //         title: "jfla",
+    //         semester:2,
+    //         l:1,
+    //         t:2,
+    //         p:1,
+    //         credits: 2
+    //       }, {
+    //         code: "evw32",
+    //         title: "jfla",
+    //         semester:2,
+    //         l:1,
+    //         t:2,
+    //         p:1,
+    //         credits: 2
+    //       }, {
+    //         code: "evw32",
+    //         title: "jfla",
+    //         semester:2,
+    //         l:1,
+    //         t:2,
+    //         p:1,
+    //         credits: 2
+    //       },
+    //     ]
+    //   }
+    // ]

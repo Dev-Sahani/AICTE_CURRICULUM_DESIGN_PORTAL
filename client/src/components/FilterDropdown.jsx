@@ -13,7 +13,7 @@ const FilterDropdown = ({name, defaultValue, list})=>
 
   const onChange = (e)=>{
     setValue(e.target.value);
-    handleChange({name: e.target.value, value: e.target.value})
+    handleChange({name: e.target.name, value: e.target.value})
   }
   if(!list.includes(defaultValue)) list.unshift(defaultValue);
 
@@ -27,7 +27,7 @@ const FilterDropdown = ({name, defaultValue, list})=>
       {
         list.map( (itemValue, index)=>{
           return (
-            <option key={index} value={itemValue} className="text-sm">
+            <option key={index} value={itemValue} className="text-sm" >
               {itemValue}
             </option>
           );
