@@ -8,7 +8,11 @@ const port = process.env.PORT || 8080;
 
 const start = ()=>{
     try{
-        mongoose.connect(process.env.MONGO_URL)
+        mongoose.connect(process.env.MONGO_URL).then(()=>{
+            console.log(process.env.NODE_ENV==="development"?"connected to db":undefined)
+        }).catch((err)=>{
+            console.log("can't connect to db")
+        })
 
         app.listen(port, ()=>{
             console.log("Server has started on port "+port)
