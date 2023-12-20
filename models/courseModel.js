@@ -16,14 +16,14 @@ const courseSchema = new mongoose.Schema({
 
     program:{
         type:String,
-        enum:["undergraduate","postgraduate","diploma"],
+        enum:["Applied Arts and Crafts", "Architecture and Town Planning",
+        "Architecture", "Town Planning", "Engineering & Technology", 
+        "Hotel Management and Catering", "Management", "MCA", "Pharmacy"],
         require:[true,"program is missin"]
     },
     level:{
         type:String,
-        enum:["Applied Arts and Crafts", "Architecture and Town Planning",
-            "Architecture", "Town Planning", "Engineering & Technology", 
-            "Hotel Management and Catering", "Management", "MCA", "Pharmacy"],
+        enum:["undergraduate","postgraduate","diploma"],
         require:[true,"level is missin"]
     },
     description:String,

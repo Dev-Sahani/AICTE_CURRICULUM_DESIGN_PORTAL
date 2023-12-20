@@ -25,7 +25,6 @@ exports.getOne = (Model)=>async (req,res, next)=>{
 exports.getByQuery = (Model)=>async (req, res, next)=>{
     const query = Model.find()
     const filteredQuery = new filterAPI(query,req.query)
-        .filterAndFind()
         .sort()
         .select()
         .paging()

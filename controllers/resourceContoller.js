@@ -9,17 +9,14 @@ const filterAPI = require('../utils/filterAPI.js')
 exports.getAllResources = async (req, res, next)=>{
     const filt = {}
     if(req.query.search){
-        // console.log(req.query.search)
-        const exp = new RegExp(`^${req.query.search}^`);
-
-        // Use the regex in the query to find matching titles
-        filt["title"] =  {$regex:exp,$options:"i"}
-        filt["title"] =  req.query.search
+        const exp = new RegExp(`^${req.query.search}`, 'i');
+        // const exp = new RegExp(`.*${req.query.search}.*`,'i');
+        filt.title =  { $regex: exp};
     }
     console.log(filt)
     const query = resourceModel.find(filt)
     const filteredQuery = new filterAPI(query,req.query)
-        .filterAndFind()
+        // .filterAndFind()
         .sort()
         .select()
         .paging()
