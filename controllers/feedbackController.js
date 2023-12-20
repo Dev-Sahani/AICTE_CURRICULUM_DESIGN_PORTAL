@@ -6,9 +6,8 @@ const mongoose = require("mongoose");
 
 async function getAllQuestions(req, res) {
     // Verify user  -----------------------------------
-    // One student = one feedback per subject ---------
+    // One faculty = one feedback per subject ---------
 
-    const {subjectId} = req.body;
     // const data = FeedbackQuestions.find({$subjectId: {subjectId}});
     const data = await FeedbackQuestions.find({});
     
@@ -24,7 +23,6 @@ async function postFeedback(req, res) {
     answers.forEach((ans, index, array) => {
         array[index] = {
           subjectId,
-          isStudent,
           by,
           questionNo: ans.questionNo,
           questionType: ans.questionType,
@@ -41,7 +39,7 @@ async function postFeedback(req, res) {
 async function getFeedbackAnalysis(req, res) {
     // TO-DO -------------------------------
     // Verify User 
-    const {subjectId, student} = req.body;
+    const {subjectId } = req.body;
     
     const data = await FeedbackResponse.aggregate([
         {

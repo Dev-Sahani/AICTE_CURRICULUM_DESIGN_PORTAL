@@ -51,12 +51,28 @@ export const FilterProvider = ({children})=>{
         return new Error("Cannot get courses");
     }
     
+    const getAllResources = async ()=>{
+        try {
+            let url = `resources?`;
+            const {resourceSearch, resourceFormat, resourceProgram} = state;
+            if(resourceSearch && resourceSearch!=="" ) url +=  `search=${resourceSearch}`; 
+            if(resourceFormat && resourceFormat!=="" && resourceFormat!=="Select Format") url +=  `&type=${resourceFormat}`; 
+            // if(resourceProgram && resourceProgram!==""&& resourceProgram!=="Select Program") url +=  `&program=${resourceProgram}`; 
+
+            const res = await axiosInstance.get(url);
+            if(res && res.status === 200) return res.data;
+            return null;
+        } catch(err) {
+            return null;
+        }
+    }
     return (
         <FilterContext.Provider
             value = {{
                 ...state,
                 handleChange,
                 getAllCourses,
+                getAllResources,
             }}
         >
             {children}

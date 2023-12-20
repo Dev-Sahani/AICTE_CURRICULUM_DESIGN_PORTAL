@@ -6,16 +6,16 @@ export default function TemplatePageFilter() {
   return (
     <nav className="w-full flex justify-evenly my-2">
         <FilterSearch 
-            name="Resourcesearch"
+            name="resourceSearch"
             placeholder={"Search Resources"}
         />
         <FilterDropdown
-          name="Resourcedrop"
+          name="resourceFormat"
           defaultValue="Select Format "
-          list={["Books","Tutorial Videos","Notes","Practice Sheets ,Last year Paper"]}
+          list={["books","videos","e-book"]}
         />
-        <FilterDropdown
-          name="Resourcedown"
+        {/* <FilterDropdown
+          name="resourse"
           defaultValue="Select Subject"
           list={[
             "Applied Arts and Crafts", 
@@ -28,7 +28,7 @@ export default function TemplatePageFilter() {
             "MCA", 
             "Pharmacy"
           ]}
-        />
+        /> */}
     </nav>
   )
 }

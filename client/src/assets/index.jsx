@@ -15,6 +15,7 @@ import PersonAddImage from "./personAdd.svg";
 import PlusImage from "./Plus.png";
 import ProgressImage from "./Progress.png";
 import SearchImage from "./Search.png";
+import CloseImage from "./CloseImage.png"
 
 const imageMap = {
   ChatBubbleImage,
@@ -32,6 +33,7 @@ const imageMap = {
   PlusImage,
   ProgressImage,
   SearchImage,
+  CloseImage
 };
 
 const ImageComponent = ({ imageName, alt, className, ...others}) => {
