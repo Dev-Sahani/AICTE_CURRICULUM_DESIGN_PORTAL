@@ -112,12 +112,22 @@ exports.getSemester = async(req, res, next)=>{
     })
 }
 exports.getSubjects = async(req, res, next)=>{
-    const subjectsIds = (await Course.find({common_id:req.params.commonId})
+    const course = (await Course.find({common_id:req.params.commonId})
         .sort({version:-1})
         .limit(1)
-        .select("subjects"))[0].subjects.map((val)=>val.common_id)
+        .select("subjects"))[0]
+    const subjectsIds = course.subjects.map((val)=>val.common_id)
     
-    const data = await Subject.find({common_id:{$in:subjectsIds}})
+    let data = await Subject.find({common_id:{$in:subjectsIds}})
+
+    // data.forEach((val, index)=>{
+    //     const ind = course.subjects.findIndex((subVal)=>subVal.common_id===val.common_id)
+    //     for(const key in course.subjects[ind]){
+    //         if(["common_id","version","title",""].includes(key))continue;
+    //         data[index][key] = course.subjects[ind][key]
+    //     }
+    // })
+
     res.status(200).send({
         status:"success",
         length:data.length,

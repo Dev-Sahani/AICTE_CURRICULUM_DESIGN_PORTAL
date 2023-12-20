@@ -22,6 +22,12 @@ const subjectSchema = new mongoose.Schema({
         },
         topics:[String],
     }],
+    experiments:[{
+        name:{
+            type:String,require:true
+        },
+        url:String
+    }],
     referenceMaterial:[mongoose.SchemaTypes.ObjectId],
     outcomes:[String],
     // alternativeCourses:[]
