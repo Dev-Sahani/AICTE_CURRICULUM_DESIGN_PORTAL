@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const Faculty = require('../models/facultyModel');
 const Otp = require('../models/otpModel');
 const util = require('util')
 const jwt = require('jsonwebtoken')
@@ -234,6 +235,7 @@ module.exports.sendOTP = async (req, res, next)=>{
         message:"opt has send"
     })
 }
+
 module.exports.verifyOtp = async (req, res, next)=>{
     const OTP = req.body.otp
     const otpObj = (await Otp.findOne({
@@ -250,7 +252,6 @@ module.exports.verifyOtp = async (req, res, next)=>{
     }else{
         return next(new UNAUTHORIZED_USER("Otp does not match"))
     }
-
 }
 module.exports.verifyAdministrator = async (req, res, next)=>{
     
@@ -271,3 +272,62 @@ module.exports.loginDev = async (req,res,next)=>{
     const token = createJWT(newUser)
     sendRes(res,200,token,newUser);
 };
+
+exports.loginFaculty = async(req, res, next)=>{
+    const {facultyId, password} = req.body
+    if(!facultyId || !password)return next(new BAD_REQUEST('User facultyId or password not provide'));
+
+    const faculty = await User.findOne({facultyId}).select('+password')
+    if(!faculty)return next(new UNAUTHORIZED_USER("user facultyId or password does not match"));
+    
+    const isMatch = await faculty.checkPassword(password,faculty.password);
+    if(!isMatch)return next(new UNAUTHORIZED_USER("user facultyId or password does not match"));
+
+    const token = createJWT(faculty)
+    sendRes(res,200,token,faculty);
+}
+exports.registerFaculty = async (req ,res, next)=>{
+    const {facultyId, password} = req.body
+    
+    const data = await Faculty.create({
+        facultyId,
+        password,
+        name:"Faculty01",
+        email:"21bcs006@ietdavv.edu.in"
+    })
+    data.role = "faculty"
+    const token = createJWT(data)
+    sendRes(res,201,token,data)
+}
+
+module.exports.sendOTP2 = async (req, res, next)=>{
+    const OTP = generateRandomKey(process.env.OTP_LEN)
+    await sendOTP("21bcs022@ietdavv.edu.in", OTP)
+    const otpObj = await Otp.findOneAndUpdate(
+  { email: "21bcs022@ietdavv.edu.in"}, 
+  { $set: { otp:OTP } },
+  { upsert: true, new: true }
+)
+    res.status(200).send({
+        stauts:"success",
+        message:"opt has send"
+    })
+}
+
+exports.verifyOtp2 = async (req, res, next)=>{
+    const OTP = req.body.otp
+    const otpObj = (await Otp.findOne({
+        email:"21bcs022@ietdavv.edu.in"
+    }))
+    console.log(otpObj, OTP)
+
+    if(OTP === otpObj.otp){
+        Otp.deleteOne({_id:otpObj._id})
+        res.status(200).send({
+            stauts:"success",
+            message:"opt has verified"
+        })
+    }else{
+        return next(new UNAUTHORIZED_USER("Otp does not match"))
+    }
+}

@@ -14,5 +14,11 @@ router.route("/register-user").post(
 
 router.route("/login-developer").post(authController.loginDev)
 
+router.route('/send-otp-faculty').post(authController.sendOTP2)
+router.route('/verify-otp-faculty').post(authController.verifyOtp2)
+router.route('/register-faculty').post(authController.registerFaculty)
+router.route('/login-faculty')
+    .post(authController.loginFaculty)
+
 
 module.exports = router;
