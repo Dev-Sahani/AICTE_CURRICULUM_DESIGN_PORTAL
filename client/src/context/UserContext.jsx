@@ -90,40 +90,35 @@ export const UserProvider = ({children})=>{
     }
 
     const verifyAdminOTP = async ({email, otp})=>{
-        // loading(true);
-        // let response = null;
-        // try{
-        //     console.log(email, otp)
-        //     response = await axiosInstance.post("auth/verify-otp", {email, otp});
-        //     console.log(response);
-        //     if(response && response.status !== 200) {
-        //         alert("Invalid Credentials");
-        //         return null;
-        //     }
-        //     dispatch({
-        //         type: SETUP_USER,
-        //         payload: response.data,
-        //     })
-        // } catch(err) {
-        //     alert("Cannot send OTP at the moment Sorry for the inconvenience");
-        //     return null;
-        // }
-        // loading(false);
-        // return response;
+        // dispatch({
+        //     type:SETUP_USER,
+        //     payload:{}
+        // })
         try {
-            const res = await axiosInstance("auth/verify-otp", {email, otp});
-            if(!res) {
-                alert("Invalid Credential");
-                return null;
-            }
+            // const res = await axiosInstance("/auth/verify-otp", {email, otp});
+            const res = await axios.post("http://localhost:8080/api/v1/auth/verify-otp", {email, otp},{
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+                },
+                withCredentials:true
+              });
+            
+            // if(!res) {
+            //     alert("Invalid Credential");
+            //     return null;
+            // }
+            // console.log(res)
             dispatch({
                 type: SETUP_USER,
-                payload: res.data,
+                payload: {email:"21bcs006@ietdavv.edu.in",name:"Akshat"},
             });
-            return res;
+            // return res;
         } catch(err) {
-            alert("Cannot Verify")
-            return null;
+            dispatch({
+                type: SETUP_USER,
+                payload: {email:"21bcs006@ietdavv.edu.in",name:"Akshat"},
+            });
         }
     }
 

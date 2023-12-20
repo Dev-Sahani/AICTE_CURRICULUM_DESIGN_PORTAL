@@ -1,9 +1,10 @@
 export default function Table({ data, primaryHead, head }) {
+  const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
     let headClasses = "border-separate border-spacing-0 ";
     if (primaryHead) headClasses += " text-white bg-primary-600";
     else headClasses += " text-primary-900";
     if(head) data.unshift(head);
-    
+
     return (
       <table className="table-auto border-separate border-spacing-y-2">
         <thead>

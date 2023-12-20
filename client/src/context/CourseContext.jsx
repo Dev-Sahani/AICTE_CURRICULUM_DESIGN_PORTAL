@@ -26,6 +26,7 @@ export const CourseProvider = ({children})=>{
                 payload: {course: response.data.data}
             });
         }
+        return state.subjects
     }
 
     const getCategoriesWiseSub = async(courseId)=>{

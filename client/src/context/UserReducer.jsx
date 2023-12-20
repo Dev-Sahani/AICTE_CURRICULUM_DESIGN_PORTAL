@@ -4,20 +4,20 @@ import {
     ALERT,
 } from "./UserAction"
 
-export default function reducer({action, state}){
-    if(action.type === ALERT) {
+export default function reducer(state, action){
+    if(action&& action.type === ALERT) {
         return {
             ...state,
             alert: action.payload,
         }
     }
-    if(action.type === HANDLE_LOADING) {
+    if(action&& action.type === HANDLE_LOADING) {
         return {
             ...state,
             loading: action.payload,
         }
     }
-    if(action.type === SETUP_USER) {
+    if(action&& action.type === SETUP_USER) {
         return {
             ...state,
             user: action.payload,
