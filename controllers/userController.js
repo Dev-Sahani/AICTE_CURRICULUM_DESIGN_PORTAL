@@ -1,8 +1,27 @@
 const { BAD_REQUEST } = require('../errors/index')
 const User = require('../models/userModel')
 const factoryController = require('./factoryController')
+const filterAPI =require('../utils/filterAPI')
 
-exports.getAllUser = factoryController.getByQuery(User)
+exports.getAllUser = async (req, res, next)=>{
+    const {name, areaOfSpecialization} = req.query
+    const flt = {}
+    if (name) {
+        const exp = new RegExp(`^${name}`, 'i');
+        flt.name = { $regex: exp };
+    }
+    const query = User.find(flt)
+    const filteredQuery = new filterAPI(query,req.query)
+        .sort()
+        .select()
+        .paging()
+    const data = await filteredQuery.query
+    res.status(200).send({
+        status:"success",
+        length:data.length,
+        data
+    })
+}
 
 exports.getUser = factoryController.getOne(User)
 
