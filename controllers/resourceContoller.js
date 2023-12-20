@@ -2,11 +2,34 @@ const { StatusCodes } = require("http-status-codes");
 const resourceModel = require("../models/resourceModel.js");
 const factoryController = require('./factoryController')
 const { BAD_REQUEST, NOT_FOUND } = require("../errors/index.js");
-const { resourceUsage } = require("process");
+const filterAPI = require('../utils/filterAPI.js')
 
 
 
-exports.getAllResources = factoryController.getByQuery(resourceModel)
+exports.getAllResources = async (req, res, next)=>{
+    const filt = {}
+    if(req.query.search){
+        // console.log(req.query.search)
+        const exp = new RegExp(`^${req.query.search}^`);
+
+        // Use the regex in the query to find matching titles
+        filt["title"] =  {$regex:exp,$options:"i"}
+        filt["title"] =  req.query.search
+    }
+    console.log(filt)
+    const query = resourceModel.find(filt)
+    const filteredQuery = new filterAPI(query,req.query)
+        .filterAndFind()
+        .sort()
+        .select()
+        .paging()
+    const data = await filteredQuery.query
+    res.status(200).send({
+        status:"success",
+        length:data.length,
+        data
+    })
+}
 
 exports.addResource = async function (req, res) {
     const { title,description,type,author,coverImageUrl,url } = req.body;

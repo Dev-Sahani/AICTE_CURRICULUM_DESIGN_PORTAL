@@ -5,6 +5,7 @@ import {
     HANDLE_SUBJECT_CHANGE,
 } from "./ChangesAction"
 import reducer from "./ChangesReducer"
+import axios from 'axios'
 
 export const initialStates = {};
 const ChangesContext = React.createContext();
@@ -30,6 +31,14 @@ export function ChangesProvider({children}) {
         localStorage.setItem("changes", states);
     }
 
+    const handlePush = async ()=>{
+
+        await axios.post("api/v1/push",{
+            courses:{},
+            subjects:[]
+        })
+    }
+
     return (
         <ChangesContext.Provider
             value={{
@@ -37,6 +46,7 @@ export function ChangesProvider({children}) {
                 handleChange,
                 handleSave,
                 handleSubjectChange,
+                handlePush
             }}
         >
             {children}
