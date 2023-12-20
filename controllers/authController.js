@@ -277,7 +277,7 @@ exports.loginFaculty = async(req, res, next)=>{
     const {facultyId, password} = req.body
     if(!facultyId || !password)return next(new BAD_REQUEST('User facultyId or password not provide'));
 
-    const faculty = await User.findOne({facultyId}).select('+password')
+    const faculty = await Faculty.findOne({facultyId}).select('+password')
     if(!faculty)return next(new UNAUTHORIZED_USER("user facultyId or password does not match"));
     
     const isMatch = await faculty.checkPassword(password,faculty.password);

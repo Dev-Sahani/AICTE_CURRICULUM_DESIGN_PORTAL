@@ -44,6 +44,7 @@ const App = ()=>{
                     <Route path="profile" element={<ProfilePage />} />
                 </Route>
                 <Route path="/register" element={<RegisterPage />} />
+                {/* <Route path="/register" element={<LoginPage />} /> */}
                 <Route path="/landing" element={<LandingPage />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
