@@ -9,9 +9,9 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import ImageComponent from "../../../../assets/index.jsx";
 
-
-export const Chat = ({room, userr, className}) => {
+export const Chat = ({room, userr, className, onClose}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesRef = collection(db, "messages");
@@ -48,7 +48,7 @@ export const Chat = ({room, userr, className}) => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-white rounded-l-2xl relative pt-4">
   <div className="flex-grow overflow-auto p-4 gap-y-4">
     {messages.map((message) => (
       <div key={message.id} className="flex border rounded-lg p-2">
@@ -69,6 +69,9 @@ export const Chat = ({room, userr, className}) => {
       Send
     </button>
   </form>
+  <button className="absolute top-0 left-0 text-2xl" onClick={onClose}>
+    <ImageComponent imageName="CloseImage" className="w-8 h-6" />
+  </button>
 </div>
   );
 };
