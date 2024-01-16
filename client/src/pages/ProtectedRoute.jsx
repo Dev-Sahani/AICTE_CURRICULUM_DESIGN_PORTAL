@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react'
-import RegisterPage from './RegisterPage';
+import { useEffect, useState } from 'react'
 import { useUserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router';
+import Loading from '../components/Loading';
+import { Navigate } from 'react-router';
 
 const ProtectedRoute = ({children}) => {  
-  // return <RegisterPage />
-  const {user} = useUserContext()
-  const navigate = useNavigate()
-  console.log(user)
+  const {user, loading} = useUserContext()
 
-  useEffect(()=>{
-    if(user) return children;
-    navigate("/register")
-  }, [user])
-  // const [state, dispatch] = useReducer(reducer, initialState);
-  return;
+  if(loading){
+    return <Loading />
+  }
+  else if(!user){
+    return <Navigate to="/register" />
+  }
+
+  return children
 }
 
 export default ProtectedRoute

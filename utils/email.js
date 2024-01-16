@@ -1,4 +1,5 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const { BAD_REQUEST } = require('../errors');
 
 const getTransporter = ()=>nodemailer.createTransport({
     service: 'gmail',
@@ -7,6 +8,15 @@ const getTransporter = ()=>nodemailer.createTransport({
         pass: "Daksh@8123", // Your Gmail password or App Password
     },
 });
+
+const checkEmailInfo = (info)=>{
+    if (info.rejected && info.rejected.length > 0) {
+        console.error('Rejected email addresses:', info.rejected);
+  
+        // Handle the rejected email addresses appropriately
+        throw new BAD_REQUEST('Failed to send email');
+      }
+}
 
 // Function to send an email
 exports.sendEmailToUser = async function (user) {
@@ -25,6 +35,8 @@ exports.sendEmailToUser = async function (user) {
     };
     // Send the email
     const info = await transporter.sendMail(mailOptions);
+    // Check for rejected email addresses
+    checkEmailInfo(info)
 }
 exports.sendOTP = async function (email,otp) {
     // Create a transporter using Gmail service
@@ -40,5 +52,7 @@ exports.sendOTP = async function (email,otp) {
     };
     // Send the email
     const info = await transporter.sendMail(mailOptions);
+    // Check for rejected email addresses
+    checkEmailInfo(info)    
 }
 

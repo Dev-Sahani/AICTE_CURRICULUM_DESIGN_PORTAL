@@ -2,23 +2,25 @@ const express = require("express");
 const router = express.Router();
 const authController = require('../controllers/authController')
 
-router.route("/register").post(authController.register)
+//Auth routes
+router.get("/verify-token",authController.verifyByToken)
+
+//Admin routes
+
+router.route("/register-admin").post(authController.registerAdmin)
 router.route("/send-otp").post(authController.sendOTP)
 router.route("/verify-otp").post(authController.verifyOtp)
-router.route("/login-admin").get(authController.loginAdmin)
+router.route("/login-admin").post(authController.login)
 router.route("/register-user").post(
     authController.protect,
     authController.restrictTo("administrator"),
-    authController.registerUser)
+    authController.registerDev)
     
 
-router.route("/login-developer").post(authController.loginDev)
+//Developer routes 
 
+router.route("/login-developer").post(authController.login)
 router.route('/send-otp-faculty').post(authController.sendOTP2)
 router.route('/verify-otp-faculty').post(authController.verifyOtp2)
-router.route('/register-faculty').post(authController.registerFaculty)
-router.route('/login-faculty')
-    .post(authController.loginFaculty)
-
 
 module.exports = router;
