@@ -1,14 +1,13 @@
 import React from "react";
 import {Chat} from "./Chat.js";
 import Cookies from "universal-cookie";
+import { useUserContext } from "../../../../context/UserContext.jsx";
 
 const cookies = new Cookies();
 function ChatApp({room, ...props}) {
-    const userr = {
-      name : "user",
-    }
+    const {user} = useUserContext()
 
-    return <Chat room={room} userr={userr} {...props} />
+    return <Chat room={room} user={user} {...props} />
 }
 
 export default ChatApp;

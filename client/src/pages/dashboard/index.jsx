@@ -1,5 +1,5 @@
 import AnalyticsPage from "./AnalyticsPage";
-import DraftPage from "./DraftPage";
+import CommitteePage from "./CommitteePage/index";
 import ExplorePage from "./ExplorePage";
 import NotificationPage from "./NotificationPage";
 import ProfilePage from "./ProfilePage";
@@ -10,7 +10,7 @@ import {CurriculumEditPageRoutes, SharedNav} from "./CurriculumEditPage";
 
 export {
     AnalyticsPage, 
-    DraftPage, 
+    CommitteePage, 
     ExplorePage,
     NotificationPage,
     ProfilePage,

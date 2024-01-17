@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import ImageComponent from "../../../../assets/index.jsx";
 
-export const Chat = ({room, userr, className, onClose}) => {
+export const Chat = ({room, user, className, onClose}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesRef = collection(db, "messages");
@@ -40,7 +40,7 @@ export const Chat = ({room, userr, className, onClose}) => {
     await addDoc(messagesRef, {
       text: newMessage,
       createdAt: serverTimestamp(),
-      user: userr.name,
+      user: user.name,
       room,
     });
 

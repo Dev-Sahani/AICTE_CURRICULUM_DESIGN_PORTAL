@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {     
     AnalyticsPage, 
-    DraftPage, 
+    CommitteePage, 
     ExplorePage,
     NotificationPage,
     ProfilePage,
@@ -42,7 +42,7 @@ const App = ()=>{
                         {CurriculumEditPageRoutes}
                     </Route>
                     <Route path="explore" element={<ExplorePage/>} />
-                    <Route path="drafts" element={<DraftPage/>} />
+                    <Route path="committee" element={<CommitteePage/>} />
                     <Route path="analytics" element={<AnalyticsPage/>} />
                     <Route path="notification" element={<NotificationPage />} />
                     <Route path="resources" element={<ResourcesPage />} />

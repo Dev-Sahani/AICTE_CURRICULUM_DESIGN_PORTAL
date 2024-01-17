@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
         // require:[true,"User's gender is Missing"]
     },
     dob:Date,
-    // profileImgUrl:
+    profileImgUrl:String,
 
     areaOfSpecialization:[String],
     adminIn:[{

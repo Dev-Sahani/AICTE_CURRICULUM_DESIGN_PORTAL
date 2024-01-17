@@ -12,12 +12,12 @@ export default function TemplatePageFilter() {
         />
         <FilterDropdown
           name="courseLevel"
-          defaultValue="Select"
+          defaultValue="Select Level"
           list={getAllLevels}
         />
         <FilterDropdown
           name="courseProgram"
-          defaultValue="Select"
+          defaultValue="Select Program"
           list={getAllProgrammes}
         />
     </nav>
