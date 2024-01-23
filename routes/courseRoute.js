@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const courseController = require('../controllers/courseController')
+const authController = require('../controllers/authController')
 
-router.get("/",courseController.getAllCourses) // wiht search functionality 
+router.get("/",
+    courseController.getAllCourses) // wiht search functionality 
 router.get("/:commonId", courseController.getCourse)
 router.get("/basic-info/:commonId", courseController.getBasicInfo)
 router.get("/categories/:commonId", courseController.getCategory)

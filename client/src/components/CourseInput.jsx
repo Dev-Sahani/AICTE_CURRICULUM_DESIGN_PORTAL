@@ -1,6 +1,5 @@
-import { useState } from "react"
-import Search from "../assets/Search.png";
 import { useCourseContext } from "../context";
+import classnames from 'classnames'
 
 export default function CourseInput({ 
     name,
@@ -12,11 +11,13 @@ export default function CourseInput({
   const { handleChange } = useCourseContext();
   const value = courseContext[name];
   
-  if(className) className = className +  " w-full p-1 border-2 border-gray-400 rounded focus:outline-none ";
-  else className = "w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
+  className = classnames(
+    "w-full p-1 max-h-64",
+    "border-2 border-gray-400 rounded focus:outline-none resize-none",
+    className)
 
   return (
-    <input 
+    <textarea 
         type="text"
         name={name}
         value={value}

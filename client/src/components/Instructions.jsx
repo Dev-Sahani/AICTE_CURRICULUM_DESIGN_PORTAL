@@ -17,11 +17,11 @@ export default function Instructions({instructions, className}) {
         <main>
             <ul className='list-disc pl-4'>
             {
-                instructions.map((instr)=>{
+                instructions.map((instr,ind)=>{
                     const head = instr.heading ? instr.heading : "";
                     const text = instr.text ? instr.text : "";
                     return (
-                        <li className='mb-4'>
+                        <li className='mb-4' key={ind}>
                             <p className={`text-primary-900 inline ${head!==""?"mr-4":""}`}>{head}</p>
                             <p className='inline'>{text}</p>
                         </li>

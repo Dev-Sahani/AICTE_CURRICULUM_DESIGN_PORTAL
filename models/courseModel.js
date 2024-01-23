@@ -46,10 +46,7 @@ const courseSchema = new mongoose.Schema({
         activity:String, //like 'L', 'T', 'P' etc.
         overallCredits:Number
     }],
-    rangeOfCredits:{
-        text:String,
-        credits:Number
-    },
+    rangeOfCredits:Number,
     guidlines : [String],
     codesAndDef : [{
         code:String,

@@ -25,10 +25,10 @@ export default function BasicInfoPage() {
     begin();
   }, []);
 
+  // <div className="flex gap-2 justify-between">
   return (
-    <div className="flex gap-2 justify-between">
       <div>
-        <Label breakLine={true} className="!w-32">Course Name</Label>
+        <Label breakLine={true} className="!w-32">Course Title</Label>
         <CourseInput
           name="title"
           placeholder="Enter Course name..."
@@ -36,45 +36,72 @@ export default function BasicInfoPage() {
         />
         
         <div className="flex gap-6 my-4 items-center">
-          <Label>Level</Label>
-          <CourseDropdown
-            name="level"
-            // Default Values 
-            list={getAllLevels}
-          />
+          <div>
+            <Label>Level</Label>
+            <CourseDropdown
+              className="w-fit"
+              name="level"
+              // Default Values 
+              list={getAllLevels}
+            />
+          </div>
+          <div>
+            <Label>Program</Label>
+            <CourseDropdown
+              className="w-fit"
+              name="program"
+              // Default Values 
+              list={getAllProgrammes}
+            />
+          </div>
         </div>
 
         <div className="flex gap-6 my-4 items-center">
-          <Label>Program</Label>
-          <CourseDropdown
-            name="program"
-            // Default Values 
-            list={getAllProgrammes}
-          />
         </div>
 
-          <Label large breakLine className="mt-6">Objectives</Label>
-          <AddCourseInput 
-            propertyName="objectives"
-            arr={[
-              "lorem ipsum fehawiovn oieafjioew oivehaw iojfenva aef",
-              "lorem ipsum fehawiovn oieafjioew oivehaw iojfenva aef",
-            ]}
-            className="w-[90%]"
-          />
+        <Label large breakLine className="mt-6">Message</Label>
+        <CourseInput
+          name="message"
+          className="w-[90%] min-h-[6rem]"
+        />
 
-          <Label large breakLine className="w-48 mt-6">Learning Outcomes</Label>
-          <AddCourseInput 
-            propertyName="outcomes"
-            arr={[
-              "lorem ipsum fehawiovn oieafjioew oivehaw iojfenva aef",
-              "lorem ipsum fehawiovn oieafjioew oivehaw iojfenva aef",
-            ]}
-            className="w-[90%]"
+        <Label large breakLine className="w-48 mt-6">Preface</Label>
+        <CourseInput
+          name="preface"
+          propertyName="preface"
+          className="w-[90%] min-h-[6rem] "
+        />
+        <Label large breakLine className="w-48 mt-6">Acknowledgement</Label>
+        <CourseInput
+          name="acknowledgement"
+          propertyName="acknowledgement"
+          className="w-[90%] min-h-[6rem] "
+        />
+        <Label large breakLine className="w-auto mt-6">Definitions of Credit</Label>
+        <AddCourseInput
+          name="definitionOfCredits"
+          propertyName="definitionOfCredits"
+          propertyKeys={["activity", "overallCredits"]}
+          className="w-[90%] min-h-[6rem] grid grid-cols-2 gap-6"
+        />
+        <div className="flex justify-between mt-8">
+          <Label large breakLine className="w-auto">range of Credit</Label>
+          <CourseInput
+            name="rangeOfCredits"
+            propertyName="rangeOfCredits"
+            className="w-auto h-10"
           />
-      </div>
+        </div>
+        <Label large breakLine className="w-auto mt-6">Codes And Definitions</Label>
+        <AddCourseInput
+          name="codesAndDef"
+          propertyName="codesAndDef"
+          propertyKeys={["code", "definition"]}
+          className="w-[90%] min-h-[6rem] grid grid-cols-2 gap-6"
+        />
+      </div>)
 
-      <Instructions instructions={[
+      {/* <Instructions instructions={[
         {
           heading: "Course Name",
           text: "Give a title for the course that describe it in the best way.",
@@ -92,7 +119,6 @@ export default function BasicInfoPage() {
         }
       ]} 
         className="basis-2/5"
-      />
-    </div>
-  )
+      /> */}
+    // </div>
 }

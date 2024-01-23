@@ -14,7 +14,7 @@ export default function reducer(state, action) {
     if(action.type === HANDLE_COURSE_CHANGE) {
         return {
             ...state,
-            [action.payload.name]: [action.payload.value],
+            [action.payload.name]: action.payload.value,
         }
     }
     if(action.type === HANDLE_SUBJECT_CHANGE) {

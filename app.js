@@ -60,14 +60,21 @@ const userRouter = require('./routes/userRoute')
 const authRouter = require('./routes/authRoute')
 const subjectRouter = require('./routes/subjectRoute')
 
+const authController = require('./controllers/authController')
+
 // APIs
 app.use("/api/v1/feedback", feedbackRouter);
 app.use('/api/v1/push',pushRouter);
-app.use('/api/v1/commit',commitRouter);
+app.use('/api/v1/commit',
+    authController.protect,
+    commitRouter);
 app.use('/api/v1/explore', otherCurriculumRouter)
 app.use('/api/v1/courses',courseRouter)
 app.use('/api/v1/resources',resourceRouter)
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users', 
+    authController.protect, 
+    authController.restrictTo("administrator") ,
+    userRouter)
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/subjects',subjectRouter)
 

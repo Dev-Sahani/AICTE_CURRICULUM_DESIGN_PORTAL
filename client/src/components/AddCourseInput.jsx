@@ -1,26 +1,26 @@
 import { useState } from "react"
-import ImageComponent from "../assets"
 import { useCourseContext } from "../context";
+import Label from "./Label";
 
-export default function AddCourseInput({ propertyName, className }) {
+export default function AddCourseInput({ propertyName, className, propertyKeys }) {
 
     const courseContext = useCourseContext();
     const {handleChange} = courseContext;
     let localArr = courseContext[propertyName];
     if(!localArr) localArr = [];
-        // console.log(localArr);
-    const [lastInput, setLastInput] = useState("");
-
+    
+    const [lastInput, setLastInput] = useState({});
     const handleLocalChange = (e) => {
         const temp = localArr;
-        temp[e.target.name] = e.target.value;
+        const [ind,key] = e.target.name.split("+");
+        temp[ind][key] = e.target.value;
         handleChange(propertyName, temp)
     }
     const handleSubmit = (e)=>{
         e.preventDefault();
         localArr.push(lastInput);
         handleChange(propertyName, localArr);
-        setLastInput("");
+        setLastInput({});
     }
 
     // if(className) className = className + " my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
@@ -29,28 +29,43 @@ export default function AddCourseInput({ propertyName, className }) {
         <div className={className}>
             {
                 localArr.map((item, index)=>{
-                    return <input 
-                        key={index}
-                        name={index.toString()} 
-                        value={localArr[index]} 
-                        onChange={handleLocalChange}
-                        className="my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
-                    />
+                    const res = []
+                    for(let key of propertyKeys){
+                        res.push(<div className="ml-6 flex justify-between" key={index+key}>
+                            <Label >{key}</Label>
+                            <input 
+                                name={index.toString()+"+"+key} 
+                                value={item[key]} 
+                                onChange={handleLocalChange}
+                                className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
+                            />
+                        </div>)
+                    }
+                    return <div className="relative my-2">
+                        <h2 className="text-primary-900 absolute top-left">{index+1}</h2>
+                        {res}
+                    </div>
                 })
             }
-            <form className="flex justify-between" onSubmit={handleSubmit}>
-                <ImageComponent 
-                    imageName="PlusImage" 
-                    alt="plus" 
+            <form className="relative" onSubmit={handleSubmit}>
+                <h2 
+                    className="text-3xl absolute top-left hover:cursor-pointer hover:scale-1.05"
                     onClick={handleSubmit} 
-                    className="hover:cursor-pointer w-11 h-11"
-                />
-                <input 
-                    name={localArr.length.toString()} 
-                    value={lastInput} 
-                    onChange={(e)=>setLastInput(e.target.value)} 
-                    className="my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
-                />
+                >+
+                </h2>
+                <div className="ml-8">
+                {   
+                    propertyKeys.map((el,ind)=><div className="flex justify-between" key={ind}>
+                        <Label>{el}</Label>
+                        <input 
+                            name={localArr.length.toString() +"+"+el} 
+                            value={lastInput[el]}
+                            onChange={(e)=>setLastInput(prev=>({...prev, [el]:e.target.value}))}
+                            className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
+                        />
+                    </div>)
+                }
+                </div>
             </form>
         </div>
   )

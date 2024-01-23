@@ -9,6 +9,7 @@ const SidebarList = ({data}) => {
       className={"h-12 ml-[0.5vw] flex gap-4 items-center"} 
       to={data.link}
       {...data}
+      svg="" //to avoid warning
     >
         {
           data.svg(color)
