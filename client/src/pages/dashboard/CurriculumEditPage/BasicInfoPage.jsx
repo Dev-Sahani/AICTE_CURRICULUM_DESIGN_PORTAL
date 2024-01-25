@@ -62,42 +62,42 @@ export default function BasicInfoPage() {
         <Label large breakLine className="mt-6">Message</Label>
         <CourseInput
           name="message"
-          className="w-[90%] min-h-[6rem]"
+          className="w-[90%] min-h-[8rem]"
         />
 
         <Label large breakLine className="w-48 mt-6">Preface</Label>
         <CourseInput
           name="preface"
           propertyName="preface"
-          className="w-[90%] min-h-[6rem] "
+          className="w-[90%] min-h-[8rem] "
         />
         <Label large breakLine className="w-48 mt-6">Acknowledgement</Label>
         <CourseInput
           name="acknowledgement"
           propertyName="acknowledgement"
-          className="w-[90%] min-h-[6rem] "
+          className="w-[90%] min-h-[8rem] "
         />
+        <div className="flex justify-start gap-8 mt-8">
+          <Label large breakLine className="w-auto">Range of Credit</Label>
+          <CourseInput
+            name="rangeOfCredits"
+            propertyName="rangeOfCredits"
+            className="!w-auto h-10"
+          />
+        </div>
         <Label large breakLine className="w-auto mt-6">Definitions of Credit</Label>
         <AddCourseInput
           name="definitionOfCredits"
           propertyName="definitionOfCredits"
           propertyKeys={["activity", "overallCredits"]}
-          className="w-[90%] min-h-[6rem] grid grid-cols-2 gap-6"
+          className="w-[90%] min-h-[6rem] ml-8 grid grid-cols-2 gap-6"
         />
-        <div className="flex justify-between mt-8">
-          <Label large breakLine className="w-auto">range of Credit</Label>
-          <CourseInput
-            name="rangeOfCredits"
-            propertyName="rangeOfCredits"
-            className="w-auto h-10"
-          />
-        </div>
         <Label large breakLine className="w-auto mt-6">Codes And Definitions</Label>
         <AddCourseInput
           name="codesAndDef"
           propertyName="codesAndDef"
           propertyKeys={["code", "definition"]}
-          className="w-[90%] min-h-[6rem] grid grid-cols-2 gap-6"
+          className="w-[90%] min-h-[6rem] ml-8 grid grid-cols-2 gap-6"
         />
       </div>)
 

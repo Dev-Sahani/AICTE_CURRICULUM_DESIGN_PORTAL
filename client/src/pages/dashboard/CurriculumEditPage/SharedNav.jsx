@@ -60,12 +60,12 @@ const tempList = (common_id)=>{
         }, {
             innerHtml: "Categories",
             to: `/curriculum/${common_id}/categories`,
-        }, {
-            innerHtml: "Subjects",
-            to: `/curriculum/${common_id}/subjects`,
-        }, {
+        },{
             innerHtml: "Semester",
             to: `/curriculum/${common_id}/semesters`,
+        },{
+            innerHtml: "Subjects",
+            to: `/curriculum/${common_id}/subjects`,
         }
     ])
 }
