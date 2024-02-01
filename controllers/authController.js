@@ -39,7 +39,6 @@ const createJWT = (user)=>jwt.sign({id:user._id, role:user.role},process.env.JWT
 
 module.exports.verifyByToken = async (req, res, next)=>{
     const token = req.cookies.token;
-    console.log("token",token,"\n")
     if(!token){
         throw new UNAUTHORIZED_USER("Invalid Authentication!")
     }
@@ -118,7 +117,7 @@ module.exports.protect = async (req, res, next)=>{
     //Verifying Token
     if(!token) return next(new UNAUTHORIZED_USER('User not logged in' ));
     const decoded = await util.promisify(jwt.verify)(token,process.env.JWT_SECRET)
-    console.log(decoded)
+
     //Checking that user still exists.
     const freshUser = await User.findById(decoded.id);
     if(!freshUser)
@@ -135,7 +134,7 @@ module.exports.protect = async (req, res, next)=>{
 
 module.exports.restrictTo = function(...roles){
     return (req, res, next)=>{
-        console.log(req.user)
+        
         if(!req.user || !roles.includes(req.user.role)){
             next(new CustomAPIError("You don't have acess to performe this action\nFORBIDDEN", 403))
         }
@@ -217,7 +216,6 @@ exports.verifyOtp2 = async (req, res, next)=>{
     const otpObj = (await Otp.findOne({
         email:"21bcs022@ietdavv.edu.in"
     }))
-    console.log(otpObj, OTP)
 
     if(OTP === otpObj.otp){
         Otp.deleteOne({_id:otpObj._id})

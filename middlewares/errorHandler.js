@@ -35,7 +35,7 @@ const errorHandlerMiddleware = (err, req, res, next)=>{
     //     defaultErr.message = 'Your Token has Expired! Please log in again'
     // }
 
-    res.status(defaultErr.statusCode).json({message: defaultErr.message});
+    res.status(defaultErr.statusCode).json({status:"fail",message: defaultErr.message});
 }
 
 module.exports = errorHandlerMiddleware;

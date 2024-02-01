@@ -11,7 +11,7 @@ const start = ()=>{
         mongoose.connect(process.env.MONGO_URL).then(()=>{
             console.log(process.env.NODE_ENV==="development"?"connected to db":undefined)
         }).catch((err)=>{
-            console.log("can't connect to db")
+            console.log("can't connect to db\n", err.message)
         })
 
         app.listen(port, ()=>{

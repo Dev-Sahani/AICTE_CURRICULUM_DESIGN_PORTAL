@@ -1,5 +1,34 @@
 const mongoose = require('mongoose')
 
+const editableTypeWrapper = (obj)=>({
+    new:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        value:obj
+    }],
+    cur:obj,
+    _id:false
+})
+const editableArrayWrapper = (arr)=>({
+    add:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        value:mongoose.Schema.Types.Mixed
+    }],
+    del:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        ind:Number
+    }],
+    cur:arr
+})
+
 const subjectSchema = new mongoose.Schema({
     common_id:{
         type:mongoose.SchemaTypes.ObjectId,
@@ -9,27 +38,27 @@ const subjectSchema = new mongoose.Schema({
         type:Number,
         default:1
     },
-    title:{
+    title:editableTypeWrapper({
         type:String,
         require:[true, "Subject's Title is Missing"]
-    },
-    objectives:[String],
-    prerequisites:[String],
-    modules:[{
+    }),
+    objectives:editableArrayWrapper([editableTypeWrapper(String)]),
+    prerequisites:editableArrayWrapper([editableTypeWrapper(String)]),
+    modules:editableArrayWrapper([editableTypeWrapper({
         title:{
             type:String,
             require:[true, "Subject's Title is Missing"]
         },
         topics:[String],
-    }],
-    experiments:[{
+    })]),
+    experiments:editableArrayWrapper([editableTypeWrapper({
         name:{
             type:String,require:true
         },
         url:String
-    }],
-    referenceMaterial:[mongoose.SchemaTypes.ObjectId],
-    outcomes:[String],
+    })]),
+    referenceMaterial:editableArrayWrapper([editableTypeWrapper(mongoose.SchemaTypes.ObjectId)]),
+    outcomes:editableArrayWrapper([editableTypeWrapper(String)]),
     // alternativeCourses:[]
 })
 

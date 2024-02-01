@@ -1,5 +1,38 @@
 const mongoose = require('mongoose')
 
+const editableTypeWrapper = (obj)=>({
+    new:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        value:obj,
+        _id:false
+    }],
+    cur:obj,
+    _id:false
+})
+const editableArrayWrapper = (arr)=>({
+    add:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        // index:Number,
+        value:{type:arr[0].cur, _id:false},
+        _id:false
+    }],
+    del:[{
+        by:{
+            type:mongoose.Types.ObjectId,
+            ref:'User'
+        },
+        index:Number,
+        _id:false
+    }],
+    cur:arr
+})
+
 const courseSchema = new mongoose.Schema({
     common_id:{
         type:mongoose.SchemaTypes.ObjectId,
@@ -10,30 +43,30 @@ const courseSchema = new mongoose.Schema({
         default:1
     },
     title:{
-        type:String,
+        type:editableTypeWrapper(String),
         require:[true,"Course Title is Missing"]
     },
 
     program:{
-        type:String,
-        enum:["Applied Arts and Crafts", "Architecture and Town Planning",
-        "Architecture", "Town Planning", "Engineering & Technology", 
-        "Hotel Management and Catering", "Management", "MCA", "Pharmacy"],
+        type:editableTypeWrapper({
+            type:String,
+            enum:["Applied Arts and Crafts", "Architecture and Town Planning",
+                "Architecture", "Town Planning", "Engineering & Technology", 
+                "Hotel Management and Catering", "Management", "MCA", "Pharmacy"],
+        }),
         require:[true,"program is missin"]
     },
     level:{
-        type:String,
-        enum:["undergraduate","postgraduate","diploma"],
+        type:editableTypeWrapper({
+            type:String,
+            enum:["undergraduate","postgraduate","diploma"]
+        }),
         require:[true,"level is missin"]
     },
-    description:String,
-    prerequisites:[String],
-    objectives:[String],
-    outcomes:[String],
-
-    message:String,
-    preface:String,
-    acknowledgement:String,
+    description:editableTypeWrapper(String),
+    message:editableTypeWrapper(String),
+    preface:editableTypeWrapper(String),
+    acknowledgement:editableTypeWrapper(String),
 
     committee:[{
         educatorId:mongoose.SchemaTypes.ObjectId,
@@ -42,17 +75,17 @@ const courseSchema = new mongoose.Schema({
             enum: ['editor','admin'],
         }
     }],
-    definitionOfCredits:[{
-        activity:String, //like 'L', 'T', 'P' etc.
-        overallCredits:Number
-    }],
-    rangeOfCredits:Number,
-    guidlines : [String],
-    codesAndDef : [{
-        code:String,
-        definition:String
-    }],
-    subjects:[{
+    definitionOfCredits:editableArrayWrapper([editableTypeWrapper({
+        activity:{type:String, require:[true,"activity of credit missing"]},
+        overallCredits:{type:Number, require:[true,"overallCredits of credit missing"]}
+    })]),
+    rangeOfCredits:editableTypeWrapper(Number),
+    guidlines : editableArrayWrapper([editableTypeWrapper(String)]),
+    codesAndDef : editableArrayWrapper([editableTypeWrapper({
+        code:{type:String, require:[true,"code of code missing"]},
+        definition:{type:String, require:[true,"definition of code missing"]}
+    })]),
+    subjects:editableArrayWrapper([editableTypeWrapper({
         common_id:mongoose.SchemaTypes.ObjectId,
         version:{
             type:Number,
@@ -67,7 +100,7 @@ const courseSchema = new mongoose.Schema({
         code:String,
         semester:Number,
         weeklyHours:Number,
-    }],
+    })]),
     dateOfCommit:{
         type:Date,
         default:Date.now()
@@ -83,28 +116,28 @@ courseSchema.index(["common_id","version"],{
 })
 
 //Virtual props
-courseSchema.virtual("categories").get(function (next){
+courseSchema.virtual("categories").get(function (){
     const categories = {}
-    // console.log("./courseModel/virtuals", this.get('subjects'))
-    if(this.subjects)
-    this.subjects.forEach((val)=>{
-        if(!categories[val.category])
-            categories[val.category] = []
-        categories[val.category].push(val)
+    if(this.subjects.cur)
+    this.subjects.cur.forEach((val)=>{
+        if(!categories[val.cur.category])
+            categories[val.cur.category] = []
+        categories[val.cur.category].push(val)
     })
     return categories
 })
-courseSchema.virtual("semesters").get(function(next){
+
+courseSchema.virtual("semesters").get(function(){
     const prop = {};
-    // console.log("./courseModel/virtuals", this.get('subjects'))
-    if(this.subjects)
-    this.subjects.forEach((val)=>{
-        if(!prop[val.semester])
-            prop[val.semester] = []
-        prop[val.semester].push(val)
+    if(this.subjects.cur)
+    this.subjects.cur.forEach((val)=>{
+        if(!prop[val.cur.semester])
+            prop[val.cur.semester] = []
+        prop[val.cur.semester].push(val)
     })
     return prop
 })
+
 
 courseSchema.pre(/^find^/,function (next){
     this.select({__v:0})
