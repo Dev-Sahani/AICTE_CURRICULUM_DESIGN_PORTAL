@@ -1,4 +1,3 @@
-const { finished } = require('nodemailer/lib/xoauth2');
 const { NOT_FOUND, BAD_REQUEST } = require('../errors');
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
@@ -156,14 +155,17 @@ exports.getSubjects = async(req, res, next)=>{
 }
 
 exports.updateByUser = async (req, res, next) =>{
-    // add and del
     let {data, isnew , del , prop} = req.body
-    if(prop==undefined || !(del ^ data))return next(new BAD_REQUEST("improper request body"))
-    // ["prop1", "ind()"]
+
+    if(prop==undefined || !((del==undefined) ^ (data==undefined)))return next(new BAD_REQUEST("improper request body"))
+    
     let ind = -1
     if(prop.indexOf('.') != -1){
         [prop,ind] = prop.split('.')
         ind *= 1;
+    }
+    if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
+        return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
 
     //find the course By id and update the Course
@@ -172,7 +174,7 @@ exports.updateByUser = async (req, res, next) =>{
     const course = (await Course.find({common_id:courseCommonId})
         .sort({version:-1})
         .limit(1))[0]
-    // console.log(course[0][prop])
+
     if(!course)return next(new BAD_REQUEST("Invalid Course Id"))
     if(!course[prop])return next(new BAD_REQUEST("Field does not exists"))
     if(del){
@@ -217,7 +219,6 @@ exports.updateByUser = async (req, res, next) =>{
             })
         }
         else{
-            // course[prop].new.push(data);
             await Course.findOneAndUpdate({_id:course._id},{
                 "$push":{
                     [`${prop}.new`]:{
@@ -243,7 +244,7 @@ exports.acceptUpdates = async function(req,res,next){
 
     let {index, isnew , del , prop} = req.body
     if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
-    // ["prop1", "ind()"]
+
     let ind = -1
     if(prop.indexOf('.') != -1){
         [prop,ind] = prop.split('.')
@@ -306,10 +307,19 @@ exports.acceptUpdates = async function(req,res,next){
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= course[prop].cur.length)
                 return next(new BAD_REQUEST("index range out of bond"))
-
+            
+            const val = course[prop].cur[ind].new[index].value
+            if(typeof(val) === 'object'){
+                for(let i in course[prop].cur[ind].cur){
+                    if(val[i]==undefined){
+                        val[i]=course[prop].cur[ind].cur[i]
+                    }
+                }
+            }
+            
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
-                    [`${prop}.cur.${ind}.cur`]:course[prop].cur[ind].new[index].value
+                    [`${prop}.cur.${ind}.cur`]:val
                 }
             })
         }

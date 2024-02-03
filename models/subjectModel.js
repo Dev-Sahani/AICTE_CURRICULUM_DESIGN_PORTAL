@@ -6,7 +6,8 @@ const editableTypeWrapper = (obj)=>({
             type:mongoose.Types.ObjectId,
             ref:'User'
         },
-        value:obj
+        value:obj,
+        _id:false
     }],
     cur:obj,
     _id:false
@@ -17,14 +18,17 @@ const editableArrayWrapper = (arr)=>({
             type:mongoose.Types.ObjectId,
             ref:'User'
         },
-        value:mongoose.Schema.Types.Mixed
+        // index:Number,
+        value:{type:arr[0].cur, _id:false},
+        _id:false
     }],
     del:[{
         by:{
             type:mongoose.Types.ObjectId,
             ref:'User'
         },
-        ind:Number
+        index:Number,
+        _id:false
     }],
     cur:arr
 })
