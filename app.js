@@ -51,7 +51,6 @@ app.use('/api',limiter)
 
 // Importing Routes
 const feedbackRouter = require("./routes/feedbackRoute");
-const pushRouter = require('./routes/pushRoutes');
 const commitRouter = require('./routes/commitRoute');
 const otherCurriculumRouter = require("./routes/otherCurriculumsRoute");
 const courseRouter = require("./routes/courseRoute");
@@ -64,7 +63,6 @@ const authController = require('./controllers/authController')
 
 // APIs
 app.use("/api/v1/feedback", feedbackRouter);
-app.use('/api/v1/push',pushRouter);
 app.use('/api/v1/commit',
     authController.protect,
     commitRouter);
