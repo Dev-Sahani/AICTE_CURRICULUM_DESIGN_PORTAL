@@ -48,7 +48,7 @@ export const Chat = ({room, user, className, onClose}) => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white rounded-l-2xl relative pt-4">
+  <div className="flex flex-col h-full pt-4">
   <div className="flex-grow overflow-auto p-4 gap-y-4">
     {messages.map((message) => (
       <div key={message.id} className="flex border rounded-lg p-2">
@@ -57,7 +57,7 @@ export const Chat = ({room, user, className, onClose}) => {
       </div>
     ))}
   </div>
-  <form onSubmit={handleSubmit} className="flex items-center mt-4 p-4 bg-gray-100 rounded-lg">
+  <form onSubmit={handleSubmit} className="flex items-center mt-4 p-4 bg-primary-50 rounded-lg">
     <input
       type="text"
       value={newMessage}
@@ -69,7 +69,7 @@ export const Chat = ({room, user, className, onClose}) => {
       Send
     </button>
   </form>
-  <button className="absolute top-0 left-0 text-2xl" onClick={onClose}>
+  <button className="absolute top-2 right-2 text-2xl" onClick={onClose}>
     <ImageComponent imageName="CloseImage" className="w-8 h-6" />
   </button>
 </div>

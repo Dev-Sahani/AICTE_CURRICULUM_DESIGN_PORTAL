@@ -43,17 +43,19 @@ const userSchema = new mongoose.Schema({
     profileImgUrl:String,
 
     areaOfSpecialization:[String],
-    adminIn:[{
-        type:mongoose.SchemaTypes.ObjectId,
-        ref:"course"
-    }],
-    editorIn:[{
-        type:mongoose.SchemaTypes.ObjectId,
-        ref:"course"
-    }],
-    viewerIn:[{
-        type:mongoose.SchemaTypes.ObjectId,
-        ref:"course"
+    courses:[{
+        type:{
+            id:{
+                type:mongoose.SchemaTypes.ObjectId,
+                ref:"course"
+            },
+            access:{
+                type:String,
+                enum:["head","edit","view"]
+            }
+        },
+        unique:[true, "user already enrolled"],
+        _id:false
     }],
     passwordChangedAt:{
         type:Date,

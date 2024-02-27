@@ -9,7 +9,7 @@ export default function CourseInput({
 }){
   const courseContext = useCourseContext();
   const { handleChange } = useCourseContext();
-  const value = courseContext[name];
+  const value = courseContext[name]?.cur;
   
   className = classnames(
     "w-full p-1 max-h-64",

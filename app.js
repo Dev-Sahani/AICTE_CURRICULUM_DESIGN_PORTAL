@@ -40,7 +40,7 @@ app.use(hpp({
 
 //Limit the number of requests from 1 IP address
 const limiter = rateLimit({
-    max:100,    //Max numbers of request can be made by same IP
+    max:1000,    //Max numbers of request can be made by same IP
     windowMs: 1000*60*60, //time period (in ms) for limiting the request
     message:"Too much request from this IP please try again later"
 })

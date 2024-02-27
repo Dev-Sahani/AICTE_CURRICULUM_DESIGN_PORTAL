@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCourseContext } from "../context";
 
 const CourseDropdown = ({name, defaultValue, list, subjectId, className})=>
 {
   const courseContext = useCourseContext();
-  if(!defaultValue || defaultValue==="") {
-    if(subjectId) defaultValue = courseContext[subjectId][name];
-    else defaultValue = courseContext[name];
-  }
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState("");
+  useEffect(()=>{
+    if(!defaultValue || defaultValue==="") {
+      if(subjectId) defaultValue = courseContext[subjectId][name]?.cur;
+      else defaultValue = courseContext[name]?.cur;
+    }
+    setValue(defaultValue)
+  }, [courseContext]);
 
   if(!name || !list || list.length === 0) {
     throw new Error("Please pass all arguments in CourseDropdown component");

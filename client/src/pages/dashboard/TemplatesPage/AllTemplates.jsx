@@ -37,21 +37,20 @@ export default function AllTemplates() {
             </Link>
         {
             templates.map((template, index) => {
-                console.log(template);
                 return (
                     <Link 
                         key={template.common_id}
                         className={CardsClasses}
                         to={`/curriculum/${template.common_id}`} 
                     >
-                        <h1 className='text-xl m-2'>{template.title}</h1>
-                        <p className='text-xs mx-2 mb-2'>{template.message ? template.message : getMessage()[index].message}</p>
+                        <h1 className='text-xl m-2'>{template.title?.cur}</h1>
+                        <p className='text-xs mx-2 mb-2'>{template?.message?.cur}</p>
                         <div className='flex text-xs'>
                             <div className="bg-secondary-100 text-secondary-900 px-2 py-1 m-2 rounded-full">
-                                {template.level}
+                                {template.level?.cur}
                             </div>
                             <div className="bg-purple-200 text-purple-800 px-2 py-1 m-2 rounded-full">
-                                {template.program}
+                                {template.program?.cur}
                             </div>
                         </div>
                     </Link>
@@ -66,6 +65,7 @@ export default function AllTemplates() {
 const getMessage = ()=>{
     return [
         {message: "The quality of technical education depends on many factors but largely on outcome based socially and industrially relevant curriculum, good quality motivated faculty, teaching learning process, effective industry internship and evaluation of students based on desired outcomes."},
+        {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
         {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
         
     ]

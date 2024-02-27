@@ -4,6 +4,7 @@ import BasicInfoPage from "./BasicInfoPage";
 import CategoriesPage from "./CategoriesPage";
 import SubjectPage from "./SubjectsPage";
 import SemestersPage from "./SemestersPage";
+import VersionPage from "./VersionPage";
 
 export  {
   BasicInfoPage,
@@ -11,6 +12,7 @@ export  {
   SubjectPage,
   SemestersPage,
   SharedNav,
+  VersionPage,
 };
 
 export const CurriculumEditPageRoutes = [
@@ -29,5 +31,10 @@ export const CurriculumEditPageRoutes = [
   {
     path: "semesters",
     element: <SemestersPage />
+  }
+  ,
+  {
+    path: "versions",
+    element: <VersionPage />
   }
 ].map((props) => <Route {...props} />);

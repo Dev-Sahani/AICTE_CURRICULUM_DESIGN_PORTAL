@@ -108,11 +108,7 @@ module.exports.login = async (req,res,next)=>{
 
 module.exports.protect = async (req, res, next)=>{
     //Checking that token exists
-    let token;
-    // req.cookie
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        token = req.headers.authorization.split(' ')[1];
-    }
+    let token = req.cookies?.token;
 
     //Verifying Token
     if(!token) return next(new UNAUTHORIZED_USER('User not logged in' ));

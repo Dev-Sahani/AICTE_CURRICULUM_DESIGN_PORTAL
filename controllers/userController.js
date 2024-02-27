@@ -2,6 +2,7 @@ const { BAD_REQUEST } = require('../errors/index')
 const User = require('../models/userModel')
 const factoryController = require('./factoryController')
 const filterAPI =require('../utils/filterAPI')
+const Course = require('../models/courseModel')
 
 exports.getAllUser = async (req, res, next)=>{
     const {name, areaOfSpecialization} = req.query
@@ -28,7 +29,7 @@ exports.getUser = factoryController.getOne(User)
 exports.postUser = factoryController.postOne(User)
 
 exports.patchUser = async (req, res, next)=>{
-    const fieldsToExclude = ["userId","password","role","adminIn","editorIn",
+    const fieldsToExclude = ["userId","password","role","headIn","editorIn",
         "viewerIn","passwordChangedAt","passwordResetToken","passwordResetTokenExpire","active"]
     if(Object.keys(req.body).some((val)=>fieldsToExclude.includes(val))){
         return next(new BAD_REQUEST("Cannot update some property of user like 'password' or 'userId' through this route"))
@@ -57,3 +58,66 @@ exports.deleteUser = async (req, res, next)=>{
     })
 }
 
+exports.getCourseUser = async (req, res, next)=>{
+    const commonId = req.params.commonId
+    // console.log("commonId",commonId, new mongoose.SchemaTypes.ObjectId(commonId))
+    const users = await User.find({
+        "courses.id": { $in:[commonId] } 
+    })
+    
+    res.status(200).send({
+        status:"success",
+        data:users
+    })
+}
+
+exports.addCourseUser = async (req, res, next)=>{
+    const commonId = req.params.commonId
+    const id = req.body.userId
+    const access = req.body.access
+    
+    if(!["head","edit","view"].includes(access)){
+        return next(new BAD_REQUEST("request body must have access with value 'head','editor','view'"))
+    }
+    const exists = await User.findOne({
+        _id:id,
+        "courses.id":commonId
+    })
+    let result;
+    if(exists){
+        result = await User.updateOne(
+            { _id: id, 'courses.id': commonId },
+            { $set: { 'courses.$.access': access } },
+            { new: true }
+        )
+    }else{
+        result = await User.findByIdAndUpdate(id,{
+            "$push":{
+                "courses":{
+                    "id":commonId,
+                    "access":access
+                }
+            }
+        },{
+            new:true
+        })
+    }
+    res.status(200).send({
+        status:"success",
+        data:result
+    })
+}
+
+exports.deleteCourseUser = async (req,res, next)=>{
+    const commonId = req.params.commonId
+    const id = req.body.userId
+
+    const result = await User.updateOne(
+        { _id: id },
+        { $pull: { courses: { id: commonId } } }
+    )
+    res.status(200).send({
+        status:"success",
+        data:result
+    })
+}

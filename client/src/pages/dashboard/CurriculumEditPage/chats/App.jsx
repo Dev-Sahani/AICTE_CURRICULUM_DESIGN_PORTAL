@@ -1,5 +1,5 @@
 import React from "react";
-import {Chat} from "./Chat.js";
+import {Chat} from "./Chat.jsx";
 import Cookies from "universal-cookie";
 import { useUserContext } from "../../../../context/UserContext.jsx";
 

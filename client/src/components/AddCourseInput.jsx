@@ -6,14 +6,14 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
 
     const courseContext = useCourseContext();
     const {handleChange} = courseContext;
-    let localArr = courseContext[propertyName];
+    let localArr = courseContext[propertyName]?.cur;
     if(!localArr) localArr = [];
     
     const [lastInput, setLastInput] = useState({});
     const handleLocalChange = (e) => {
-        const temp = localArr;
+        const temp = {cur:localArr};
         const [ind,key] = e.target.name.split("+");
-        temp[ind][key] = e.target.value;
+        temp.cur[ind].cur[key] = e.target.value;
         handleChange(propertyName, temp)
     }
     const handleSubmit = (e)=>{
@@ -35,7 +35,7 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                             <Label >{key}</Label>
                             <input 
                                 name={index.toString()+"+"+key} 
-                                value={item[key]} 
+                                value={item?.cur[key]} 
                                 onChange={handleLocalChange}
                                 className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
                             />
@@ -54,7 +54,7 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                 >+
                 </h2>
                 <div className="ml-8">
-                {   
+                {
                     propertyKeys.map((el,ind)=><div className="flex justify-between" key={ind}>
                         <Label>{el}</Label>
                         <input 

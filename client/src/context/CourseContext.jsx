@@ -14,7 +14,10 @@ const courseContext = React.createContext();
 
 export const CourseProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, intialCourse);
-    const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/"});
+    const axiosInstance = axios.create({
+        baseURL: "http://localhost:8080/api/v1/",
+        withCredentials:true
+    });
 
     const getCourse = async (courseId)=>{
         if(!courseId || courseId==="") return {};
@@ -32,8 +35,7 @@ export const CourseProvider = ({children})=>{
     const getCategoriesWiseSub = async(courseId)=>{
         let res = null;
         try{
-            const url = `courses/categories/${courseId}`;
-            console.log(url);
+            const url = `courses/${courseId}/categories`;
             res = await axiosInstance.get(url);
             if(res.status !== 200) {
                 alert("Cannot make Request");
@@ -48,8 +50,9 @@ export const CourseProvider = ({children})=>{
 
     const getAllSubjects = async (courseId)=>{
         try{
-            const url = `courses/subjects/${courseId}`;
+            const url = `courses/${courseId}/subjects`;
             const res = await axiosInstance.get(url);
+
             if(res && res.status === 200) {
                 return res.data;
             }
@@ -62,7 +65,7 @@ export const CourseProvider = ({children})=>{
 
     const getSemestersWiseSub = async (courseId)=>{
         try{
-            const url = `courses/semesters/${courseId}`;
+            const url = `courses/${courseId}/semesters`;
             console.log(url);
             const res = await axiosInstance.get(url);
             if(res.status !== 200) {
