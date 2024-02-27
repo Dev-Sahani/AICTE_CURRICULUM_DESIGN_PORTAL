@@ -84,8 +84,8 @@ const tempList2 = (showChats, setShowChats,common_id)=>{
             </Link>, 
         },
          {
-            work: "access",
-            innerHtml: <Link to={`/curriculum/${common_id}/user`}>
+            work: "users",
+            innerHtml: <Link to={`/curriculum/${common_id}/users`}>
                 <ImageComponent className="w-6 h-6"  imageName="PersonAddImage" alt="grant-access" />
             </Link>,
         }, 

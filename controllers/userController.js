@@ -75,18 +75,19 @@ exports.addCourseUser = async (req, res, next)=>{
     const commonId = req.params.commonId
     const id = req.body.userId
     const access = req.body.access
-    
+
+    if(!id)return next(new BAD_REQUEST("Please provide the userId"))
     if(!["head","edit","view"].includes(access)){
         return next(new BAD_REQUEST("request body must have access with value 'head','editor','view'"))
     }
     const exists = await User.findOne({
-        _id:id,
+        userId:id,
         "courses.id":commonId
     })
     let result;
     if(exists){
         result = await User.updateOne(
-            { _id: id, 'courses.id': commonId },
+            { userId: id, 'courses.id': commonId },
             { $set: { 'courses.$.access': access } },
             { new: true }
         )
@@ -113,7 +114,7 @@ exports.deleteCourseUser = async (req,res, next)=>{
     const id = req.body.userId
 
     const result = await User.updateOne(
-        { _id: id },
+        { userId: id },
         { $pull: { courses: { id: commonId } } }
     )
     res.status(200).send({

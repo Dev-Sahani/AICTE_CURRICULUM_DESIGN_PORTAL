@@ -14,6 +14,7 @@ import AddCourseInput from "./AddCourseInput";
 import Instructions from "./Instructions";
 import Table from "./Table";
 import CardWrapper from "./CardWrapper"
+import Loading from "./Loading";
 
 export {
     NavBar,
@@ -32,4 +33,5 @@ export {
     Instructions,
     CardWrapper,
     Table,
+    Loading
 }
