@@ -1,5 +1,4 @@
 import React from 'react'
-import logo from "../assets/logo.png";
 import ImageComponent from '../assets';
 
 const NavBar = ({className}) => {

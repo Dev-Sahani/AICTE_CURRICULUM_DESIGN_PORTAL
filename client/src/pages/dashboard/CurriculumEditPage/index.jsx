@@ -42,4 +42,4 @@ export const CurriculumEditPageRoutes = [
     path: "users",
     element:<UsersPage />
   }
-].map((props) => <Route {...props} />);
+].map((props, ind) => <Route {...props} key={ind}/>);

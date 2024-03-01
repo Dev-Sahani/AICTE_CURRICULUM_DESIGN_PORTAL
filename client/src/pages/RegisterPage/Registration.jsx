@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useUserContext } from "../../context";
 
-export default function AdminRegistration() {
-    const { verifyAdminOTPAndRegister , sendAdminOTP }  = useUserContext();
+export default function Registration() {
+    const { verifyAdminOTPAndRegister , sendAdminOTP, loading }  = useUserContext();
   
     const [localState, setLocalState] = useState({
       name:"",
@@ -11,7 +11,6 @@ export default function AdminRegistration() {
       otp:"",
     });
     const [otpSend, setOtpSend] = useState(false);
-    const [buttonDisable, setButtonDisable] = useState(false);
     
     const handleChange = (e)=>{
       setLocalState({
@@ -21,28 +20,20 @@ export default function AdminRegistration() {
     }
     
     const onSubmit = async (e)=>{
-      // e.preventDefault();
-      setButtonDisable(true);
+      e.preventDefault();
+      if(loading)return;
       if(!otpSend) {
-        const res = await sendAdminOTP({email: localState.email});
-        if(!res){
-          setButtonDisable(false)
-          return
-        }
+        await sendAdminOTP({email: localState.email});
         setOtpSend(true);
       }
       else {
-        const res = await verifyAdminOTPAndRegister({...localState});
-        //if not otp not verified handled in userContext
-        if(!res){
-          return
-        }
+        await verifyAdminOTPAndRegister({...localState});
       }
-      setButtonDisable(false);
     }
   
     return (
-        <div className='flex flex-col m-4 text-sm'>
+        <form className='flex flex-col m-4 text-sm'>
+          {!otpSend &&<>
           <div className='flex justify-between my-1'>
             <label className='mr-2 self-center'>Name</label>
             <input 
@@ -65,7 +56,7 @@ export default function AdminRegistration() {
               onChange={handleChange}
             />
           </div>
-        {!otpSend && <div className='flex justify-between my-1'>
+          <div className='flex justify-between my-1'>
             <label className='mr-2 self-center'>AICTE email</label>
             <input 
               className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
@@ -75,10 +66,11 @@ export default function AdminRegistration() {
               value={localState.email} 
               onChange={handleChange}
             />
-          </div>}
+          </div>
+          </>}
           { otpSend && 
-            <div className='flex justify-between my-1'>
-              <label className='mr-2 self-center'>OTP</label>
+            <div className='m-1'>
+              <label className='my-2 self-center block'>Enter the otp send to your mail</label>
               <input 
                 className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
                 placeholder='Enter AICTE email'
@@ -88,10 +80,10 @@ export default function AdminRegistration() {
               />
             </div>
           }
-          <button disabled={buttonDisable} className={`bg-secondary-400 m-2 p-4 py-2 rounded-lg ${buttonDisable&&"bg-opacity-50"}`} onClick={onSubmit}>
+          <button type="submit" disabled={loading} className={`bg-secondary-400 my-2 p-4 py-2 rounded-lg ${loading&&"bg-opacity-50"}`} onClick={onSubmit}>
               {otpSend ? "Register" : "Generate OTP"}
           </button>
-        </div>
+        </form>
     )
   }
   

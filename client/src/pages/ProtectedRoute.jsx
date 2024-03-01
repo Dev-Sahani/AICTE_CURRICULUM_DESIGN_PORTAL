@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useUserContext } from '../context/UserContext';
 import Loading from '../components/Loading';
 import { Navigate } from 'react-router';

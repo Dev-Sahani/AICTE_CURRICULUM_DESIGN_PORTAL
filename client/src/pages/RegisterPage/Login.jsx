@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { useUserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function AdminCurriculum() {
-  const { loginAdmin }  = useUserContext();
+export default function Login() {
+  const { login, loading }  = useUserContext();
   const navigate = useNavigate()
 
   const [localState, setLocalState] = useState({
     password:"",
     email:"",
   });
-  const [buttonDisable, setButtonDisable] = useState(false);
   
   const handleChange = (e)=>{
     setLocalState({
@@ -21,20 +20,15 @@ export default function AdminCurriculum() {
   
   const onSubmit = async (e)=>{
     e.preventDefault();
-    setButtonDisable(true);
-    const res = await loginAdmin(localState)
-    //if not not verified handled in userContext
-    if(!res){
-        return
-    }
+    await login(localState)
+    //if login failed - handled in userContext
     navigate('/')
-    setButtonDisable(false);
   }
 
   return (
-      <div className='flex flex-col m-4 text-sm'>
+      <form className='flex flex-col m-4 text-sm'>
         <div className='flex justify-between my-1'>
-          <label className='mr-2 self-center'>AICTE email</label>
+          <label className='mr-2 self-center'>Email</label>
           <input 
             className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
             placeholder='Enter AICTE email'
@@ -55,9 +49,9 @@ export default function AdminCurriculum() {
             onChange={handleChange}
           />
         </div>
-        <button type="submit" disabled={buttonDisable} className={`bg-secondary-400 my-2 p-4 py-2 rounded-lg ${buttonDisable&&"bg-opacity-50"}`} onClick={onSubmit}>
+        <button type="submit" disabled={loading} className={`bg-secondary-400 my-4 p-4 py-2 rounded-lg ${loading &&"bg-opacity-50"}`} onClick={onSubmit}>
             Login
         </button>
-      </div>
+      </form>
   )
 }

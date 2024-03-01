@@ -3,17 +3,6 @@ const bcrypt = require("bcrypt")
 const crypto = require('crypto')
 
 const userSchema = new mongoose.Schema({
-    userId:{
-        type:String,
-        require:[true,"User's id is Missing"],
-        unique:[true,"User with same id already exists"],
-        // validate: {
-        //     validator: function(value) {
-        //       return 
-        //     },
-        //     message: 'Username must only contain letters, numbers, and underscores.'
-        //   }
-    },
     password:{
         type:String,
         require:[true,'User password is missing'],
@@ -76,9 +65,8 @@ const userSchema = new mongoose.Schema({
 
 
 //Indexes
-userSchema.index("userId",{
-    unique:true
-})
+
+
 userSchema.pre(/^find/,async function (next){
     //this refers to the query here
     this.find({ active: {$ne:false} })

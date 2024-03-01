@@ -41,7 +41,7 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                             />
                         </div>)
                     }
-                    return <div className="relative my-2">
+                    return <div key={index} className="relative my-2">
                         <h2 className="text-primary-900 absolute top-left">{index+1}</h2>
                         {res}
                     </div>

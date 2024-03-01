@@ -7,7 +7,7 @@ export default function NavList({list, className, vertical}) {
         {
             list.map((item, index) => 
                 <NavButton key={index} to={item.to}>
-                    {item.innerHtml}
+                    {item.child}
                 </NavButton>
             )
         }

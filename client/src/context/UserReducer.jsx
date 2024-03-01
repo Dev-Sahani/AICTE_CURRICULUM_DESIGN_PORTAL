@@ -1,6 +1,7 @@
 import {
     HANDLE_LOADING,
     SETUP_USER,
+    REMOVE_USER,
     ALERT,
 } from "./UserAction"
 
@@ -11,17 +12,22 @@ export default function reducer(state, action){
             alert: action.payload,
         }
     }
-    if(action.type === HANDLE_LOADING) {
+    else if(action.type === HANDLE_LOADING) {
         return {
             ...state,
             loading: action.payload,
         }
     }
-    if(action.type === SETUP_USER) {
-        console.log("SETINGUP_USER")
+    else if(action.type === SETUP_USER) {
         return {
             ...state,
             user: action.payload,
+        }
+    }
+    else if(action.type === REMOVE_USER){
+        return {
+            ...state,
+            user:undefined
         }
     }
     throw new Error("No such action in User Reducer")

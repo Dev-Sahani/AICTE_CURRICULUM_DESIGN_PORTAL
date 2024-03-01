@@ -25,7 +25,7 @@ export default function SharedNav() {
                         className="w-12 h-12 flex justify-center items-center hover:cursor-pointer" 
                         {...item}
                     >
-                        {item.innerHtml}
+                        {item.child}
                     </div>)
                 })}
             </div>
@@ -55,16 +55,16 @@ export default function SharedNav() {
 const tempList = (common_id)=>{
     return ([
         {
-            innerHtml: "Basic Info",
+            child: "Basic Info",
             to: `/curriculum/${common_id}`,
         }, {
-            innerHtml: "Categories",
+            child: "Categories",
             to: `/curriculum/${common_id}/categories`,
         },{
-            innerHtml: "Semester",
+            child: "Semester",
             to: `/curriculum/${common_id}/semesters`,
         },{
-            innerHtml: "Subjects",
+            child: "Subjects",
             to: `/curriculum/${common_id}/subjects`,
         }
     ])
@@ -74,23 +74,23 @@ const tempList2 = (showChats, setShowChats,common_id)=>{
     return ([
         {
             work: "chats",
-            innerHtml: <ImageComponent className="w-6 h-6" imageName="ChatBubbleImage" alt="Chat" />, 
+            child: <ImageComponent className="w-6 h-6" imageName="ChatBubbleImage" alt="Chat" />, 
             onClick: ()=>{setShowChats(!showChats)},
             onClose: ()=>setShowChats(false),
         }, {
             work: "logs",
-            innerHtml: <Link to={`/curriculum/${common_id}/versions`}>
+            child: <Link to={`/curriculum/${common_id}/versions`}>
                 <ImageComponent className="w-6 h-6" imageName="LogsImage" alt="Logs" />
             </Link>, 
         },
          {
             work: "users",
-            innerHtml: <Link to={`/curriculum/${common_id}/users`}>
+            child: <Link to={`/curriculum/${common_id}/users`}>
                 <ImageComponent className="w-6 h-6"  imageName="PersonAddImage" alt="grant-access" />
             </Link>,
         }, 
         {
-            innerHtml: <ImageComponent className="w-6 h-6"  imageName="DownloadImage" alt="download" />,
+            child: <ImageComponent className="w-6 h-6"  imageName="DownloadImage" alt="download" />,
         }
     ])
 }

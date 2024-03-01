@@ -34,7 +34,7 @@ const Sidebar = ({className}) => {
         <div>
           {arr}
         </div>
-        <footer className="absolute bottom-6 left-0">
+        <footer className="absolute bottom-6 left-0 w-full">
           <LogoutBtnSidebar />
         </footer>
       </section>

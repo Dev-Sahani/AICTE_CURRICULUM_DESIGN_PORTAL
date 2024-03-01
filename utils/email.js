@@ -5,7 +5,7 @@ const getTransporter = ()=>nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL, // Your Gmail address
-        pass: "Daksh@8123", // Your Gmail password or App Password
+        pass: process.env.APP_PASSWORD_GMAIL, // Your Gmail password or App Password
     },
 });
 
@@ -28,9 +28,8 @@ exports.sendEmailToUser = async function (user) {
         from: process.env.EMAIL, // Sender email address
         to: user.email, // Receiver email address
         subject: 'Credentials Information',
-        text: `Your login credentials:
-        \t\tUserId: ${user.userId}
-        \t\t Password: ${user.password}\n
+        text: `Your login credentials for AICTE:
+        \t Password: ${user.password}\n
         please login here "https://aicte-curriculum-portal.onrender.com/api/v1/auth/login"`,
     };
     // Send the email

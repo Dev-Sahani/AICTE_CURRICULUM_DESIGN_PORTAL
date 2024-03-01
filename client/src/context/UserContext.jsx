@@ -5,7 +5,8 @@ import axios from "axios";
 import {
     HANDLE_LOADING,
     SETUP_USER,
-    ALERT
+    ALERT,
+    REMOVE_USER,
 } from "./UserAction"
 
 const initialState = {
@@ -19,6 +20,18 @@ export const UserProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, initialState);
     
     const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/"});
+
+    axiosInstance.interceptors.response.use(
+        (response)=>{
+            return response;
+        }, (err)=>{
+            console.log("response interceptor ",err);
+            if(err.response.status >= 401){
+                // logoutUser();
+            }
+            return Promise.reject(err);
+        }
+    )
     
     const getCurrUser = async ()=>{
         setLoading(true)
@@ -26,12 +39,6 @@ export const UserProvider = ({children})=>{
             const res = await axiosInstance.get("/auth/verify-token",{
                 withCredentials:true
             })
-            if(res.status !== 200){
-                dispatch({
-                    type:ALERT,
-                    payload:"cannot verify user please login again"
-                })
-            }
             const {user} = res.data;
             dispatch({
                 type: SETUP_USER,
@@ -39,7 +46,7 @@ export const UserProvider = ({children})=>{
             })
         }
         catch(err){
-            // logout()
+            logout()
         }
         setLoading(false)
     }
@@ -47,27 +54,10 @@ export const UserProvider = ({children})=>{
         getCurrUser();
     }, [])
     
-    axiosInstance.interceptors.response.use((response)=>{
-        return response;
-    }, (err)=>{
-        // console.log(err.response);
-        if(err.response.status === 401){
-            // logoutUser();
-        }
-        return Promise.reject(err);
-    })
-
-    const loginAdmin = async ({email, password})=>{
+    const login = async ({email, password})=>{
         setLoading(true);
         try {
-            const response = await axiosInstance.post(`auth/login-admin/`, {email, password},{withCredentials:true})
-            if(response.status !== 200) {
-                dispatch({
-                    type:ALERT,
-                    payload:"Invalid Credentials"
-                })
-                return;
-            }
+            const response = await axiosInstance.post(`auth/login/`, {email, password},{withCredentials:true})
             dispatch({
                 type: SETUP_USER,
                 payload: {
@@ -75,44 +65,36 @@ export const UserProvider = ({children})=>{
                     email:response.data.user.email
                 }
             })
-            setLoading(false)
-            return response
         } catch(err) {
             dispatch({
                 type:ALERT,
-                payload:"Cannot Login User at the moment Sorry for the inconvenience"
+                payload:"Invalid Credentials while login"
             })
-            setLoading(false);
-            return null;
-        }   
+        }finally{
+            setLoading(false)
+        }
     }
     const sendAdminOTP = async ({email})=>{
-        if(
-            // !email.endsWith("@aicte-india.org") || 
-        !email || email === "") {
+        if(!email || email === "") {
             return null;
         }
-        let res;
+        setLoading(true)
         try{
-            res = await axiosInstance.post("auth/send-otp", {email,});
-            // console.log(res);
-            if(res.status !== 200) return null;
-                       
+            await axiosInstance.post("auth/send-otp", {email});
         } catch (err){
             dispatch({
                 type:ALERT,
                 payload:"Cannot send OTP at the moment Sorry for the inconvenience"
             })
-            return null;
+        }finally{
+            setLoading(false)
         }
-        return res;
     }
 
     const setupAdminPassword = async ({name, password})=>{
         setLoading(true);
         try{
             const res = await axiosInstance("auth/set-up-admin", {name, password});
-            if(res.status !== 200) throw new Error();
             dispatch({
                 type: SETUP_USER,
                 payload: {
@@ -133,57 +115,24 @@ export const UserProvider = ({children})=>{
     }
 
     const verifyAdminOTPAndRegister = async ({name, password, email, otp})=>{
+        setLoading(true);
         try {
-            const res = await axiosInstance.post("/auth/verify-otp", {email, otp});
-            if(res.status !== 200) {
-                dispatch({
-                    type:ALERT,
-                    payload:"Invalid OTP"
-                })
-                return null;
-            }
-            const res2 = await axiosInstance.post("/auth/register-admin", {
-                name, email,password
+            await axiosInstance.post("/auth/register-admin", {
+                name, email,password, otp
             },{withCredentials:true})
-            if(res2.status !== 201) {
-                dispatch({
-                    type:ALERT,
-                    payload:res2.message
-                })
-                return null;
-            }
+
             dispatch({
                 type: SETUP_USER,
                 payload: {name,email},
             });
-            return res;
         } catch(err) {
             dispatch({
                 type:ALERT,
                 payload:"Error while verifying OTP"
             })
+        }finally{
+            setLoading(false)
         }
-    }
-
-    const loginDeveloper = async ({userId, password})=>{
-        setLoading(true);
-        try{
-            const res = await axiosInstance.post("auth/login-developer", {userId, password},{
-                withCredentials:true
-            });
-            
-            dispatch({
-                type:SETUP_USER,
-                payload:res.data.users
-            })
-
-        } catch(err) {
-            dispatch({
-                type:ALERT,
-                payload:"Invalid Credentials"
-            })
-        }
-        setLoading(false);
     }
 
     const createUser = async ({name, email, role})=>{
@@ -210,6 +159,24 @@ export const UserProvider = ({children})=>{
         setLoading(false);
     }
 
+    const logout = async ()=>{
+        setLoading(true);
+        try {
+            await axiosInstance.post("auth/logout", {},{
+                withCredentials:true
+            });
+            dispatch({
+                type:REMOVE_USER
+            })
+        } catch(err) {
+            dispatch({
+                type:ALERT,
+                payload:`Logout fail! server Respoded with ${err.status}`
+            })
+        }
+        setLoading(false);
+    }
+
     const setLoading = (value)=>{
         if(!value) value = false;
         dispatch({
@@ -223,11 +190,11 @@ export const UserProvider = ({children})=>{
             value={{
                 ...state,
                 setLoading,
-                loginAdmin,
+                login,
                 sendAdminOTP,
                 setupAdminPassword,
                 verifyAdminOTPAndRegister,
-                loginDeveloper,
+                logout,
                 createUser,
                 getCurrUser,
             }}

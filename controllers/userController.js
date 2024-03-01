@@ -2,7 +2,6 @@ const { BAD_REQUEST } = require('../errors/index')
 const User = require('../models/userModel')
 const factoryController = require('./factoryController')
 const filterAPI =require('../utils/filterAPI')
-const Course = require('../models/courseModel')
 
 exports.getAllUser = async (req, res, next)=>{
     const {name, areaOfSpecialization} = req.query
@@ -73,7 +72,7 @@ exports.getCourseUser = async (req, res, next)=>{
 
 exports.addCourseUser = async (req, res, next)=>{
     const commonId = req.params.commonId
-    const id = req.body.userId
+    const id = req.body._id
     const access = req.body.access
 
     if(!id)return next(new BAD_REQUEST("Please provide the userId"))
@@ -81,13 +80,13 @@ exports.addCourseUser = async (req, res, next)=>{
         return next(new BAD_REQUEST("request body must have access with value 'head','editor','view'"))
     }
     const exists = await User.findOne({
-        userId:id,
+        _id:id,
         "courses.id":commonId
     })
     let result;
     if(exists){
         result = await User.updateOne(
-            { userId: id, 'courses.id': commonId },
+            { _id: id, 'courses.id': commonId },
             { $set: { 'courses.$.access': access } },
             { new: true }
         )
@@ -111,10 +110,10 @@ exports.addCourseUser = async (req, res, next)=>{
 
 exports.deleteCourseUser = async (req,res, next)=>{
     const commonId = req.params.commonId
-    const id = req.body.userId
+    const id = req.body._id
 
     const result = await User.updateOne(
-        { userId: id },
+        { _id: id },
         { $pull: { courses: { id: commonId } } }
     )
     res.status(200).send({
