@@ -9,14 +9,14 @@ const filterAPI = require('../utils/filterAPI.js')
 exports.getAllResources = async (req, res, next)=>{
     const filt = {}
     if(req.query.search){
-        const exp = new RegExp(`^${req.query.search}`, 'i');
+        const exp = new RegExp(`${req.query.search}`, 'i');
         // const exp = new RegExp(`.*${req.query.search}.*`,'i');
-        filt.title =  { $regex: exp};
+        filt["$or"] =  [{title:{ $regex: exp}}, {author:{ $regex:exp}}];
     }
-    console.log(filt)
+    
     const query = resourceModel.find(filt)
     const filteredQuery = new filterAPI(query,req.query)
-        // .filterAndFind()
+        .filterAndFind()
         .sort()
         .select()
         .paging()
