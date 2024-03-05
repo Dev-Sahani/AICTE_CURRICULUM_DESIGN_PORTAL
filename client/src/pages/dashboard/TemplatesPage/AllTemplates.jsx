@@ -12,15 +12,9 @@ export default function AllTemplates() {
 
     const [templates, setTemplates] = useState([]);
     useEffect(()=>{
-        const getCourses = async ()=>{
-            try{
-                const data = await getAllCourses();
-                setTemplates(data.data);
-            } catch(err) {
-                setTemplates([]);
-            }
-        }
-        getCourses();
+        getAllCourses().then(res=>{
+            if(res) setTemplates(res.data);
+        })
     // eslint-disable-next-line
     }, [courseSearch, courseLevel, courseProgram]);
     
@@ -37,23 +31,24 @@ export default function AllTemplates() {
                 <h1>Start with new Template</h1>
             </Link>
         {
-            templates.map((template, index) => {
+            templates.map((template) => {
                 return (
                     <Link 
-                        key={template.common_id}
+                        key={template?.common_id}
                         className={CardsClasses}
-                        to={`/curriculum/${template.common_id}`} 
+                        to={`/curriculum/${template?.common_id}`} 
                     >
-                        <h1 className='text-xl m-2'>{template.title?.cur}</h1>
-                        <p className='text-xs mx-2 mb-2'>{template?.message?.cur}</p>
+                        <h1 className='text-xl m-2 mb-0'>{template?.title?.cur}</h1>
+                        <p className='text-xs mx-2 mb-2 text-gray-300'>{template?.common_id}</p>
                         <div className='flex text-xs'>
                             <div className="bg-secondary-100 text-secondary-900 px-2 py-1 m-2 rounded-full">
-                                {template.level?.cur}
+                                {template?.level?.cur}
                             </div>
                             <div className="bg-purple-200 text-purple-800 px-2 py-1 m-2 rounded-full">
-                                {template.program?.cur}
+                                {template?.program?.cur}
                             </div>
                         </div>
+                        <div className="mr-2 absolute top-1 right-1 text-gray-300">{template?.version}</div>
                     </Link>
                 )
             })

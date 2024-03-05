@@ -37,6 +37,7 @@ export default function AddUserModal({onClose}){
             res?setData(res.data.data):setData([])
             setLoading(false)
         })
+    // eslint-disable-next-line
     },[])
 
     const debounce = ()=>{

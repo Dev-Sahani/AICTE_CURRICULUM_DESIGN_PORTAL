@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { NavList, NavButton } from "../../../components";
+import { NavList } from "../../../components";
 import ImageComponent from "../../../assets";
 import {useParams }  from "react-router-dom";
 import ChatApp from "./chats/App";

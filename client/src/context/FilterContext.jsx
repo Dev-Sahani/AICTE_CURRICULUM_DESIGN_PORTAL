@@ -43,12 +43,18 @@ export const FilterProvider = ({children})=>{
         if(courseProgram && courseProgram.toLowerCase()!=="select") query += `&search=${courseProgram}`;
 
         const url = `courses${query}`
-        const response = await axiosInstance.get(url);
-        console.log(response);
-        if(response.request.status === 200) {
-            return response.data;
+        let response = undefined;
+        try {
+            response = await axiosInstance.get(url);
+            if(response.request.status === 200) {
+                return response.data;
+            }
+            console.log("ERROR inside getAllCourses(), ", response);
+            throw new Error("Cannot get course!");
+        } catch (err) {
+            // error handling
         }
-        return new Error("Cannot get courses");
+        return response;
     }
     
     const getAllResources = async ()=>{
