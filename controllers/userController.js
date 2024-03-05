@@ -4,11 +4,11 @@ const factoryController = require('./factoryController')
 const filterAPI =require('../utils/filterAPI')
 
 exports.getAllUser = async (req, res, next)=>{
-    const {name, areaOfSpecialization} = req.query
+    const {search, areaOfSpecialization} = req.query
     const flt = {}
-    if (name) {
-        const exp = new RegExp(`^${name}`, 'i');
-        flt.name = { $regex: exp };
+    if (search) {
+        const exp = new RegExp(`${search}`, 'i');
+        flt["$or"] = [{"name":{$regex:exp}}, {"email":{ $regex: exp }}]
     }
     const query = User.find(flt)
     const filteredQuery = new filterAPI(query,req.query)

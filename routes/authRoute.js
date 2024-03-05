@@ -12,9 +12,11 @@ router.route("/send-otp").post(authController.sendOTP)
 
 //register
 router.route("/register-admin").post(authController.registerAdmin)
-router.route("/register-user").post(
+router.route("/pre-register-user").post(
     authController.protect,
     authController.restrictTo("administrator"),
-    authController.registerDev)
+    authController.preRegisterDev)
+router.post("/register-user", authController.registerDev)
+
 
 module.exports = router;

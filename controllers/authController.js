@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const Otp = require('../models/otpModel');
 const util = require('util')
 const jwt = require('jsonwebtoken')
+const bcrypt = require("bcrypt");
 const { CustomAPIError, UNAUTHORIZED_USER, BAD_REQUEST ,NOT_FOUND } = require('../errors');
 const {sendEmailToUser, sendOTP} = require('../utils/email')
 
@@ -55,29 +56,79 @@ module.exports.registerAdmin = async (req,res, next)=>{
     const token = createJWT(newUser)
     sendRes(res,201,token,newUser)
 }
-module.exports.registerDev = async (req,res, next)=>{
+module.exports.preRegisterDev = async (req,res, next)=>{
+    const {name,email, role, mailText} = req.body;
     if(!(["expert","faculty"].includes(req.body.role))){
         return next(new BAD_REQUEST("role can only include 'expert' or 'faculty'"))
     }
-    const newPass = generateRandomKey(process.env.USER_PASSWORD_LEN)
-    const newUser = new User({
-        name:req.body.name, 
-        email:req.body.email,
-        role:req.body.role
-    })
-    newUser.password = newPass
+    
+    //If user already in database
+    let newPass;
+    const query = User.findOne({email}).select("name email preRegistered password")
+    query.skipPreMiddleware = true;
+    let user = await query;
+    //If user is an PreRegistered user
+    if(user && !user.preRegistered) throw new BAD_REQUEST("User with this Email already exists")
 
-    await newUser.save()
-
-    //email the new user credentials to newUser.email
-    const mailContent = {...newUser._doc,password:newPass}
-    await sendEmailToUser(mailContent)
+    newPass = generateRandomKey(process.env.USER_PASSWORD_LEN)
+    if(!user){
+        user = new User({
+            name:name, 
+            email:email,
+            role:role,
+            preRegistered:true,
+        })
+        user.password = newPass
+        await user.save()
+    }
+    //if user is in database but not preRegistered
+    else{
+        const encryptPass = await bcrypt.hash(newPass,12)
+        const query = User.findOneAndUpdate(
+            {email}
+            ,{name,role,password:encryptPass},
+            {new:true}
+        )
+        query.skipPreMiddleware = true
+        user = await query; 
+    }
+    
+    
+    //email the new user credentials to user.email
+    const mailUser = {...user._doc,password:newPass}
+    await sendEmailToUser(mailUser, mailText)
 
     res.status(200).json({
         status:"success",
         message:"login credential has been send to user on provided email",
-        data:mailContent
+        data:{...mailUser, password:undefined}
     })
+}
+
+module.exports.registerDev = async (req,res, next)=>{
+    const {name, email, password} = req.body;
+
+    if(!email || !name || !password){
+        return next(new BAD_REQUEST("Invalid request body"))
+    }
+
+    let query = User.findOne({email}).select("+password +preRegistered")
+    query.skipPreMiddleware = true;
+    let user = await query;
+
+    if(!user)return next(new UNAUTHORIZED_USER("user mail id does not match"));
+    
+    if(!user.preRegistered)return next(new UNAUTHORIZED_USER("user already registered"));
+
+    const isMatch = await user.checkPassword(password,user.password);
+    if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
+
+    query = User.findOneAndUpdate({email},{name, preRegistered:false})
+    query.skipPreMiddleware = true;
+    user = await query;
+
+    const token = createJWT(user)
+    sendRes(res,200,token,user)
 }
 
 module.exports.verifyByToken = async (req, res, next)=>{

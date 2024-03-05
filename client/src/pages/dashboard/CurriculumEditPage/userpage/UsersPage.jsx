@@ -1,12 +1,16 @@
 import { useEffect,  useState} from "react";
 import { useParams } from "react-router-dom";
-import {Loading, PrimaryButton} from "../../../components";
+import {Loading, SecondaryButton} from "../../../../components";
+import AddUserModal from "./AddUserModal"
+import InviteUserModal from "./InviteUserModal"
 import axios from "axios";
 
 
 export default function UsersPage(){
     const {common_id} = useParams();
     const [data, setData] = useState()
+    const [addButton, setAddButton] = useState(false)
+    const [inviteButton, setInviteButton] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const axiosInstance = axios.create({
@@ -29,7 +33,7 @@ export default function UsersPage(){
         setLoading(true)
         try{
             await axiosInstance.patch("",{
-                userId:e.target.name,
+                _id:e.target.name,
                 access:e.target.value
             })
             const res = (await fetchData()).data.data
@@ -40,11 +44,11 @@ export default function UsersPage(){
         setLoading(false)
     }
 
-    const handleDelete = async (e, userId)=>{
+    const handleDelete = async (e, _id)=>{
         setLoading(true)
         try{
             await axiosInstance.delete("", {
-                data:{userId}
+                data:{_id}
             })
             const res = (await fetchData()).data.data
             setData(res)
@@ -52,6 +56,22 @@ export default function UsersPage(){
             window.alert(err.message)
         }
         setLoading(false)
+    }
+
+    const handleInvite = async ()=>{
+        setInviteButton(true)
+    }
+    const handleAdd = async ()=>{
+        setAddButton(prev=>!prev)
+    }
+
+    const onCloseModal = ()=>{
+        setAddButton(false)
+        setLoading(true)
+        fetchData()
+            .then((res)=>setData(res.data.data))
+            .catch((err)=>window.alert(err.message))
+            .finally(()=>setLoading(false))
     }
     
     const list = data?.map(user=>(
@@ -67,8 +87,8 @@ export default function UsersPage(){
                 <div className="px-2">
                     <p>Access type:</p>
                     <select
-                        name={user.userId}
-                        value={user.courses.find(el=>el.id==common_id).access}
+                        name={user._id}
+                        value={user.courses.find(el=>el.id===common_id).access}
                         onChange={handleChange}
                         className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none"
                     >
@@ -77,30 +97,22 @@ export default function UsersPage(){
                         <option value="view" className="text-sm">view</option>
                     </select>
                 </div>
-                <button onClick={(e)=>handleDelete(e, user.userId)} >
+                <button onClick={(e)=>handleDelete(e, user._id)} >
                     <img className="w-8 hover:mix-blend-luminosity" src="/deleteButton.png" alt="delete button" />
                 </button>
             </div>
         </div> 
     ))
 
-    return <div className="">
-        <h1 className="w-[80%] text-2xl text-center">Previous versions</h1>
+    return <div className="h-full">
+        <div className="w-full px-2 flex justify-between">
+            <h1 className="text-2xl">Previous versions</h1>
+            <div className="flex gap-2">
+                <SecondaryButton onClick={handleInvite}>Invite User</SecondaryButton>
+                <SecondaryButton onClick={handleAdd}>Add User</SecondaryButton>
+            </div>
+        </div>
         <div className="flex flex-col m-4 gap-2">
-            <form className="w-[80%] rounded-2xl flex justify-between p-4 border-2 border-gray-500">
-                <div>
-                    <label>email</label>
-                    <input type="email" value="" onChange={()=>{}} ></input>
-                    <br></br>
-                    <label>Access type</label>
-                    <select onChange={()=>{}} className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none">
-                        <option className="text-sm">head</option>
-                        <option className="text-sm">edit</option>
-                        <option className="text-sm">view</option>
-                    </select>
-                </div>
-                <PrimaryButton className="text-center !rounded-2xl" onClick={()=>{}}>Add To this course</PrimaryButton>
-            </form>
             {
                 loading?
                 <Loading count={5} cardClassName="!w-[80%]"/>
@@ -108,5 +120,8 @@ export default function UsersPage(){
                 list
             }
         </div>
+
+        {addButton && <AddUserModal onClose={onCloseModal} data={data}/>}
+        {inviteButton && <InviteUserModal onClose={()=>setInviteButton(false)} data={data}/>}
     </div>
 }

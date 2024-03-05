@@ -60,6 +60,11 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:true,
         select:false
+    },
+    preRegistered:{
+        type:Boolean,
+        default:false,
+        select:false
     }
 })
 
@@ -68,10 +73,11 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.pre(/^find/,async function (next){
-    //this refers to the query here
+    //this refers to the query here 
     this.find({ active: {$ne:false} })
-    //or this.and({ active: {$ne:false} })
-    //or this.where('active').ne(false)
+    if(!this.skipPreMiddleware){
+        this.find({preRegistered:{$ne:true}})
+    }
     next()
 })
 
@@ -97,7 +103,7 @@ userSchema.pre("save",async function(next){
     next();
 })
 userSchema.pre("save",async function(next){
-    if(!this.isModified() || this.isNew)return next()
+    if(!this.isModified("password") || this.isNew || this.preRegistered)return next()
     this.passwordChangedAt = Date.now() - 1000
     next()
 })

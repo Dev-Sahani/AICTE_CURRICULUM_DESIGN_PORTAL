@@ -19,7 +19,7 @@ const checkEmailInfo = (info)=>{
 }
 
 // Function to send an email
-exports.sendEmailToUser = async function (user) {
+exports.sendEmailToUser = async function (user, mailText) {
     // Create a transporter using Gmail service
     const transporter = getTransporter()
 
@@ -28,9 +28,12 @@ exports.sendEmailToUser = async function (user) {
         from: process.env.EMAIL, // Sender email address
         to: user.email, // Receiver email address
         subject: 'Credentials Information',
-        text: `Your login credentials for AICTE:
-        \t Password: ${user.password}\n
-        please login here "https://aicte-curriculum-portal.onrender.com/api/v1/auth/login"`,
+        text: 
+        `${mailText?mailText:""}
+You can register to AICTE curriculum editing platform with:
+    Your email: ${user.email}
+    Password: ${user.password}
+please register here https://aicte-curriculum-portal.onrender.com/api/v1/auth/login`,
     };
     // Send the email
     const info = await transporter.sendMail(mailOptions);

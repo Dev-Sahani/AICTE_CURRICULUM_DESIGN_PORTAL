@@ -5,7 +5,7 @@ import CategoriesPage from "./CategoriesPage";
 import SubjectPage from "./SubjectsPage";
 import SemestersPage from "./SemestersPage";
 import VersionPage from "./VersionPage";
-import UsersPage from "./UsersPage";
+import UsersPage from "./userpage/UsersPage";
 
 export  {
   BasicInfoPage,

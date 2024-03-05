@@ -11,7 +11,7 @@ export default function SharedNav() {
   const [showChats, setShowChats] = useState(false);
 
   return (
-    <div >
+    <div className="h-full flex flex-col">
         <nav className="flex justify-between w-full">
             <NavList 
                 list={tempList(common_id)}
@@ -31,7 +31,7 @@ export default function SharedNav() {
             </div>
         </nav>
         <hr className="border-t border-gray-300 mb-4"/>
-        <main className="w-full relative">
+        <main className="w-full relative flex-grow">
             <Outlet />
         </main>
         <motion.div
