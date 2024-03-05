@@ -27,6 +27,7 @@ export default function UsersPage(){
             .then((res)=>setData(res.data.data))
             .catch((err)=>window.alert(err.message))
             .finally(()=>setLoading(false))
+    //eslint-disable-next-line
     },[])
 
     const handleChange = async (e)=>{

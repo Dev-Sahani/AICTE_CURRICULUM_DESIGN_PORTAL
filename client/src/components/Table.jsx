@@ -1,5 +1,5 @@
 export default function Table({ data, primaryHead, head }) {
-  const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
+  // const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
     let headClasses = "border-separate border-spacing-0 ";
     if (primaryHead) headClasses += " text-white bg-primary-600";
     else headClasses += " text-primary-900";
@@ -9,11 +9,13 @@ export default function Table({ data, primaryHead, head }) {
       <table className="table-auto border-separate border-spacing-y-2">
         <thead>
           <tr className={headClasses}>
-            {data[0].map((str) => (
-              <th className="px-5 py-2 capitalize" key={str}>
-                {str}
-              </th>
-            ))}
+            {
+              data[0].map((str) => 
+                <th className="px-5 py-2 capitalize" key={str}>
+                  {str}
+                </th>
+              )
+            }
           </tr>
         </thead>
         <tbody>
@@ -21,7 +23,7 @@ export default function Table({ data, primaryHead, head }) {
             if (indx === 0) return;
             return (
               <tr className="bg-accent-200" key={indx}>
-                {row.map((str, cellIndex) => (
+                {row.map((str, cellIndex) => 
                   <td
                     className={`px-5 py-2 ${
                       // Apply rounded classes to the first and last cells in the row
@@ -31,7 +33,7 @@ export default function Table({ data, primaryHead, head }) {
                   >
                     {str}
                   </td>
-                ))}
+                )}
               </tr>
             );
           })}

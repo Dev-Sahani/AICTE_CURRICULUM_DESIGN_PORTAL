@@ -1,4 +1,4 @@
-import React , { useReducer , useContext, useState } from "react";
+import React , { useReducer , useContext } from "react";
 import { reducer } from "./FilterReducer"
 import axios from "axios"
 
@@ -54,7 +54,11 @@ export const FilterProvider = ({children})=>{
     const getAllResources = async ()=>{
         try {
             let url = `resources?`;
-            const {resourceSearch, resourceFormat, resourceProgram} = state;
+            const {
+                resourceSearch, 
+                resourceFormat, 
+                // resourceProgram, 
+            } = state;
             if(resourceSearch && resourceSearch!=="" ) url +=  `search=${resourceSearch}`; 
             if(resourceFormat && resourceFormat!=="" && resourceFormat!=="Select Format") url +=  `&type=${resourceFormat}`; 
             // if(resourceProgram && resourceProgram!==""&& resourceProgram!=="Select Program") url +=  `&program=${resourceProgram}`; 

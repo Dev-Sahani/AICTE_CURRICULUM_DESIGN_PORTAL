@@ -24,6 +24,7 @@ export default function SemestersPage() {
         setSemesters(convertIntoArray(res.data.semesters, keyOrder))
       }
     });
+  // eslint-disable-next-line
   },[])
 
   return (

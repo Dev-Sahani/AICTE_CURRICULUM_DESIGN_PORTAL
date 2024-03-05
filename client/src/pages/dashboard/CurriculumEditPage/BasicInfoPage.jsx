@@ -4,7 +4,7 @@ import {
   CourseDropdown, 
   Label, 
   AddCourseInput ,
-  Instructions,
+  // Instructions,
 } from "../../../components";
 import { getAllLevels, getAllProgrammes } from "../../../utils/getAllProgramAndLevels";
 import { useCourseContext } from "../../../context";
@@ -23,6 +23,7 @@ export default function BasicInfoPage() {
       }
     }
     begin();
+  // eslint-disable-next-line
   }, []);
 
   // <div className="flex gap-2 justify-between">
@@ -99,9 +100,10 @@ export default function BasicInfoPage() {
           propertyKeys={["code", "definition"]}
           className="w-[90%] min-h-[6rem] ml-8 grid grid-cols-2 gap-6"
         />
-      </div>)
+      </div>
+      )
 
-      {/* <Instructions instructions={[
+      /* <Instructions instructions={[
         {
           heading: "Course Name",
           text: "Give a title for the course that describe it in the best way.",
@@ -119,6 +121,6 @@ export default function BasicInfoPage() {
         }
       ]} 
         className="basis-2/5"
-      /> */}
+      /> */
     // </div>
 }

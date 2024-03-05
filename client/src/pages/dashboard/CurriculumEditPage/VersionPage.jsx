@@ -16,6 +16,7 @@ export default function VersionPage(){
             setData(res.data.data.commits)
         }).catch((err)=>window.alert(err.message))
         .finally(()=>setLoading(false))
+  // eslint-disable-next-line
     },[])
     
     return <div className="">

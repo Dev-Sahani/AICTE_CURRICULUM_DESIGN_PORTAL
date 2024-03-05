@@ -52,6 +52,7 @@ export const UserProvider = ({children})=>{
     }
     useEffect(()=>{
         getCurrUser();
+    // eslint-disable-next-line
     }, [])
     
     const login = async ({email, password})=>{

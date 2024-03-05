@@ -17,6 +17,7 @@ function Resources1(props){
       console.log(res);
       if(res) setArray(res.data);
     });
+  // eslint-disable-next-line
   }, [resourceSearch, resourceFormat, resouceProgram]);
 
   return(

@@ -25,6 +25,7 @@ export default function CategoriesPage() {
         setCategories(convertIntoArray(res.data.categories, keyOrder))
       }
     });
+  // eslint-disable-next-line
   },[])
 
   if(!categories) return <></>
