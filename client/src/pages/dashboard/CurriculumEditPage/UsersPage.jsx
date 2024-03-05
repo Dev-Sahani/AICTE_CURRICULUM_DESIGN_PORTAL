@@ -23,6 +23,7 @@ export default function UsersPage(){
             .then((res)=>setData(res.data.data))
             .catch((err)=>window.alert(err.message))
             .finally(()=>setLoading(false))
+    // eslint-disable-next-line
     },[])
 
     const handleChange = async (e)=>{
@@ -68,7 +69,7 @@ export default function UsersPage(){
                     <p>Access type:</p>
                     <select
                         name={user.userId}
-                        value={user.courses.find(el=>el.id==common_id).access}
+                        value={user.courses.find(el=>el.id === common_id).access}
                         onChange={handleChange}
                         className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none"
                     >

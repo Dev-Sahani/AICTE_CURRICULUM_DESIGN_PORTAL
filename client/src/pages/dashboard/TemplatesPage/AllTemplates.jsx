@@ -21,6 +21,7 @@ export default function AllTemplates() {
             }
         }
         getCourses();
+    // eslint-disable-next-line
     }, [courseSearch, courseLevel, courseProgram]);
     
     
@@ -62,11 +63,11 @@ export default function AllTemplates() {
 }
 
 
-const getMessage = ()=>{
-    return [
-        {message: "The quality of technical education depends on many factors but largely on outcome based socially and industrially relevant curriculum, good quality motivated faculty, teaching learning process, effective industry internship and evaluation of students based on desired outcomes."},
-        {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
-        {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
+// const getMessage = ()=>{
+//     return [
+//         {message: "The quality of technical education depends on many factors but largely on outcome based socially and industrially relevant curriculum, good quality motivated faculty, teaching learning process, effective industry internship and evaluation of students based on desired outcomes."},
+//         {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
+//         {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
         
-    ]
-}
+//     ]
+// }

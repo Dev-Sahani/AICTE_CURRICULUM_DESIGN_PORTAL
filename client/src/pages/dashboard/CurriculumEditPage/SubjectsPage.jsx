@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+// import { useParams } from "react-router-dom";
+import { 
+  useState, 
+  // useEffect, 
+} from "react";
 import { Table } from "../../../components"
 import SubjectsFilter from "./SubjectsFilter"
 import { useCourseContext } from "../../../context";
 
 export default function SubjectPage() {
-  const {common_id} = useParams();
+  // const {common_id} = useParams();
   const { subjects } = useCourseContext();
   console.log(subjects)
   const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
@@ -25,7 +28,7 @@ export default function SubjectPage() {
   //     }
   //   });
   // },[])
-  console.log(allSubjects); 
+  // console.log(allSubjects); 
   return (
     <>
       <SubjectsFilter />
@@ -38,41 +41,41 @@ export default function SubjectPage() {
   )
 }
 
-const getSubjects = ()=>{
-    const subjects = [
-      {
-        code: "evw32",
-        title: "jfla",
-        semester:2,
-        l:1,
-        t:2,
-        p:1,
-        credits: 2
-      }, {
-        code: "evw32",
-        title: "jfla",
-        semester:2,
-        l:1,
-        t:2,
-        p:1,
-        credits: 2
-      }, {
-        code: "evw32",
-        title: "jfla",
-        semester:2,
-        l:1,
-        t:2,
-        p:1,
-        credits: 2
-      },
-    ]
-    const convertion = subjects.map((sub)=>
-      [sub.code, sub.title, sub.semester, sub.l, sub.t, sub.t, sub.credits]
-    )
-    convertion.unshift(["Code", "Subject Name", "Semester", "L","T","P", "Credits"])
+// const getSubjects = ()=>{
+//     const subjects = [
+//       {
+//         code: "evw32",
+//         title: "jfla",
+//         semester:2,
+//         l:1,
+//         t:2,
+//         p:1,
+//         credits: 2
+//       }, {
+//         code: "evw32",
+//         title: "jfla",
+//         semester:2,
+//         l:1,
+//         t:2,
+//         p:1,
+//         credits: 2
+//       }, {
+//         code: "evw32",
+//         title: "jfla",
+//         semester:2,
+//         l:1,
+//         t:2,
+//         p:1,
+//         credits: 2
+//       },
+//     ]
+//     const convertion = subjects.map((sub)=>
+//       [sub.code, sub.title, sub.semester, sub.l, sub.t, sub.t, sub.credits]
+//     )
+//     convertion.unshift(["Code", "Subject Name", "Semester", "L","T","P", "Credits"])
     
-    return convertion;
-}
+//     return convertion;
+// }
 
 const converIntoArray = (array, keyOrder) => {
   const arr = [];

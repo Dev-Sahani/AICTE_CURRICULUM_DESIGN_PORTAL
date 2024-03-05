@@ -79,7 +79,6 @@ export const CourseProvider = ({children})=>{
         }
     }
     const handleChange = (name, value, subjectId) => {
-        const obj = {name, value};
         if(subjectId && subjectId !== "") {
             dispatch({
                 type: HANDLE_SUBJECT_CHANGE,

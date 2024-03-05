@@ -31,6 +31,7 @@ export const Chat = ({room, user, className, onClose}) => {
     });
 
     return () => unsuscribe();
+  // eslint-disable-next-line
   }, []);
 
   const handleSubmit = async (event) => {
