@@ -3,6 +3,7 @@ import SidebarList from "./SidebarList";
 import Sidebar from "./Sidebar";
 import FilterDropdown from "./FilterDropdown";
 import FilterSearch from "./FilterSearch";
+import FullPageLoading from "./FullPageLoading";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import NavButton from "./NavButton";
@@ -22,6 +23,7 @@ export {
     Sidebar,
     FilterDropdown,
     FilterSearch,
+    FullPageLoading, 
     PrimaryButton,
     SecondaryButton,
     NavButton,

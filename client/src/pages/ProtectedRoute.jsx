@@ -1,12 +1,12 @@
 import { useUserContext } from '../context/UserContext';
-import Loading from '../components/Loading';
+import { FullPageLoading } from '../components';
 import { Navigate } from 'react-router';
 
 const ProtectedRoute = ({children}) => {  
   const {user, loading} = useUserContext()
 
   if(loading){
-    return <Loading />
+    return <FullPageLoading />
   }
   else if(!user){
     return <Navigate to="/register" />

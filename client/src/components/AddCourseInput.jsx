@@ -32,15 +32,12 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
         setLastInput({});
     }
 
-    // if(className) className = className + " my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
-    // else className = "my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
     return (
         <div className={className}>
             <form className="col-span-2 relative bg-primary-500 rounded-xl py-2 px-4 flex items-center justify-between gap-2 overflow-hidden" onSubmit={handleSubmit}>
-                {/* <div className="w-full flex justify-between"> */}
                 {
                     propertyKeys.map((el,ind)=>
-                        <div className="flex justify-between" key={ind}>
+                        <div className="flex justify-between gap-1" key={ind}>
                             <Label className="text-white">{el}</Label>
                             <input 
                                 name={localArr.length.toString() +"+"+el} 
@@ -51,7 +48,6 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                         </div>
                     )
                 }
-                {/* </div> */}
                 <div
                     className="px-2 py-1 bg-secondary-500 rounded-lg hover:cursor-pointer hover:bg-secondary-600"
                     onClick={handleSubmit} 
@@ -59,6 +55,7 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                     <h2 className="text-white whitespace-nowrap font-medium w-full text-center" style={{fontSize: "1.2rem"}}>Add +</h2>
                 </div>
             </form>
+
             {
                 localArr.map((item, index)=>{
                     const res = []

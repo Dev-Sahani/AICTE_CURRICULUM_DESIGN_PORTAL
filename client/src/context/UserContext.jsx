@@ -10,7 +10,7 @@ import {
 } from "./UserAction"
 
 const initialState = {
-    loading: false,
+    loading: true,
     user: null,
 };
 
@@ -50,7 +50,9 @@ export const UserProvider = ({children})=>{
         }
         setLoading(false)
     }
+
     useEffect(()=>{
+        setLoading(false);
         getCurrUser();
     // eslint-disable-next-line
     }, [])
@@ -95,7 +97,7 @@ export const UserProvider = ({children})=>{
     const setupAdminPassword = async ({name, password})=>{
         setLoading(true);
         try{
-            const res = await axiosInstance("auth/set-up-admin", {name, password});
+            await axiosInstance("auth/set-up-admin", {name, password});
             dispatch({
                 type: SETUP_USER,
                 payload: {
