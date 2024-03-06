@@ -5,7 +5,7 @@ class filterAPI{
     }
     filterAndFind(){
         let reqQueryTemp = {...this.reqQuery}
-        const filter = ['sort','limit','fields','page']
+        const filter = ['sort','limit','fields','page','search']
         filter.forEach((el)=>{
             delete reqQueryTemp[el];
         })
