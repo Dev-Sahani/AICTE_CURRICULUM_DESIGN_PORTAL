@@ -36,6 +36,29 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
     // else className = "my-1 w-full p-1 border-2 border-gray-400 rounded focus:outline-none"
     return (
         <div className={className}>
+            <form className="col-span-2 relative bg-primary-500 rounded-xl py-2 px-4 flex items-center justify-between gap-2 overflow-hidden" onSubmit={handleSubmit}>
+                {/* <div className="w-full flex justify-between"> */}
+                {
+                    propertyKeys.map((el,ind)=>
+                        <div className="flex justify-between" key={ind}>
+                            <Label className="text-white">{el}</Label>
+                            <input 
+                                name={localArr.length.toString() +"+"+el} 
+                                value={lastInput[el]}
+                                onChange={(e)=>setLastInput(prev=>({...prev, [el]:e.target.value}))}
+                                className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
+                            />
+                        </div>
+                    )
+                }
+                {/* </div> */}
+                <div
+                    className="px-2 py-1 bg-secondary-500 rounded-lg hover:cursor-pointer hover:bg-secondary-600"
+                    onClick={handleSubmit} 
+                >
+                    <h2 className="text-white whitespace-nowrap font-medium w-full text-center" style={{fontSize: "1.2rem"}}>Add +</h2>
+                </div>
+            </form>
             {
                 localArr.map((item, index)=>{
                     const res = []
@@ -56,29 +79,7 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
                     </div>
                 })
             }
-            <form className="relative bg-primary-400 rounded-xl pt-2 pb-3 px-3 flex flex-col items-center justify-center gap-2 overflow-hidden" onSubmit={handleSubmit}>
-                <div className="w-full ">
-                {
-                    propertyKeys.map((el,ind)=>
-                        <div className="flex justify-between" key={ind}>
-                            <Label className="text-white">{el}</Label>
-                            <input 
-                                name={localArr.length.toString() +"+"+el} 
-                                value={lastInput[el]}
-                                onChange={(e)=>setLastInput(prev=>({...prev, [el]:e.target.value}))}
-                                className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
-                            />
-                        </div>
-                    )
-                }
-                </div>
-                <div
-                    className="bg-secondary-400 w-full rounded-lg hover:cursor-pointer hover:bg-secondary-500"
-                    onClick={handleSubmit} 
-                >
-                    <h2 className="text-white font-medium w-full text-center" style={{fontSize: "1.2rem"}}>Add +</h2>
-                </div>
-            </form>
+            
         </div>
   )
 }
