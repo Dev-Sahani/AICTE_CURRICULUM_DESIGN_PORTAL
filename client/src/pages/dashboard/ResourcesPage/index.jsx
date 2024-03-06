@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import Resource from "./Resources";
-import { Loading } from "../../../components";
+import AddResourceForm from "./AddResourceForm"
+import { Loading, SecondaryButton } from "../../../components";
 import axios from 'axios';
+import SearchImg from "./../../../assets/Search.png"
 
 function ResourcesPage() {
     const [Array, setArray] = useState([]);
@@ -9,6 +11,7 @@ function ResourcesPage() {
         search: "",
         format: ""
     })
+    const [addResource, setAddResource] = useState(false);
     const [loading, setLoading] = useState(false)
 
     const axiosInstance = axios.create({
@@ -18,7 +21,7 @@ function ResourcesPage() {
 
     const searchFunc = async ({search,format})=>{
         if(!search)search="";
-        if(!format || format=="Select format")format=undefined;
+        if(!format || format==="Select format")format=undefined;
         try{
             const res = await axiosInstance.get("",{
                 params:{
@@ -37,7 +40,6 @@ function ResourcesPage() {
         setLoading(true);
         searchFunc({search:"",format:""})
         .finally(()=>setLoading(false))
-        //eslint-disable-next-line
     }, [])
 
     const debounce = () => {
@@ -62,37 +64,57 @@ function ResourcesPage() {
     // eslint-disable-next-line
     []);
 
+    const handleAddButtonClose = async ()=>{
+        setAddResource(false);
+        setLoading(true);
+        await searchFunc({search:"", format:""})
+        setLoading(false)
+    }
+
     if (loading) return <Loading count={5} cardClassName="!h-28" />
 
     return (
         <>
-            <nav className="w-full flex justify-evenly items-center my-2 bg-secondary-100 rounded-xl">
-                <img src="/search-black.png" alt="search" className="w-8 h-8" />
-                <div className="w-[80%] flex justify-between">
-                <div className="bg-white h-fit flex rounded m-2 items-center">
+            {/* Search Bar Section */}
+            <div className="w-full flex justify-evenly items-center my-2 rounded-xl">
+                <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
+                    <img src={SearchImg} alt="search" className="w-8 h-8" />
                     <input
                         type="text"
                         name="search"
                         value={state.search}
                         onChange={handleChange}
                         placeholder=" Enter title or author..."
-                        className="border-2 border-solid border-gray-400 rounded focus:outline-none w-[28vw] h-8"
+                        className="rounded focus:outline-none w-[28vw] h-8"
                     />
                 </div>
-                <select
-                    name="format"
-                    value={state.format}
-                    onChange={handleChange}
-                    className="border-2 border-gray-400 rounded px-4 my-2 focus:outline-none"
-                >
-                    <option value="Select format" className="text-base">Select format</option>
-                    <option value="book" className="text-base">book</option>
-                    <option value="video" className="text-base">video</option>
-                    <option value="e-book" className="text-base">e-book</option>
-                </select>
+                <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
+                    <img src={SearchImg} alt="search" className="w-8 h-8" />
+                    <select
+                        name="format"
+                        value={state.format}
+                        onChange={handleChange}
+                        className="rounded px-4 h-8 focus:outline-none"
+                    >
+                        <option value="Select format" className="text-base">Select format</option>
+                        <option value="book" className="text-base">book</option>
+                        <option value="video" className="text-base">video</option>
+                        <option value="e-book" className="text-base">e-book</option>
+                    </select>
                 </div>
-            </nav>
-            <div className="h-20 w-full border-2 border-gray-400 rounded-2xl text-2xl flex justify-center items-center">Add +</div>
+
+                <SecondaryButton 
+                    onClick={()=>setAddResource(prev=>!prev)}
+                    className=""
+                >
+                    Add New Resource+
+                </SecondaryButton>
+            </div>
+
+            {/* ADD Resource Section */}
+            {addResource && <AddResourceForm onClose={handleAddButtonClose}/> }
+            
+            {/* Resources List Section */}
             {
                 Array.map((x, indx) => <Resource key={indx} resource={x} />)
             }
