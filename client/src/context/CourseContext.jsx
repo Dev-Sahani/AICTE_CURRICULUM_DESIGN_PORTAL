@@ -49,7 +49,7 @@ export const CourseProvider = ({children})=>{
             }
             return res.data
         } catch(err) {
-            alert("Cannot make Request");
+            alert("Something went wrong!");
             return null;
         }
     }

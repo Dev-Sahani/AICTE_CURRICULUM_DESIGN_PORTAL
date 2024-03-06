@@ -17,7 +17,7 @@ export default function BasicInfoPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
-    getCourse()
+    getCourse(common_id)
       .then((res)=>{
         // handle inappropriate response
         if(!res) return;
