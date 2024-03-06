@@ -20,7 +20,7 @@ export default function CategoriesPage() {
     getCategoriesWiseSub(common_id)
       .then((res)=>{
         if(res) {
-          console.log(res);
+          // console.log(res);
           setCategories(res?.data?.categories)
         }
       })
@@ -46,6 +46,14 @@ export default function CategoriesPage() {
     <>
       {
         Object.keys(categories || {})?.map((category, index)=>{
+          const totalCredits = categories[category].reduce(
+            (credits, item) => {
+              if(!item || !item.cur || !item.cur.credits) return credits;
+              return credits + item.cur.credits; 
+            },
+            0,
+          )
+
           return (
             <CardWrapper classNames="m-8 p-6 pt-2" key={index}>
               <header className="mx-2 flex justify-between">
@@ -56,9 +64,7 @@ export default function CategoriesPage() {
                   {category || "-----"}
                 </h1>
                 <h1 className="inline text-lg">
-                  {
-                    "Total Credits"
-                  }
+                  {`Credits-${totalCredits}`}
                 </h1>
               </header>
 

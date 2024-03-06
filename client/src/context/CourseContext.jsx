@@ -70,19 +70,18 @@ export const CourseProvider = ({children})=>{
     }
 
     const getSemestersWiseSub = async (courseId)=>{
+        let res = null;
         try{
             const url = `courses/${courseId}/semesters`;
-            console.log(url);
-            const res = await axiosInstance.get(url);
+            res = await axiosInstance.get(url);
             if(res.status !== 200) {
-                alert("Cannot make Request");
-                return null;
+                alert("Cannot make request!");
+                res = null;
             }
-            return res.data;
         } catch(err) {
-            alert("Cannot make Request");
-            return null;
+            alert("Something went wrong!");
         }
+        return (!res || !res?.data)? res : res.data;
     }
     const handleChange = (name, value, subjectId) => {
         if(subjectId && subjectId !== "") {

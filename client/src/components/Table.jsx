@@ -10,7 +10,7 @@ export default function Table({data, keys}) {
         keys?.map((value, indx)=>{
           return (
             <div className="flex flex-col items-center justify-between whitespace-nowrap" key={indx}>
-              <header className="text-primary-500 text-2xl capitalize">
+              <header className="text-primary-500 text-lg font-semibold capitalize">
                 <h2>{value}</h2>
               </header>
               
