@@ -20,16 +20,22 @@ export const CourseProvider = ({children})=>{
     });
 
     const getCourse = async (courseId)=>{
-        if(!courseId || courseId==="") return {};
+        if(!courseId || courseId==="") return undefined;
         const url = `courses/${courseId}`;
-        const response = await axiosInstance.get(url);
-        if(response.status === 200) {
-            dispatch({
-                type: GET_COURSE,
-                payload: {course: response.data.data}
-            });
+        let response = undefined;
+        try {
+            response = await axiosInstance.get(url);
+            if(response.status === 200) {
+                dispatch({
+                    type: GET_COURSE,
+                    payload: {course: response.data.data}
+                });
+            }
+        } catch(err) {
+            // Handle Error
+            console.log("ERROR while executing getCourse() in CourseContext.jsx\n", err);
         }
-        return state.subjects
+        return response.data;
     }
 
     const getCategoriesWiseSub = async(courseId)=>{
