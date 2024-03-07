@@ -83,24 +83,27 @@ export const CourseProvider = ({children})=>{
         }
         return (!res || !res?.data)? res : res.data;
     }
-    const handleChange = (name, value, subjectId) => {
-        if(subjectId && subjectId !== "") {
-            dispatch({
-                type: HANDLE_SUBJECT_CHANGE,
-                payload: {name, value, subjectId},
+    const updateProperty = async (name, value, courseId)=>{
+        let res = null;
+        const url = `courses/${courseId}/update-by-user`;
+        console.log(url);
+        try {
+            res = await axiosInstance.patch(url, {
+                prop: name,
+                data: value,
             })
-        } else {
-            dispatch({
-                type: HANDLE_COURSE_CHANGE,
-                payload: {name, value}
-            })
+        } catch(err) {
+            res = null;
+            alert("cannot make request to server!");
+            console.log(err);
         }
+        return res;
     }
     return (
         <courseContext.Provider
             value={{
                 ...state,
-                handleChange,
+                updateProperty,
                 getCourse,
                 getCategoriesWiseSub,
                 getSemestersWiseSub,

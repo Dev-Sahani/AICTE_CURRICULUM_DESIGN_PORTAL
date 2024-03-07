@@ -19,7 +19,7 @@ function Trending()
                     <Link to="error">
                        <div className=' flex flex-row px-3  bg-white rounded-lg items-center justify-between'>
                          <div className='text-[#064D74] text-xl font-medium h-full'>#{x}</div>
-                         <div ><img src={Plus} alt="" className="h-[28px] w-[28px] shrink-0" /></div>
+                         <div ><img src={Plus} alt="plus" className="h-[28px] w-[28px] shrink-0" /></div>
                        </div>
 
                     </Link>

@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 
 export default function BasicInfoPage() {
   const {common_id} = useParams();
-  const { getCourse } = useCourseContext();
+  const { getCourse, level, program } = useCourseContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
@@ -50,24 +50,30 @@ export default function BasicInfoPage() {
         />
         
         <div className="flex gap-6 my-4 items-center">
-          <div>
-            <Label>Level</Label>
-            <CourseDropdown
-              className="w-fit"
-              name="level"
-              // Default Values 
-              list={getAllLevels}
-            />
-          </div>
-          <div>
-            <Label>Program</Label>
-            <CourseDropdown
-              className="w-fit"
-              name="program"
-              // Default Values 
-              list={getAllProgrammes}
-            />
-          </div>
+          {
+            level && level.cur && 
+            <div>
+              <Label>Level</Label>
+              <CourseDropdown
+                className="w-fit"
+                name="level"
+                defaultValue={level}
+                list={getAllLevels}
+              />
+            </div>
+          }
+          {
+            program && program.cur && 
+            <div>
+              <Label>Program</Label>
+              <CourseDropdown
+                className="w-fit"
+                name="program"
+                defaultValue={program.cur}
+                list={getAllProgrammes}
+              />
+            </div>
+          }
         </div>
 
         <div className="flex gap-6 my-4 items-center">
