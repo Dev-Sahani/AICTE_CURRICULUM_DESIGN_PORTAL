@@ -11,7 +11,7 @@ export default function Resources({ resource }) {
     >
       <div className='mx-1 my-2 flex flex-col w-full min-w-fit '>
         <div className='rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.03] '>
-          <div><img src={resource.BookImage} alt="" className='flex shrink-0 h-full w-[90px] ' /></div>
+          <div><img src={resource.coverImageUrl} alt="book Image" className='flex shrink-0 h-full w-[90px] ' /></div>
 
           <div className='flex flex-col space-y-4 justify-between  w-full'>
             <div className='flex flex-col space-y-1'>

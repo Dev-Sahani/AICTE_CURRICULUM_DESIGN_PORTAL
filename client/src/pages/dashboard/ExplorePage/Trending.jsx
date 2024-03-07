@@ -9,7 +9,7 @@ function Trending()
         <div>
         <div className='flex flex-row gap-1'>
           <div className='text-[25px] font-semibold text-[#008AD4] font-sans'>Trending</div>
-          <div className="flex justify-center items-center"><img src={Fire} w-5 h-5 alt=""/></div>
+          <div className="flex justify-center items-center"><img src={Fire} className="w-8 h-8" alt="fire image"/></div>
         </div> 
         
         <div className=' w-full grid grid-cols-3 mb-4  p-3 gap-2 flex-start rounded-lg bg-gradient-to-r from-[#006EAB] to-[#2CC4FF] '>
