@@ -11,20 +11,6 @@ export default function reducer(state, action) {
             ...action.payload.course,
         }
     }
-    if(action.type === HANDLE_COURSE_CHANGE) {
-        return {
-            ...state,
-            [action.payload.name]: action.payload.value,
-        }
-    }
-    if(action.type === HANDLE_SUBJECT_CHANGE) {
-        return {
-            ...state,
-            [action.payload.subjectId]: {
-                ...action.payload.subjectId,
-                [action.payload.name]: action.payload.value,
-            }
-        }
-    }
+    
     throw new Error("No Such action exists");
 }

@@ -1,4 +1,4 @@
-export const getAllLevels = ["diploma", "undergraduate", "postgraduate)"]
+export const getAllLevels = ["diploma", "undergraduate", "postgraduate"]
 
 export const getAllProgrammes = [
   "Applied Arts and Crafts", 

@@ -18,7 +18,7 @@ onIdRouter
     .get("/semesters", courseController.getSemester)
     .get("/subjects", courseController.getSubjects)
     .patch("/update-by-user/", courseController.updateByUser)
-    .patch("/accept-updates/:commonId", courseController.acceptUpdates)
+    .patch("/accept-updates/", courseController.acceptUpdates)
     .get("/users", userController.getCourseUser)
     .patch("/users", userController.addCourseUser)
     .delete("/users", userController.deleteCourseUser)

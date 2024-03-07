@@ -101,8 +101,8 @@ exports.updateByUser = async (req, res, next) =>{
         .sort({version:-1})
         .limit(1))[0]
     
-    if(!sub)return next(new BAD_REQUEST("Invalid sub Id"))
-    if(!sub[prop])return next(new BAD_REQUEST("Field does not exists"))
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+    if(!sub[prop]) return next(new BAD_REQUEST("Field does not exists"))
     if(del){
         if (!sub[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));

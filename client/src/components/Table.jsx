@@ -1,8 +1,8 @@
 
-export default function Table({data, keys}) {
+export default function Table({data, keys, primaryHeader=true, secondaryHeader=false}) {
   if(!data || !keys) return <div>Data is not passed</div>;
 
-  const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-500";
+  const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-400";
 
   return (
     <div className="flex justify-center items-center">
@@ -10,7 +10,7 @@ export default function Table({data, keys}) {
         keys?.map((value, indx)=>{
           return (
             <div className="flex flex-col items-center justify-between whitespace-nowrap" key={indx}>
-              <header className="text-primary-500 text-lg font-semibold capitalize">
+              <header className={`${secondaryHeader ? "w-full text-center text-white bg-primary-700 p-2" : "text-primary-500"} text-lg font-semibold capitalize`}>
                 <h2>{value}</h2>
               </header>
               
