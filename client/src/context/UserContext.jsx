@@ -25,7 +25,6 @@ export const UserProvider = ({children})=>{
         (response)=>{
             return response;
         }, (err)=>{
-            console.log("response interceptor ",err);
             if(err.response.status >= 401){
                 // logoutUser();
             }
@@ -78,11 +77,11 @@ export const UserProvider = ({children})=>{
         }
     }
     const sendAdminOTP = async ({email})=>{
-        if(!email || email === "") {
-            return null;
-        }
         setLoading(true)
         try{
+            if(!email || email === "") {
+                throw new Error("Enter Valid email")
+            }
             await axiosInstance.post("auth/send-otp", {email});
         } catch (err){
             dispatch({

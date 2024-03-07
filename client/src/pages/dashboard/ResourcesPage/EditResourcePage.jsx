@@ -2,15 +2,15 @@ import { useState } from "react";
 import axios from "axios";
 import { SecondaryButton } from "../../../components";
 
-export default function AddResourceForm({onClose}) {
+export default function AddResourceForm({onClose, resource}) {
     const [state, setState] = useState({
-        title:"",
-        author:"",
-        publisher:"",
-        url:"",
-        coverImageUrl:"",
-        type:"",
-        description:"",
+        title:resource?.title || "",
+        author:resource?.author || "",
+        publisher:resource?.publisher || "",
+        url:resource?.url || "",
+        coverImageUrl:resource?.coverImageUrl || "",
+        type:resource?.type || "",
+        description:resource?.description || "",
     })
     const [loading, setLoading] = useState(false)
     
@@ -23,7 +23,8 @@ export default function AddResourceForm({onClose}) {
         })
     }
 
-    const handleAdd = async (e)=>{
+    const handleEdit = async (e)=>{
+        return ;
         setLoading(true)
         try{
             if(!state.type || state.type==="select format" || !state.author || !state.title || !state.url || !state.coverImageUrl || !state.description){
@@ -141,9 +142,9 @@ export default function AddResourceForm({onClose}) {
             <SecondaryButton 
                 className={`${loading&& "opacity-50"} !mx-2`}
                 disabled={loading}
-                onClick={handleAdd}
+                onClick={handleEdit}
             >
-                Add+
+                save
             </SecondaryButton>
         </form>
     </Modal>

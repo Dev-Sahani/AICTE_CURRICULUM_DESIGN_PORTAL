@@ -16,6 +16,7 @@ import PlusImage from "./Plus.png";
 import ProgressImage from "./Progress.png";
 import SearchImage from "./Search.png";
 import CloseImage from "./CloseImage.png"
+import ExpandDown from "./expand-down.png"
 
 const imageMap = {
   ChatBubbleImage,
@@ -33,7 +34,8 @@ const imageMap = {
   PlusImage,
   ProgressImage,
   SearchImage,
-  CloseImage
+  CloseImage,
+  ExpandDown,
 };
 
 const ImageComponent = ({ imageName, alt, className, ...others}) => {
