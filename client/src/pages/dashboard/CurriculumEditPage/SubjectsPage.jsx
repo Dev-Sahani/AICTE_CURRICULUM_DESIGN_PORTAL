@@ -1,89 +1,49 @@
 // import { useParams } from "react-router-dom";
 import { 
+  useEffect,
   useState, 
-  // useEffect, 
 } from "react";
-import { Table } from "../../../components"
+import { useParams } from "react-router-dom";
+import { Table, Loading } from "../../../components"
 import SubjectsFilter from "./SubjectsFilter"
 import { useCourseContext } from "../../../context";
 
 export default function SubjectPage() {
-  // const {common_id} = useParams();
-  const { subjects } = useCourseContext();
-  console.log(subjects)
+  const { common_id } = useParams();
+  const { subjects, getCourse } = useCourseContext();
   const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
-  const [ allSubjects, setAllSubjects] = useState(converIntoArray(subjects?subjects:[], keyOrder));
-  // setSubjects(converIntoArray(subjects, keyOrder));
+  const [ allSubjects, setAllSubjects] = useState([]);
+  const [localLoading, setLocalLoading] = useState(true);
 
-  // useEffect(()=>{
-  //   const data = async()=>{
-  //     const res = await getAllSubjects(common_id);
-  //     return res;
-  //   }
-  //   data().then((res)=>{
-  //     if(res) {
-  //       // console.log(res);
-  //       console.log(res);
-  //       setSubjects(res.data)
-  //     }
-  //   });
-  // },[])
-  // console.log(allSubjects); 
+  useEffect(()=>{
+    if(!subjects) {
+      getCourse(common_id);
+    }
+    else {
+      setAllSubjects(subjects.cur || []);
+      setLocalLoading(false);
+    }
+
+  // eslint-disable-next-line
+  }, [subjects])
+
+  if(localLoading) {
+    return (
+      <>
+        <Loading count={4} containerClassName="m-10 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12"/>
+        <Loading count={4} containerClassName="m-10 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12"/>
+      </>
+    )
+  }
+
   return (
     <>
-      <SubjectsFilter />
+      <SubjectsFilter localSubjects={allSubjects} setLocalSubjects={setAllSubjects} />
       <Table
-        primaryHead
         data={allSubjects}
-        head={keyOrder}
+        keys={keyOrder}
+        secondaryHeader={true}
       />
     </>
   )
-}
-
-// const getSubjects = ()=>{
-//     const subjects = [
-//       {
-//         code: "evw32",
-//         title: "jfla",
-//         semester:2,
-//         l:1,
-//         t:2,
-//         p:1,
-//         credits: 2
-//       }, {
-//         code: "evw32",
-//         title: "jfla",
-//         semester:2,
-//         l:1,
-//         t:2,
-//         p:1,
-//         credits: 2
-//       }, {
-//         code: "evw32",
-//         title: "jfla",
-//         semester:2,
-//         l:1,
-//         t:2,
-//         p:1,
-//         credits: 2
-//       },
-//     ]
-//     const convertion = subjects.map((sub)=>
-//       [sub.code, sub.title, sub.semester, sub.l, sub.t, sub.t, sub.credits]
-//     )
-//     convertion.unshift(["Code", "Subject Name", "Semester", "L","T","P", "Credits"])
-    
-//     return convertion;
-// }
-
-const converIntoArray = (array, keyOrder) => {
-  const arr = [];
-  array.forEach((item, index)=>{
-    arr.push([]);
-    for(let k of keyOrder) {
-      arr[index].push(item[k]);
-    }
-  })
-  return arr;
 }

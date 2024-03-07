@@ -50,7 +50,13 @@ export default function Login() {
           />
         </div>
         <button type="submit" disabled={loading} className={`bg-secondary-400 my-4 p-4 py-2 rounded-lg ${loading &&"bg-opacity-50"}`} onClick={onSubmit}>
-            Login
+          {
+            loading 
+            ?
+            "Loading..."
+            :
+            "Login"
+          }
         </button>
       </form>
   )

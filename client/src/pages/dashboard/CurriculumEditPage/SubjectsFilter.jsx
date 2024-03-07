@@ -1,24 +1,50 @@
-import {
-    FilterSearch,
-    FilterDropdown,
-} from "../../../components";
+// import {
+//     FilterSearch,
+//     FilterDropdown,
+// } from "../../../components";
 
-export default function SubjectsFilter() {
+import { useState } from "react"
+import { useCourseContext } from "../../../context";
+import Search from "../../../assets/Search.png";
+import { SecondaryButton } from "../../../components";
+
+export default function SubjectsFilter({localSubjects, setLocalSubjects}) {
+  const [search, setSearch] = useState("");
+  const { subjects } = useCourseContext();
+  
+  if(!localSubjects || !setLocalSubjects) return <div>Error in filter</div>
+
+  const handleChange = (e)=>{
+    const value = e.target.value;
+    setLocalSubjects((prev)=>{
+      if(subjects && subjects.cur && Array.isArray(subjects.cur)) {
+        prev = subjects.cur.filter((item)=>{
+          if(!item || !item.cur || !item.cur.title || !item.cur.code) return false;
+          return item.cur.title.includes(value) || item.cur.code.includes(value)
+        })
+      }
+      return prev;
+    })
+    setSearch(value);
+  }
+
   return (
-    <nav className="w-full flex justify-start my-2 gap-32">
-        <FilterSearch 
-            name="subjectSearch"
-            placeholder={"Search Subject Name"}
+    <nav className="w-full flex justify-evenly my-2 mb-6">
+      <div className="h-fit flex items-center border border-primary-500">
+        <img src={Search} alt="search" className="bg-white w-8 h-8"/>
+        <input 
+          name="title"
+          value={search}
+          type="text"
+          className="w-[30vw] p-1 pr-2 outline-none"
+          placeholder="Search Subject"
+          onChange={handleChange}
         />
-        <FilterDropdown
-          name="subjectCategory"
-          defaultValue="Select"
-          list={[
-            "fwe eoinwve oiewv", 
-            "fjewio iouew oiwe oievw",
-            "ioej ion iomwefv jio",
-          ]}
-        />
+      </div>
+
+      <SecondaryButton>
+        Add Subject
+      </SecondaryButton>
     </nav>
   )
 }

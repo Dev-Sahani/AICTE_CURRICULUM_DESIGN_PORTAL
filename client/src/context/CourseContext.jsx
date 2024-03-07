@@ -55,18 +55,18 @@ export const CourseProvider = ({children})=>{
     }
 
     const getAllSubjects = async (courseId)=>{
+        let res = null;
         try{
             const url = `courses/${courseId}/subjects`;
-            const res = await axiosInstance.get(url);
-
-            if(res && res.status === 200) {
-                return res.data;
+            res = await axiosInstance.get(url);
+            
+            if(res.status !== 200) {
+                res = null;
             }
-            return null;
         } catch(err) {
             alert("Cannot Get Server");
-            return null;
         }
+        return res;
     }
 
     const getSemestersWiseSub = async (courseId)=>{
