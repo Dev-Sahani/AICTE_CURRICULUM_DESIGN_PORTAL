@@ -21,7 +21,7 @@ function ResourcesPage() {
 
     const searchFunc = async ({search,format})=>{
         if(!search)search="";
-        if(!format || format==="Select format")format=undefined;
+        if(!format || format === "Select format")format=undefined;
         try{
             const res = await axiosInstance.get("",{
                 params:{

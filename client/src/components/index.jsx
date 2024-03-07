@@ -16,6 +16,7 @@ import Instructions from "./Instructions";
 import Table from "./Table";
 import CardWrapper from "./CardWrapper"
 import Loading from "./Loading";
+import Modal from "./Modal";
 
 export {
     NavBar,
@@ -35,5 +36,6 @@ export {
     Instructions,
     CardWrapper,
     Table,
-    Loading
+    Loading,
+    Modal
 }

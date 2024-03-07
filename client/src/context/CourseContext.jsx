@@ -20,16 +20,22 @@ export const CourseProvider = ({children})=>{
     });
 
     const getCourse = async (courseId)=>{
-        if(!courseId || courseId==="") return {};
+        if(!courseId || courseId==="") return undefined;
         const url = `courses/${courseId}`;
-        const response = await axiosInstance.get(url);
-        if(response.status === 200) {
-            dispatch({
-                type: GET_COURSE,
-                payload: {course: response.data.data}
-            });
+        let response = undefined;
+        try {
+            response = await axiosInstance.get(url);
+            if(response.status === 200) {
+                dispatch({
+                    type: GET_COURSE,
+                    payload: {course: response.data.data}
+                });
+            }
+        } catch(err) {
+            // Handle Error
+            console.log("ERROR while executing getCourse() in CourseContext.jsx\n", err);
         }
-        return state.subjects
+        return response.data;
     }
 
     const getCategoriesWiseSub = async(courseId)=>{
@@ -43,7 +49,7 @@ export const CourseProvider = ({children})=>{
             }
             return res.data
         } catch(err) {
-            alert("Cannot make Request");
+            alert("Something went wrong!");
             return null;
         }
     }
@@ -64,19 +70,18 @@ export const CourseProvider = ({children})=>{
     }
 
     const getSemestersWiseSub = async (courseId)=>{
+        let res = null;
         try{
             const url = `courses/${courseId}/semesters`;
-            console.log(url);
-            const res = await axiosInstance.get(url);
+            res = await axiosInstance.get(url);
             if(res.status !== 200) {
-                alert("Cannot make Request");
-                return null;
+                alert("Cannot make request!");
+                res = null;
             }
-            return res.data;
         } catch(err) {
-            alert("Cannot make Request");
-            return null;
+            alert("Something went wrong!");
         }
+        return (!res || !res?.data)? res : res.data;
     }
     const handleChange = (name, value, subjectId) => {
         if(subjectId && subjectId !== "") {
