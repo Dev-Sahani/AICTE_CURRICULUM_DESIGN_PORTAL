@@ -1,8 +1,8 @@
 import React, { useReducer, useContext } from "react";
 
 import {
-    HANDLE_COURSE_CHANGE,
-    HANDLE_SUBJECT_CHANGE,
+    // HANDLE_COURSE_CHANGE,
+    // HANDLE_SUBJECT_CHANGE,
     GET_COURSE,
 } from "./CourseAction";
 
@@ -83,6 +83,7 @@ export const CourseProvider = ({children})=>{
         }
         return (!res || !res?.data)? res : res.data;
     }
+
     const updateProperty = async (name, value, courseId)=>{
         let res = null;
         const url = `courses/${courseId}/update-by-user`;

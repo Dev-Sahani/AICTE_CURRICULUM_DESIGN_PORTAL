@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { SecondaryButton } from "../../../components";
 
 export default function AddResourceForm({onClose, resource}) {
@@ -24,29 +24,30 @@ export default function AddResourceForm({onClose, resource}) {
     }
 
     const handleEdit = async (e)=>{
-        return ;
+        // ----------------- HANDLE NOTIFICATION -----------------------
+
         setLoading(true)
-        try{
-            if(!state.type || state.type==="select format" || !state.author || !state.title || !state.url || !state.coverImageUrl || !state.description){
-                throw new Error("Please enter details correctly")
-            }
-            await axios.post("http://localhost:8080/api/v1/resources/",{
-                title:state.title,
-                author:state.author,
-                type:state.type,
-                url:state.url,
-                publisher:state.publisher,
-                coverImageUrl:state.coverImageUrl,
-                description:state.description
-            },{
-                withCredentials:true
-            })
+        // try{
+        //     if(!state.type || state.type==="select format" || !state.author || !state.title || !state.url || !state.coverImageUrl || !state.description){
+        //         throw new Error("Please enter details correctly")
+        //     }
+        //     await axios.post("http://localhost:8080/api/v1/resources/",{
+        //         title:state.title,
+        //         author:state.author,
+        //         type:state.type,
+        //         url:state.url,
+        //         publisher:state.publisher,
+        //         coverImageUrl:state.coverImageUrl,
+        //         description:state.description
+        //     },{
+        //         withCredentials:true
+        //     })
         
-        }catch(err){
-            window.alert(err.message)
-        }
+        // }catch(err){
+        //     window.alert(err.message)
+        // }
         setLoading(false)
-        onClose();
+        // onClose();
     }
 
     return (

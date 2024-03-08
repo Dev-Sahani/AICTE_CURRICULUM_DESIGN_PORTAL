@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { 
-  CourseInput, 
+  CourseTextArea, 
   CourseDropdown, 
   Label, 
   AddCourseInput, 
@@ -43,7 +43,7 @@ export default function BasicInfoPage() {
   return (
       <div>
         <Label breakLine={true} className="!w-32">Course Title</Label>
-        <CourseInput
+        <CourseTextArea
           name="title"
           placeholder="Enter Course name..."
           className="w-[90%]"
@@ -80,26 +80,26 @@ export default function BasicInfoPage() {
         </div>
 
         <Label large breakLine className="mt-6">Message</Label>
-        <CourseInput
+        <CourseTextArea
           name="message"
           className="w-[90%] h-full min-h-[8rem]"
         />
 
         <Label large breakLine className="w-48 mt-6">Preface</Label>
-        <CourseInput
+        <CourseTextArea
           name="preface"
           propertyName="preface"
           className="w-[90%] min-h-[8rem] "
         />
         <Label large breakLine className="w-48 mt-6">Acknowledgement</Label>
-        <CourseInput
+        <CourseTextArea
           name="acknowledgement"
           propertyName="acknowledgement"
           className="w-[90%] min-h-[8rem] "
         />
         <div className="flex justify-start gap-8 mt-8">
           <Label large breakLine className="w-auto">Range of Credit</Label>
-          <CourseInput
+          <CourseTextArea
             name="rangeOfCredits"
             propertyName="rangeOfCredits"
             className="!w-auto h-10"

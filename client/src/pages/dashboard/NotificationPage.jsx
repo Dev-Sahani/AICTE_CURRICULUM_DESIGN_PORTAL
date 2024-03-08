@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import Resource from "./ResourcesPage/Resources";
-import AddResourceForm from "./ResourcesPage/AddResourceForm"
+// import AddResourceForm from "./ResourcesPage/AddResourceForm"
 import { Loading, SecondaryButton } from "./../../components";
 import axios from 'axios';
 import SearchImg from "./../../assets/Search.png"

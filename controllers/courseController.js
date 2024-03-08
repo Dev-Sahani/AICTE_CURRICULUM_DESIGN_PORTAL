@@ -6,7 +6,7 @@ exports.getAllCourses = async (req,res,next)=>{
     let {search, program, level, page} = req.query
     const matchObj = {}
 
-    if(search && search!==""){
+    if(search && search !== ""){
         search = new RegExp(`${search}`)
         matchObj["$or"]=[
             {
@@ -17,7 +17,7 @@ exports.getAllCourses = async (req,res,next)=>{
             }
         ]
     }
-    if(program && program!==""){
+    if(program && program !== ""){
         matchObj["program.cur"] = program
     }
     if(["undergraduate", "postgraduate", "diploma"].includes(level)){
@@ -157,7 +157,7 @@ exports.getSubjects = async(req, res, next)=>{
 exports.updateByUser = async (req, res, next) =>{
     let {data, isnew , del , prop} = req.body
 
-    if(prop==undefined || !((del===undefined) ^ (data===undefined)))return next(new BAD_REQUEST("improper request body"))
+    if(prop === undefined || !((del===undefined) ^ (data===undefined)))return next(new BAD_REQUEST("improper request body"))
     
     let ind = -1
     if(prop.indexOf('.') !== -1){
@@ -204,7 +204,7 @@ exports.updateByUser = async (req, res, next) =>{
             }
         })
     }else{
-        if(ind!=-1){
+        if(ind !== -1){
             if (!course[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= course[prop].cur.length)
@@ -243,10 +243,10 @@ exports.acceptUpdates = async function(req,res,next){
     // }
 
     let {index, isnew , del , prop} = req.body
-    if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
+    if(prop===undefined || index===undefined)return next(new BAD_REQUEST("improper request body"))
 
     let ind = -1
-    if(prop.indexOf('.') != -1){
+    if(prop.indexOf('.') !== -1){
         [prop,ind] = prop.split('.')
         ind *= 1;
     }
@@ -302,7 +302,7 @@ exports.acceptUpdates = async function(req,res,next){
             }
         })
     }else{
-        if(ind!=-1){
+        if(ind !== -1){
             if (!course[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= course[prop].cur.length)
@@ -311,7 +311,7 @@ exports.acceptUpdates = async function(req,res,next){
             const val = course[prop].cur[ind].new[index].value
             if(typeof(val) === 'object'){
                 for(let i in course[prop].cur[ind].cur){
-                    if(val[i]==undefined){
+                    if(val[i]===undefined){
                         val[i]=course[prop].cur[ind].cur[i]
                     }
                 }
