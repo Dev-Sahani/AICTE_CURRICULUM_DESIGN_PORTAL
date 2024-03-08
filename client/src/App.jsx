@@ -7,7 +7,6 @@ import {
     ResourcesPage, 
     SharedLayout, 
     TemplatePage,
-    CurriculumEditPageRoutes,
     SharedNav,
 }  from "./pages/dashboard";
 import {
@@ -16,13 +15,17 @@ import {
     ProtectedRoute, 
     RegisterPage,
 } from "./pages";
-import { useUserContext } from "./context";
+import {
+    UsersPage,
+    VersionPage,
+    BasicInfoPage,
+    CategoriesPage,
+    SubjectPage,
+    SemestersPage,
+    SubjectModal,
+} from "./pages/dashboard/CurriculumEditPage";
 
 const App = ()=>{
-    const {alert} =  useUserContext();
-    if(alert){
-        window.alert(alert)
-    }
     return (
         <BrowserRouter>
             <Routes>
@@ -38,8 +41,32 @@ const App = ()=>{
                         path="curriculum/:common_id" 
                         element={<SharedNav />}
                     >
-                        {CurriculumEditPageRoutes}
+                        <Route index element={<BasicInfoPage />} />
+                        <Route path="categories" element={<CategoriesPage />}>
+                            <Route path=":subject_common_id" element={<SubjectModal />}>
+                                <Route path="basic-info" element />
+                                <Route path="syllabus" element />
+                                <Route path="resources" element />
+                            </Route>
+                        </Route>
+                        <Route path="semesters" element={<SemestersPage />}>
+                            <Route path=":subject_common_id" element={<SubjectModal />}>
+                                <Route path="basic-info" element />
+                                <Route path="syllabus" element />
+                                <Route path="resources" element />
+                            </Route>
+                        </Route>
+                        <Route path="subjects" element={<SubjectPage />}>
+                            <Route path=":subject_common_id" element={<SubjectModal />}>
+                                <Route path="basic-info" element />
+                                <Route path="syllabus" element />
+                                <Route path="resources" element />
+                            </Route>
+                        </Route>
+                        <Route path="versions" element={<VersionPage />} />
+                        <Route path="users" element={<UsersPage />} />
                     </Route>
+
                     <Route path="explore" element={<ExplorePage/>} />
                     <Route path="analytics" element={<AnalyticsPage/>} />
                     <Route path="notification" element={<NotificationPage />} />

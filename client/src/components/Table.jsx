@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 
-export default function Table({data, keys, primaryHeader=true, secondaryHeader=false}) {
+export default function Table({data, keys, primaryHeader=true, secondaryHeader=false, to}) {
   if(!data || !keys) return <div>Data is not passed</div>;
 
   const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-400";
@@ -16,7 +17,7 @@ export default function Table({data, keys, primaryHeader=true, secondaryHeader=f
               
               <main className="w-full flex flex-col items-center gap-2 mt-2">
                 {
-                  data?.map((item)=>{
+                  data?.map((item, ind)=>{
                     const classes = `
                       ${rowClasses} 
                       ${indx===0 && " rounded-l-full "} 
@@ -27,7 +28,7 @@ export default function Table({data, keys, primaryHeader=true, secondaryHeader=f
                       innerContent = item.cur[value];
                     
                     // p can be replaced by input to listen any changes in subject property
-                    return <p className={classes}>{ innerContent }</p>
+                    return <Link key={ind} to={`${item.cur.common_id}`} className={classes}>{ innerContent }</Link>
                   })
                 }
               </main>

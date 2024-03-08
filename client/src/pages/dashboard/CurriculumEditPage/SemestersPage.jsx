@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   Table,
@@ -76,6 +76,9 @@ export default function SemestersPage() {
         )
       })
     }
+
+    {/* Subject Modal */}
+    <Outlet />
     </>
   )
 }
