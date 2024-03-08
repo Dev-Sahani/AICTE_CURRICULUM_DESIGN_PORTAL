@@ -69,7 +69,7 @@ export default function BasicInfoPage() {
               <CourseDropdown
                 className="w-fit"
                 name="program"
-                defaultValue={program.cur}
+                defaultValue={program}
                 list={getAllProgrammes}
               />
             </div>
@@ -82,7 +82,7 @@ export default function BasicInfoPage() {
         <Label large breakLine className="mt-6">Message</Label>
         <CourseInput
           name="message"
-          className="w-[90%] min-h-[8rem]"
+          className="w-[90%] h-full min-h-[8rem]"
         />
 
         <Label large breakLine className="w-48 mt-6">Preface</Label>

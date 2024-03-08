@@ -157,10 +157,10 @@ exports.getSubjects = async(req, res, next)=>{
 exports.updateByUser = async (req, res, next) =>{
     let {data, isnew , del , prop} = req.body
 
-    if(prop==undefined || !((del==undefined) ^ (data==undefined)))return next(new BAD_REQUEST("improper request body"))
+    if(prop==undefined || !((del===undefined) ^ (data===undefined)))return next(new BAD_REQUEST("improper request body"))
     
     let ind = -1
-    if(prop.indexOf('.') != -1){
+    if(prop.indexOf('.') !== -1){
         [prop,ind] = prop.split('.')
         ind *= 1;
     }

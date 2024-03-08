@@ -17,7 +17,7 @@ const {BAD_REQUEST} = require('./errors/index')
 // Midleware :
 if(process.env.NODE_ENV === 'development')
 app.use(morgan('dev'))
-app.use(express.json({limit:'10kb'}));
+app.use(express.json({limit:'1mb'}));
 app.use(cors({origin: process.env.CLIENT_URL,credentials:true}))
 app.use(cookieParser())
 //Secure Header

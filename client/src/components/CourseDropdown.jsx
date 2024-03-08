@@ -48,7 +48,7 @@ const CourseDropdown = ({name="", defaultValue="", list=[], subjectId})=>
       name={name}
       value={value}
       onChange={onChange}
-      className={`border-2 border-gray-400 border-r-0 rounded-l m-2 mr-0  px-4 py-1 focus:outline-none ${defaultValue && defaultValue.new && defaultValue.new.length > 0 && "bg-accent-400"}`}
+      className={`border-2 border-gray-400 m-2 px-4 py-1 focus:outline-none ${(defaultValue && defaultValue.new && defaultValue.new.length > 0) ? "bg-accent-400 rounded-l border-r-0 mr-0" : "rounded"}`}
     >
       {
         list.map( (itemValue, index)=>{
@@ -64,7 +64,9 @@ const CourseDropdown = ({name="", defaultValue="", list=[], subjectId})=>
     {
       defaultValue && defaultValue.new && defaultValue.new.length > 0 
       && 
-      <button className="text-sm border-2 border-gray-400 border-l-0 h-full w-full p-1 bg-accent-400 rounded-r-lg">Open</button>
+      <button className="text-sm border-2 border-gray-400 h-full w-full rounded-r-lg overflow-hidden">
+        <img src="/change.png" alt="changes" className="w-[1.92rem] h-[1.92rem]"/>
+      </button>
     }
     </div>
   )
