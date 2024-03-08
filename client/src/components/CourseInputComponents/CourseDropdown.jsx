@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useCourseContext } from "../context";
-import Loading from "./Loading";
+import { useCourseContext } from "../../context";
+import Loading from "../Loading";
 import { useParams } from "react-router-dom";
 
 const CourseDropdown = ({name="", defaultValue="", list=[], subjectId})=>

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useCourseContext } from "../context";
+import { useCourseContext } from "../../context";
 import classnames from 'classnames'
-import Loading from "./Loading";
+import Loading from "../Loading";
 import { useParams } from "react-router-dom";
 
-export default function CourseInput({ 
+export default function CourseTextArea({ 
     name,
     placeholder,
     // subjectId,
@@ -47,12 +47,12 @@ export default function CourseInput({
         placeholder={placeholder?placeholder:`Enter ${propertyName}`}
         className={className}
       />
+      
       <div className="mt-2 flex items-center gap-4">
         {
           propertyName && propertyName.new && Array.isArray(propertyName.new) && propertyName.new.length>0 
           &&
           <button className="px-2 py-1 bg-accent-500 rounded overflow-hidden text-white">
-            {/* <img src="/change.png" alt="changes" className="w-8 h-8"/> */}
             View Changes
           </button>
         }

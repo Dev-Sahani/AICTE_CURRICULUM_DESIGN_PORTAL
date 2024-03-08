@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { useCourseContext } from "../context";
-import Label from "./Label";
+import { useCourseContext } from "../../context";
+import { Label, CourseMultiInput } from ".."; 
 
 const check = (lastInput, propertyKeys) => {
     let ans = true;
@@ -18,12 +18,6 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
     if(!localArr) localArr = [];
     
     const [lastInput, setLastInput] = useState({});
-    const handleLocalChange = (e) => {
-        const temp = {cur:localArr};
-        const [ind,key] = e.target.name.split("+");
-        temp.cur[ind].cur[key] = e.target.value;
-        handleChange(propertyName, temp)
-    }
     const handleSubmit = (e)=>{
         e.preventDefault();
         if(localArr?.length === 0 || !check(lastInput, propertyKeys)) return;
@@ -58,21 +52,10 @@ export default function AddCourseInput({ propertyName, className, propertyKeys }
 
             {
                 localArr.map((item, index)=>{
-                    const res = []
-                    for(let key of propertyKeys){
-                        res.push(<div className="ml-6 flex justify-between" key={index+key}>
-                            <Label >{key}</Label>
-                            <input 
-                                name={index.toString()+"+"+key} 
-                                value={item?.cur[key]} 
-                                onChange={handleLocalChange}
-                                className="my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none"
-                            />
-                        </div>)
-                    }
                     return <div key={index} className="relative my-2">
-                        <h2 className="text-primary-900 absolute top-left">{index+1}</h2>
-                        {res}
+                        {
+                            <CourseMultiInput name={propertyName} subNames={propertyKeys} index={index} />
+                        }
                     </div>
                 })
             }
