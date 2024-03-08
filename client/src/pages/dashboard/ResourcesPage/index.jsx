@@ -40,6 +40,7 @@ function ResourcesPage() {
         setLoading(true);
         searchFunc({search:"",format:""})
         .finally(()=>setLoading(false))
+    //eslint-disable-next-line
     }, [])
 
     const debounce = () => {
