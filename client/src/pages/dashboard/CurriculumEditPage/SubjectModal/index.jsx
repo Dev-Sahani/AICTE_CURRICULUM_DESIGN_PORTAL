@@ -1,8 +1,11 @@
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { Modal } from "../../../../components";
 import { useCourseContext } from "../../../../context";
 import { useEffect, useState } from "react";
 import SharedLayout from "./SharedLayout"
+import SubjectBasicInfo from "./SubjectBasicInfo"
+import SubjectSyllabus from "./SubjectSyllabus"
+import SubjectResources from "./SubjectResources"
 
 export default function SubjectModal() {
   const {common_id, subject_common_id} = useParams()
@@ -40,8 +43,14 @@ export default function SubjectModal() {
   return (
   <Modal onClose={onClose}>
       <SharedLayout className="grow" data={data}>
-        
+        <Outlet />
       </SharedLayout>
   </Modal>
   )
+}
+
+export {
+  SubjectBasicInfo,
+  SubjectSyllabus,
+  SubjectResources,
 }

@@ -3,9 +3,17 @@ import BasicInfoPage from "./BasicInfoPage";
 import CategoriesPage from "./CategoriesPage";
 import SubjectPage from "./SubjectsPage";
 import SubjectModal from "./SubjectModal/index"
+import { SubjectBasicInfo, SubjectSyllabus, SubjectResources } from "./SubjectModal/index";
 import SemestersPage from "./SemestersPage";
 import VersionPage from "./VersionPage";
 import UsersPage from "./userpage/UsersPage";
+import { Route } from "react-router-dom";
+
+const SubjectRoutes = <Route path=":subject_common_id" element={<SubjectModal />}>
+  <Route index element={<SubjectBasicInfo />} />
+  <Route path="syllabus" element={<SubjectSyllabus />} />
+  <Route path="resources" element={<SubjectResources />} />
+</Route>
 
 export  {
   BasicInfoPage,
@@ -15,10 +23,10 @@ export  {
   SharedNav,
   VersionPage,
   UsersPage,
-  SubjectModal
+  SubjectRoutes,
 };
 
-// export const CurriculumEditPageRoutes = [
+//export const CurriculumEditPageRoutes = [
 //   {
 //     index: true,
 //     element: <BasicInfoPage />

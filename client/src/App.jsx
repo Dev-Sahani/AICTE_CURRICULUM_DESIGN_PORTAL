@@ -7,7 +7,6 @@ import {
     ResourcesPage, 
     SharedLayout, 
     TemplatePage,
-    SharedNav,
 }  from "./pages/dashboard";
 import {
     ErrorPage, 
@@ -16,13 +15,14 @@ import {
     RegisterPage,
 } from "./pages";
 import {
+    SharedNav,
     UsersPage,
     VersionPage,
     BasicInfoPage,
     CategoriesPage,
     SubjectPage,
     SemestersPage,
-    SubjectModal,
+    SubjectRoutes,
 } from "./pages/dashboard/CurriculumEditPage";
 
 const App = ()=>{
@@ -43,25 +43,13 @@ const App = ()=>{
                     >
                         <Route index element={<BasicInfoPage />} />
                         <Route path="categories" element={<CategoriesPage />}>
-                            <Route path=":subject_common_id" element={<SubjectModal />}>
-                                <Route path="basic-info" element />
-                                <Route path="syllabus" element />
-                                <Route path="resources" element />
-                            </Route>
+                            {SubjectRoutes}
                         </Route>
                         <Route path="semesters" element={<SemestersPage />}>
-                            <Route path=":subject_common_id" element={<SubjectModal />}>
-                                <Route path="basic-info" element />
-                                <Route path="syllabus" element />
-                                <Route path="resources" element />
-                            </Route>
+                            {SubjectRoutes}
                         </Route>
                         <Route path="subjects" element={<SubjectPage />}>
-                            <Route path=":subject_common_id" element={<SubjectModal />}>
-                                <Route path="basic-info" element />
-                                <Route path="syllabus" element />
-                                <Route path="resources" element />
-                            </Route>
+                            {SubjectRoutes}
                         </Route>
                         <Route path="versions" element={<VersionPage />} />
                         <Route path="users" element={<UsersPage />} />

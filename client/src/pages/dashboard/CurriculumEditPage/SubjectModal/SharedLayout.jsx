@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function SharedLayout({ className, data, children }) {
   return (
     <div className={"flex flex-col h-full w-full p-2 " + className}>
@@ -20,9 +22,15 @@ export default function SharedLayout({ className, data, children }) {
         {/* Side NavBar */}
         <nav className="flex flex-col w-40">
           <ul className="flex flex-col gap-2 px-2 py-8">
-            <li className="bg-secondary-400 rounded-lg p-2 text-base">Basic Info</li>
-            <li className="bg-secondary-400 rounded-lg p-2 text-base">Modules</li>
-            <li className="bg-secondary-400 rounded-lg p-2 text-base">Resources</li>
+            <Link to="" >
+              <li className="bg-secondary-400 rounded-lg p-2 text-base">Basic Info</li>
+            </Link>
+            <Link to="syllabus" >
+              <li className="bg-secondary-400 rounded-lg p-2 text-base">Modules</li>
+            </Link>
+            <Link to="resources" >
+              <li className="bg-secondary-400 rounded-lg p-2 text-base">Resources</li>
+            </Link>
           </ul>
         </nav>
 
