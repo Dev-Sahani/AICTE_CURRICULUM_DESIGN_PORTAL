@@ -32,16 +32,17 @@ export default function CourseMultiInput({
   const [localLoading, setLocalLoading] = useState(false);
   const [hasChanges, setHasChanges] = useState(
     index !== undefined ?
-    propertyName.cur[index].new && Array.isArray(propertyName.cur[index].new) && propertyName.cur[index].new.length > 0 
+    (propertyName.cur[index].new && Array.isArray(propertyName.cur[index].new) && propertyName.cur[index].new.length > 0) 
+    || (propertyName.del && (propertyName.del).reduce((currValue, item)=>currValue||item.index*1===index, false))
     :
     propertyName.new && Array.isArray(propertyName.new) && propertyName.new.length>0 
   )
   
   if(subNames && !Array.isArray(subNames)) 
-  return <div>subNames should be an array</div>
+  return <div>Error: subNames should be an array</div>
   
   if(!propertyName || !propertyName.cur || (index && (!Array.isArray(propertyName.cur) || propertyName.cur[index].length > index)))
-    return <div>The property name provided does not exists</div>
+    return <div>Error: The property name provided does not exists</div>
 
   const handleSave = async ()=> {
     setLocalLoading(true);

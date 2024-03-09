@@ -3,6 +3,7 @@ import { useCourseContext } from "../../context";
 import classnames from 'classnames'
 import Loading from "../Loading";
 import { useParams } from "react-router-dom";
+import ViewChangesButton from "./ViewChangesButton";
 
 export default function CourseTextArea({ 
     name,
@@ -52,9 +53,7 @@ export default function CourseTextArea({
         {
           propertyName && propertyName.new && Array.isArray(propertyName.new) && propertyName.new.length>0 
           &&
-          <button className="px-2 py-1 bg-accent-500 rounded overflow-hidden text-white">
-            View Changes
-          </button>
+          <ViewChangesButton name={name}/>
         }
         {
           value !== (propertyName?.cur || "No Such field exists!")
