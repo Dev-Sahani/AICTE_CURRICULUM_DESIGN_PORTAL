@@ -72,7 +72,7 @@ export const UserProvider = ({children})=>{
                 type:ALERT,
                 payload:"Invalid Credentials while login"
             })
-        }finally{
+        } finally{
             setLoading(false)
         }
     }

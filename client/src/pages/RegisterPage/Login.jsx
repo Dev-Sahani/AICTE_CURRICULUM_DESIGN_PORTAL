@@ -20,6 +20,16 @@ export default function Login() {
   
   const onSubmit = async (e)=>{
     e.preventDefault();
+    if(!localState.email || !localState.password) {
+      alert("Please enter all details!");
+      return;
+    }
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if(!emailRegex.test(localState.email)) {
+      alert("Email is not in correct format!");
+      return;
+    }
+    
     await login(localState)
     //if login failed - handled in userContext
     navigate('/')
