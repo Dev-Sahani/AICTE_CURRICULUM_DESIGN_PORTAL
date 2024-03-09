@@ -2,6 +2,7 @@ import {
     HANDLE_COURSE_CHANGE,
     HANDLE_SUBJECT_CHANGE,
     GET_COURSE,
+    GET_ALL_SUBJECTS,
 } from "./CourseAction";
 
 export default function reducer(state, action) {
@@ -9,6 +10,12 @@ export default function reducer(state, action) {
         return {
             ...state,
             ...action.payload.course,
+        }
+    }
+    else if(action.type === GET_ALL_SUBJECTS){
+        return {
+            ...state,
+            "allSubjects":action.payload
         }
     }
     

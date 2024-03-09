@@ -7,8 +7,6 @@ import {
     ResourcesPage, 
     SharedLayout, 
     TemplatePage,
-    CurriculumEditPageRoutes,
-    SharedNav,
 }  from "./pages/dashboard";
 import {
     ErrorPage, 
@@ -16,13 +14,18 @@ import {
     ProtectedRoute, 
     RegisterPage,
 } from "./pages";
-import { useUserContext } from "./context";
+import {
+    SharedNav,
+    UsersPage,
+    VersionPage,
+    BasicInfoPage,
+    CategoriesPage,
+    SubjectPage,
+    SemestersPage,
+    SubjectRoutes,
+} from "./pages/dashboard/CurriculumEditPage";
 
 const App = ()=>{
-    const {alert} =  useUserContext();
-    if(alert){
-        window.alert(alert)
-    }
     return (
         <BrowserRouter>
             <Routes>
@@ -38,8 +41,20 @@ const App = ()=>{
                         path="curriculum/:common_id" 
                         element={<SharedNav />}
                     >
-                        {CurriculumEditPageRoutes}
+                        <Route index element={<BasicInfoPage />} />
+                        <Route path="categories" element={<CategoriesPage />}>
+                            {SubjectRoutes}
+                        </Route>
+                        <Route path="semesters" element={<SemestersPage />}>
+                            {SubjectRoutes}
+                        </Route>
+                        <Route path="subjects" element={<SubjectPage />}>
+                            {SubjectRoutes}
+                        </Route>
+                        <Route path="versions" element={<VersionPage />} />
+                        <Route path="users" element={<UsersPage />} />
                     </Route>
+
                     <Route path="explore" element={<ExplorePage/>} />
                     <Route path="analytics" element={<AnalyticsPage/>} />
                     <Route path="notification" element={<NotificationPage />} />

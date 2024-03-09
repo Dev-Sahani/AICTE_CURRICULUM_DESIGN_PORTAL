@@ -4,6 +4,7 @@ import {
     // HANDLE_COURSE_CHANGE,
     // HANDLE_SUBJECT_CHANGE,
     GET_COURSE,
+    GET_ALL_SUBJECTS,
 } from "./CourseAction";
 
 import reducer from "./CourseReducer";
@@ -63,6 +64,11 @@ export const CourseProvider = ({children})=>{
             if(res.status !== 200) {
                 res = null;
             }
+
+            dispatch({
+                type:GET_ALL_SUBJECTS,
+                payload:res.data.data
+            })
         } catch(err) {
             alert("Cannot Get Server");
         }

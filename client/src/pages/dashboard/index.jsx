@@ -5,7 +5,6 @@ import ProfilePage from "./ProfilePage";
 import ResourcesPage from "./ResourcesPage";
 import SharedLayout from "./SharedLayout";
 import TemplatePage from "./TemplatesPage";
-import {CurriculumEditPageRoutes, SharedNav} from "./CurriculumEditPage";
 
 export {
     AnalyticsPage, 
@@ -14,7 +13,5 @@ export {
     ProfilePage,
     ResourcesPage, 
     SharedLayout, 
-    TemplatePage, 
-    CurriculumEditPageRoutes,
-    SharedNav,
+    TemplatePage,
 }

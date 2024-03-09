@@ -15,17 +15,17 @@ export default function SubjectsFilter({localSubjects, setLocalSubjects}) {
   if(!localSubjects || !setLocalSubjects) return <div>Error in filter</div>
 
   const handleChange = (e)=>{
-    const value = e.target.value;
+    const re = new RegExp(`^${e.target.value}`, 'i')
     setLocalSubjects((prev)=>{
       if(subjects && subjects.cur && Array.isArray(subjects.cur)) {
         prev = subjects.cur.filter((item)=>{
           if(!item || !item.cur || !item.cur.title || !item.cur.code) return false;
-          return item.cur.title.includes(value) || item.cur.code.includes(value)
+          return re.test(item.cur.title) || re.test(item.cur.code)
         })
       }
       return prev;
     })
-    setSearch(value);
+    setSearch(e.target.value);
   }
 
   return (

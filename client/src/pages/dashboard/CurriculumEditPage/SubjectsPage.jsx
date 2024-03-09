@@ -1,9 +1,5 @@
-// import { useParams } from "react-router-dom";
-import { 
-  useEffect,
-  useState, 
-} from "react";
-import { useParams } from "react-router-dom";
+import { useEffect,useState } from "react";
+import { Outlet, useParams } from "react-router-dom";
 import { Table, Loading } from "../../../components"
 import SubjectsFilter from "./SubjectsFilter"
 import { useCourseContext } from "../../../context";
@@ -44,6 +40,8 @@ export default function SubjectPage() {
         keys={keyOrder}
         secondaryHeader={true}
       />
+
+      <Outlet />
     </>
   )
 }
