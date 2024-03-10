@@ -7,6 +7,7 @@ import {
 
 export default function reducer(state, action){
     if(action.type === ALERT) {
+        window.alert(action.payload)
         return {
             ...state,
             alert: action.payload,

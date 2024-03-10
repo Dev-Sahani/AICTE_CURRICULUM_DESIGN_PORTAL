@@ -29,7 +29,7 @@ export const CourseProvider = ({children})=>{
             if(response.status === 200) {
                 dispatch({
                     type: GET_COURSE,
-                    payload: {course: response.data.data}
+                    payload: {course: response?.data?.data}
                 });
             }
         } catch(err) {
