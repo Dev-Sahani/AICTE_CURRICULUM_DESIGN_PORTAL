@@ -1,14 +1,18 @@
 import { useCourseContext } from "../../context";
 import { Modal } from "../";
 
-export default function ChangesModal({ name, onClose }) {
+export default function ChangesModal({ name, subName, onClose }) {
   const [propertyName, index] = name.split(".");
   let {[propertyName]: propertyValue} = useCourseContext();
-  
-  if(propertyValue === undefined) return;
-  if(index!==undefined && index!=="" && Array.isArray(propertyValue) && index*1 < propertyValue.length)  
-    propertyValue = propertyValue[index];
 
+  if(propertyValue === undefined || !propertyValue.cur) return;
+  if(index!==undefined && index!=="" && Array.isArray(propertyValue.cur) && index*1 < propertyValue.cur.length && propertyValue.cur[index*1].cur && propertyValue.cur[index*1].cur[subName])  {
+    propertyValue = {
+      cur: propertyValue.cur[index*1].cur[subName],
+      new: propertyValue.cur[index*1].new?.reduce((currSub, newSub)=>newSub?.value[subName] ? [...currSub, {by: newSub.by, value: newSub.value[subName]}] : currSub, [])
+    };
+  }
+  
   return ( 
     <Modal onClose={onClose} className="!w-[56rem]">
       <div className="h-full p-6 flex flex-col gap-6 overflow-y-auto">
@@ -29,8 +33,8 @@ export default function ChangesModal({ name, onClose }) {
           <div className="basis-[85%]">
             {
               propertyValue.new &&
-              propertyValue.new.map((item)=>
-                <div className="mb-4 flex flex-col gap-1 items-end">
+              propertyValue.new.map((item, ind)=>
+                <div className="mb-4 flex flex-col gap-1 items-end" key={ind}>
                   <div className="max-h-56 w-full px-1.5 py-1 border border-black bg-white rounded-md overflow-y-auto">
                     <p>{item?.value}</p>
                   </div>

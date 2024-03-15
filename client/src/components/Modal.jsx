@@ -2,7 +2,7 @@ import classNames from "classnames"
 
 export default function Modal({onClose, children, className}){
     className = classNames(
-        "h-[36rem] w-[56rem] relative rounded-lg shadow bg-primary-50",
+        "h-[34rem] w-[56rem] relative rounded-lg shadow bg-primary-50",
         className,
     );
 

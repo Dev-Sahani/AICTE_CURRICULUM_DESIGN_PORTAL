@@ -6,7 +6,7 @@ import ViewChangesButton from "./ViewChangesButton";
 
 const CourseDropdown = ({name="", list=[], subjectId})=>
 {
-  const { [name]: propertyName, updateProperty } = useCourseContext();
+  const { [name]: propertyName, updateProperty, getCourse } = useCourseContext();
   const [value, setValue] = useState("");
   const [localLoading, setLocalLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -23,19 +23,35 @@ const CourseDropdown = ({name="", list=[], subjectId})=>
   const { common_id } = useParams();
 
   const onChange = (e)=>{
+    // setLocalLoading(true);
+    setValue(e.target.value);
+    setShowMessage(true);
+    // updateProperty(e.target.name, e.target.value, common_id)
+    //   .then(res=>{
+    //     // console.log(res);
+    //     setShowMessage(true);
+    //   })
+    //   .finally(()=>{
+    //     setLocalLoading(false);
+    //   })
+  }
+  
+  const handleCancel = ()=>{
+    setShowMessage(false);
+    setValue(propertyName?.cur || "");
+  }
+  const handleSubmit = ()=>{
     setLocalLoading(true);
-    
-    updateProperty(e.target.name, e.target.value, common_id)
-      .then(res=>{
-        // console.log(res);
-        setShowMessage(true);
+    setShowMessage(false);
+    updateProperty(name, value, common_id)
+      .then(async res=>{
+        if(res) await getCourse(common_id);
       })
       .finally(()=>{
+        setValue(propertyName?.cur || "")
         setLocalLoading(false);
       })
   }
-  
-  
   if(propertyName && propertyName.cur && propertyName!=="" && !list.includes(propertyName.cur)) 
     list.unshift(propertyName.cur);
   
@@ -66,15 +82,21 @@ const CourseDropdown = ({name="", list=[], subjectId})=>
       propertyName && propertyName.new && propertyName.new.length > 0 
       && 
       // <button className="text-sm border-2 border-gray-400 h-full w-full rounded-r-lg overflow-hidden">
-      <ViewChangesButton className="!p-0 !rounded-l-none border-2 border-gray-400" name={name}>
-        <img src="/change.png" alt="changes" className="w-[1.92rem] h-[1.92rem]"/>
-      </ViewChangesButton>
+      <ViewChangesButton className="!p-0 !rounded-l-none border-2 border-gray-400" name={name} showImage imageClassName="w-[1.92rem]" />
     }
 
     {
       showMessage && 
-      <Modal className="w-[20rem] h-[8rem] p-4 flex items-center justify-center text-center" onClose={()=>{setShowMessage(false)}}>
-        <p>{`Request to change the value of ${name} has been sent.`}</p>
+      <Modal className="!w-[20rem] !h-[10rem] p-4 py-6 text-center flex flex-col justify-between" onClose={handleCancel}>
+        <p>{`Are you really want to change the value of ${name}`}</p>
+        <div className="w-full flex items-center justify-around">
+          <button className="min-w-[100px] px-2 py-1 rounded bg-secondary-500" onClick={handleSubmit}>
+            Yes
+          </button>
+          <button className="min-w-[100px] px-2 py-1 rounded bg-red-400" onClick={handleCancel}>
+            Cancel
+          </button>
+        </div>
       </Modal>
     }
     </div>

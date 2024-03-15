@@ -11,8 +11,10 @@ import NavList from "./NavList";
 import { 
     AddCourseInput, 
     CourseDropdown, 
+    CourseInput, 
     CourseMultiInput, 
-    CourseTextArea 
+    CourseTextArea, 
+    SubjectInput, 
 } from "./CourseInputComponents"
 import Instructions from "./Instructions";
 import Table from "./Table";
@@ -29,12 +31,14 @@ export {
     FilterSearch,
     FullPageLoading, 
     PrimaryButton,
-    SecondaryButton,
+    SecondaryButton, 
+    SubjectInput, 
     NavButton,
     NavList,
     CourseMultiInput, 
-    CourseTextArea,
-    CourseDropdown,
+    CourseTextArea, 
+    CourseDropdown, 
+    CourseInput, 
     Label,
     AddCourseInput,
     Instructions,
