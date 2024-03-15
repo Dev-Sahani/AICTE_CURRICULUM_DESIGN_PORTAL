@@ -137,6 +137,27 @@ export const UserProvider = ({children})=>{
         }
     }
 
+    const registerDev = async ({name, password, email})=>{
+        setLoading(true);
+        try {
+            await axiosInstance.post("/auth/register-user", {
+                name, email,password
+            },{withCredentials:true})
+
+            dispatch({
+                type: SETUP_USER,
+                payload: {name,email},
+            });
+        } catch(err) {
+            dispatch({
+                type:ALERT,
+                payload:"Error in register"
+            })
+        }finally{
+            setLoading(false)
+        }
+    }
+
     const createUser = async ({name, email, role})=>{
         setLoading(true);
         try {
@@ -196,6 +217,7 @@ export const UserProvider = ({children})=>{
                 sendAdminOTP,
                 setupAdminPassword,
                 verifyAdminOTPAndRegister,
+                registerDev,
                 logout,
                 createUser,
                 getCurrUser,
