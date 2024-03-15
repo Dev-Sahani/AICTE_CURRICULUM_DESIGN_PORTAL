@@ -62,6 +62,33 @@ const subjectSchema = new mongoose.Schema({
         url:String
     })]),
     referenceMaterial:editableArrayWrapper([editableTypeWrapper(mongoose.SchemaTypes.ObjectId)]),
+    // referenceMaterial:{
+    //     add:[{
+    //         by:{
+    //             type:mongoose.Types.ObjectId,
+    //             ref:'User'
+    //         },
+    //         // index:Number,
+    //         value:{
+    //             type:mongoose.Types.ObjectId,
+    //             ref:'User',
+    //             _id:false
+    //         },
+    //         _id:false
+    //     }],
+    //     del:[{
+    //         by:{
+    //             type:mongoose.Types.ObjectId,
+    //             ref:'User'
+    //         },
+    //         index:Number,
+    //         _id:false
+    //     }],
+    //     cur:[{
+    //         type:mongoose.Types.ObjectId,
+    //         ref:'User',
+    //     }]
+    // },
     outcomes:editableArrayWrapper([editableTypeWrapper(String)]),
     // alternativeCourses:[]
 })

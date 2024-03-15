@@ -7,14 +7,15 @@ export default function Syllabus() {
   const {getAllSubjects, allSubjects} = useCourseContext();
   const {common_id, subject_common_id} = useParams();
   const [data, setData] = useState();
-  console.log(data)
 
   useEffect(()=>{
     const sub = allSubjects?.find((subject)=>subject?.doc?.common_id===subject_common_id)
     setData(sub?.doc)
+  //eslint-disable-next-line
   }, [allSubjects])
   useEffect(()=>{
     getAllSubjects(common_id)
+  //eslint-disable-next-line
   }, [])
 
   return (

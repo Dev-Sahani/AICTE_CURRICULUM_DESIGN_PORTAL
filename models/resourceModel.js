@@ -11,7 +11,7 @@ const resourceSchema = new mongoose.Schema({
     },
     type:{
         type:String,
-        enum:['book','e-book','research-paper','notes','video','image','article'],
+        enum:['book','e-book','research-paper','notes','video','image','article','nptel'],
         message: 'Invalid type value: only {"book","e-book","research-paper","notes","video","image","article"} is allowed',
         require:[true,"Resource's Type is Missing"],
     },

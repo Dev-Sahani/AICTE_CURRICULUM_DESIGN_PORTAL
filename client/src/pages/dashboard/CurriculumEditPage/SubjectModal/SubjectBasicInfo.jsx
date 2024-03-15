@@ -10,11 +10,9 @@ export default function BasicInfo() {
   const [loading, setLoading] = useState(false);
 
   const { subjects, getCourse } = useCourseContext();
-  console.log(subjects, data)
 
   useEffect(() => {
     if(subjects === undefined){
-      console.log("setting loading")
       setLoading(true)
       getCourse().then((res)=>setLoading(false));
     }
