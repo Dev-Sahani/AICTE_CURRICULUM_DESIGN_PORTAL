@@ -90,9 +90,13 @@ export const CourseProvider = ({children})=>{
         return (!res || !res?.data)? res : res.data;
     }
 
-    const updateProperty = async (name, value, courseId)=>{
+    const updateProperty = async (name, value, courseId, subjectId)=>{
         let res = null;
-        const url = `courses/${courseId}/update-by-user`;
+        let url;
+        if(subjectId) url = `subjects/update-by-user/${subjectId}`;
+        else if (courseId) url = `courses/${courseId}/update-by-user`
+        else return null;
+
         try {
             res = await axiosInstance.patch(url, {
                 prop: name,

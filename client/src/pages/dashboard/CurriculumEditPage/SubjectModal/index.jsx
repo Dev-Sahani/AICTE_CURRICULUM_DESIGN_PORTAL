@@ -1,27 +1,12 @@
-import { useParams, useLocation, useNavigate, Outlet } from "react-router-dom";
+import { useLocation, useNavigate, Outlet, useParams } from "react-router-dom";
 import { Modal } from "../../../../components";
-import { useCourseContext } from "../../../../context";
-import { useEffect, useState } from "react";
 import SharedLayout from "./SharedLayout"
 import SubjectBasicInfo from "./SubjectBasicInfo"
 import SubjectSyllabus from "./SubjectSyllabus"
 import SubjectResources from "./SubjectResources"
 
-export default function SubjectModal() {
-  const {common_id, subject_common_id} = useParams()
-  
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
-
-  const {subjects} = useCourseContext();
-
-  useEffect(()=>{
-    setData(subjects?.cur?.find(
-      el=>el?.cur.common_id === subject_common_id
-    )?.cur)
-  //eslint-disable-next-line
-  },[])
-  
+export default function SubjectModal() {  
+  const {common_id} = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,10 +24,10 @@ export default function SubjectModal() {
     }
     navigate(`${before + common_id}/${path}`)
   }
-   
+  
   return (
   <Modal onClose={onClose}>
-      <SharedLayout className="grow" data={data}>
+      <SharedLayout className="grow" currentPath={location.pathname}>
         <Outlet />
       </SharedLayout>
   </Modal>

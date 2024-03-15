@@ -12,17 +12,18 @@ export default function CourseTextArea({
     className,
 }){
   const { common_id } = useParams();
-  const {[name] : propertyName, updateProperty} = useCourseContext();
+  const {[name] : propertyName, updateProperty, getCourse} = useCourseContext();
   const [value, setValue] = useState(propertyName?.cur || "No Such field exists!");
   const [localLoading, setLocalLoading] = useState(false);
 
   const handleSave = async ()=> {
     setLocalLoading(true);
     updateProperty(name, value, common_id)
-      .then(res=>{
-        if(res) setValue(propertyName?.cur || "No Such field exists!");
+      .then(async res=>{
+        if(res) await getCourse(common_id);
       })
       .finally(()=>{
+        setValue(propertyName?.cur || "No Such field exists!");
         setLocalLoading(false);
       })
   }

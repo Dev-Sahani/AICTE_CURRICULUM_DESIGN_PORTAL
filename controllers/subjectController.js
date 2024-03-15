@@ -90,7 +90,7 @@ exports.updateByUser = async (req, res, next) =>{
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
         return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
-    if(prop=="modules"){
+    if(prop === "modules"){
         return next(new BAD_REQUEST("modules field cannot be update by this route use another route"))
     }
 
