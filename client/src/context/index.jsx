@@ -1,14 +1,14 @@
 import { useFilterContext, FilterProvider } from "./FilterContext";
-import { useChangeContext, ChangesProvider } from "./ChangesContext";
+import { useSubjectContext, SubjectProvider } from "./SubjectContext";
 import { useCourseContext, CourseProvider } from "./CourseContext";
 import { useUserContext, UserProvider } from "./UserContext";
 export {
     useFilterContext,
-    useChangeContext,
+    useSubjectContext,
     useCourseContext, 
     FilterProvider,
-    ChangesProvider,
     CourseProvider,
+    SubjectProvider,
     useUserContext,
     UserProvider
 }

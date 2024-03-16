@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useCourseContext } from "../../../../context";
 import { useParams } from "react-router-dom";
 import { Loading, CourseInput } from "../../../../components";
-import { getSubject } from "../../../../utils/getSubject";
+import SomeOtherInfos from "./SomeOtherInfos";
 
 export default function BasicInfo() {
   const { common_id, subject_common_id } = useParams()
@@ -12,13 +12,19 @@ export default function BasicInfo() {
 
   const { subjects, getCourse } = useCourseContext();
   useEffect(()=>{
-    getSubject(subject_common_id, subjects, ()=>getCourse(common_id))
-      .then(res=>{
-        setData(res);
-      })
-      .finally(()=>setLoading(false));
+    setLoading(true);
+    if(subjects) {
+      const sub = subjects?.cur?.find(
+        sub=>sub?.cur?.common_id === subject_common_id
+      )
+      // handle not found error ?
+      // if(!sub) 
+      setData(sub);
+      setLoading(false);
+    }
+    else getCourse(common_id);
     // eslint-disable-next-line 
-  }, [])
+  }, [subjects])
 
   if(loading)return <Loading count={5} />
 
@@ -36,6 +42,7 @@ export default function BasicInfo() {
           )
         })
       }
+      <SomeOtherInfos />
     </div>
   )
 }

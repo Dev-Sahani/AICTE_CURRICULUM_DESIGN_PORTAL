@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getSubject } from "../../../../utils/getSubject";
 import { useCourseContext } from "../../../../context";
 import { Loading } from "../../../../components";
 
@@ -13,11 +12,19 @@ export default function SharedLayout({ className, children, currentPath }) {
   const {subjects, getCourse} = useCourseContext();
 
   useEffect(()=>{
-    getSubject(subject_common_id, subjects, ()=>getCourse(common_id))
-      .then(res=>setData(res?.cur))
-      .finally(()=>setLoading(false))
+    setLoading(true);
+    if(subjects) {
+      const sub = subjects?.cur?.find(
+        sub=>sub?.cur?.common_id === subject_common_id
+      )
+      // handle not found error ?
+      // if(!sub) 
+      setData(sub?.cur);
+      setLoading(false);
+    }
+    else getCourse(common_id);
   //eslint-disable-next-line
-  },[])
+  },[subjects])
 
   if(loading) {
     return (
@@ -66,7 +73,7 @@ export default function SharedLayout({ className, children, currentPath }) {
         </nav>
 
         {/* Main Content */}
-        <div className="h-[80vh] grow bg-white rounded-xl overflow-y-auto">
+        <div className="h-[29rem] grow bg-white rounded-xl overflow-y-auto">
           {children}
         </div>
       </div>

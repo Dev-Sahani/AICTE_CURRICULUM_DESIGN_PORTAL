@@ -14,8 +14,10 @@ import {
     CourseInput, 
     CourseMultiInput, 
     CourseTextArea, 
-    SubjectInput, 
-} from "./CourseInputComponents"
+} from "./CourseInputComponents"; 
+import {
+    SubjectMultiInput, 
+} from "./SubjectInput"; 
 import Instructions from "./Instructions";
 import Table from "./Table";
 import CardWrapper from "./CardWrapper"
@@ -32,7 +34,7 @@ export {
     FullPageLoading, 
     PrimaryButton,
     SecondaryButton, 
-    SubjectInput, 
+    SubjectMultiInput, 
     NavButton,
     NavList,
     CourseMultiInput, 

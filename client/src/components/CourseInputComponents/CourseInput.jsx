@@ -35,7 +35,7 @@ export default function CourseInput({
   }
 
   className = classnames(
-    "w-full px-1 py-px border-2 border-gray-400 rounded focus:outline-none resize-none",
+    "w-full px-1 py-px border-2 border-gray-300 rounded focus:outline-none resize-none",
     className, 
     {"bg-accent-300": hasChanges(name, propertyValue, subjectId),
     // "!w-[60%]": value !== getActualValue(name, propertyValue, subjectId),

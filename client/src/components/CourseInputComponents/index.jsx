@@ -3,7 +3,6 @@ import CourseDropdown from "./CourseDropdown";
 import CourseInput from "./CourseInput";
 import CourseMultiInput from "./CourseMultiInput";
 import CourseTextArea from "./CourseTextArea";
-import SubjectInput from "./SubjectInput";
 
 export {
     AddCourseInput, 
@@ -11,5 +10,4 @@ export {
     CourseInput, 
     CourseMultiInput, 
     CourseTextArea, 
-    SubjectInput, 
 }
