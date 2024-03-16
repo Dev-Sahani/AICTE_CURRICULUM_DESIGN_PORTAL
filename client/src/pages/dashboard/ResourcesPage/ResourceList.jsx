@@ -27,7 +27,7 @@ export default function ResourceList({ searchReqFunc }) {
         });
         clearTimeout(timeOutId);
         timeOutId = setTimeout(() => {
-          console.log(stateTemp)
+          
           searchFunc(stateTemp);
         }, 900);
       }

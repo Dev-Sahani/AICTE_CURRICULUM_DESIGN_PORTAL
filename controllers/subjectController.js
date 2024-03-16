@@ -2,7 +2,6 @@ const { UNAUTHORIZED_USER, BAD_REQUEST } = require('../errors')
 const Subject = require('../models/subjectModel')
 const Resource = require('../models/resourceModel')
 const User = require('../models/userModel')
-const { default: mongoose } = require('mongoose')
 
 exports.getSubjectById = async (req, res)=>{
     const data = (await Subject.find({common_id:req.params.commonId})
@@ -91,13 +90,14 @@ exports.getReferenceMaterial = async function(req, res, next){
     )[0]
     const ids = data?.referenceMaterial?.cur?.map(el=>el.cur)
     const addIds = data?.referenceMaterial?.add.map(el=>el.value)
+    const delIndex = data?.referenceMaterial?.del.map(el=>el.index)
 
     const referenceMaterial = await Resource.find({_id:{$in:ids}}).select("-description")
     const addReferenceMaterial = await Resource.find({_id:{$in:addIds}}).select("-description")
 
     res.status(200).send({
         status:"success",
-        data:{referenceMaterial,addReferenceMaterial}
+        data:{referenceMaterial,addReferenceMaterial,delIndex}
     })
 }
 
@@ -113,9 +113,9 @@ exports.updateByUser = async (req, res, next) =>{
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
         return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
-    if(prop === "modules"){
-        return next(new BAD_REQUEST("modules field cannot be update by this route use another route"))
-    }
+    // if(prop === "modules"){
+    //     return next(new BAD_REQUEST("modules field cannot be update by this route use another route"))
+    // }
 
     //find the course By id and update the Course
     const userId = req.user._id
