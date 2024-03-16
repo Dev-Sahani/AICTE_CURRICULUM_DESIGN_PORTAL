@@ -1,5 +1,0 @@
-
-export const HANDLE_CHANGE = "HANDLE_CHANGE";
-export const HANDLE_SAVE = "HANDLE_SAVE";
-
-export const HANDLE_SUBJECT_CHANGE = "HANDLE_SUBJECT_CHANGE";

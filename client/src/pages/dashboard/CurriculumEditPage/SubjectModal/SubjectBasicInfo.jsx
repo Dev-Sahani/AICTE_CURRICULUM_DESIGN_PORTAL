@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useCourseContext } from "../../../../context";
 import { useParams } from "react-router-dom";
 import { Loading, CourseInput } from "../../../../components";
+import SomeOtherInfos from "./SomeOtherInfos";
 
 export default function BasicInfo() {
   const { common_id, subject_common_id } = useParams()
@@ -41,6 +42,7 @@ export default function BasicInfo() {
           )
         })
       }
+      <SomeOtherInfos />
     </div>
   )
 }
