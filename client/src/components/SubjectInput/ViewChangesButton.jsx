@@ -4,12 +4,12 @@ import classNames from "classnames";
 
 export default function ViewChangesButton({ name, index, className, showImage, showText, imageClassName }) {
   const [showModal, setShowModal] = useState(false);
-  if(!name || name==="" || !index) return <div>Some Error</div>;
+  if(!name || name==="" || index===undefined || index==="") return <div>Some Error</div>;
 
   className = classNames(
-    "bg-accent-500 rounded overflow-hidden text-white",
+    "bg-accent-500 rounded overflow-hidden text-white flex items-center gap-1",
     className, 
-    {"px-2 py-1": !showImage},
+    {"px-2 py-1": showText, "!bg-accent-400 text-black": showImage},
   )
   return (
     <>

@@ -61,8 +61,8 @@ export default function ChangesModal({ name, index, onClose }) {
             <h3>Delete</h3>
             {
               propertyValue.new &&
-              propertyValue.new.map((item)=>
-                <div>
+              propertyValue.new.map((item, indx)=>
+                <div key={indx}>
                   <p>{item?.value}</p>
                   <p>{item?.by}</p>
                 </div>
@@ -88,6 +88,7 @@ function Module({module}) {
           <h4 className='w-full font-semibold text-primary-500'>Module Title</h4>
           <input 
             value={module.title}
+            onChange={()=>{}}
             className="px-2 py-1 mb-3 outline-none border-2 border-gray-300 w-full rounded"
           />
         </div>

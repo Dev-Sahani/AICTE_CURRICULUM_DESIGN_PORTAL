@@ -35,10 +35,11 @@ export default function SomeOtherInfos() {
     <>
       {
         data &&
-        Object.keys(data).map((propertyName)=>{
+        Object.keys(data).map((propertyName, index)=>{
           if(["common_id", "id", "_id", "version", "title", "modules", "experiments", "referenceMaterial"].includes(propertyName)) return null;
           return (
-            <div className="flex justify-evenly" key={propertyName}>
+            <div className="w-full" key={propertyName}>
+              <h1 className={`px-2 ${index===1 ? "mt-4" : "mt-2"} capitalize`}>{propertyName}</h1>
               <SubjectMultiInput name={propertyName} />
             </div>
           )

@@ -105,8 +105,8 @@ function SubjectInput({name, index, propertyValue, className, placeholder}) {
 
 function ModuleInput ({module, index}) {
   const name = "modules";
-  const {subject_common_id, getSubject} = useParams();
-  const { updateProperty } = useSubjectContext();
+  const {subject_common_id} = useParams();
+  const { updateProperty, getSubject } = useSubjectContext();
   const [value, setValue] = useState(module?.cur);
   const [localLoading, setLocalLoading] = useState(false);
 
