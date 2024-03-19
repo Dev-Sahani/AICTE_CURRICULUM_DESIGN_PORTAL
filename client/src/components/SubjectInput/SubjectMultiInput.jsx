@@ -8,6 +8,9 @@ export default function SubjectMultiInput({name, showName}) {
   const { subject: {[name]: propertyValue} } = useSubjectContext();
   
   if(!propertyValue || !propertyValue.cur || !Array.isArray(propertyValue.cur)) return <div>No such '{name}' exists!</div>
+  propertyValue.del?.forEach((item)=>{
+    propertyValue.cur[item?.index]?.new?.push({by: item?.by, value: "deleted"});
+  })
 
   return (
     <div className='w-full flex flex-col gap-4 p-3 py-4'>
@@ -182,7 +185,7 @@ function ModuleInput ({module, index}) {
       {
         module.new.length > 0
         &&
-        <ViewChangesButton name={name} index={index} showImage showText imageClassName="h-8" />
+        <ViewChangesButton name={name} index={index} showText imageClassName="h-8" />
       }
       {
         value !== module?.cur

@@ -1,3 +1,4 @@
+import AddSubject from "./AddSubject";
 import NavBar from "./NavBar";
 import SidebarList from "./SidebarList";
 import Sidebar from "./Sidebar";
@@ -8,7 +9,7 @@ import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import NavButton from "./NavButton";
 import NavList from "./NavList";
-import { 
+import {  
     AddCourseInput, 
     CourseDropdown, 
     CourseInput, 
@@ -26,6 +27,7 @@ import Label from "./Label"
 import Modal from "./Modal";
 
 export {
+    AddSubject, 
     NavBar,
     SidebarList,
     Sidebar,

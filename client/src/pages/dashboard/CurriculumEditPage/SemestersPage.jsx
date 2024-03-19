@@ -1,6 +1,7 @@
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  AddSubject, 
   Table,
   CardWrapper, 
   Loading, 
@@ -14,7 +15,9 @@ export default function SemestersPage() {
 
   const [semesters, setSemesters] = useState([]);
   const [localLoading, setLocalLoading] = useState(true);
-
+  const [showAddStudent, setShowAddStudent] = useState(false);
+  const [semester, setSemester] = useState(undefined);
+  
   useEffect(()=>{
     getSemestersWiseSub(common_id)
       .then((res)=>{
@@ -54,14 +57,14 @@ export default function SemestersPage() {
         )
         return (
           <CardWrapper classNames="m-8 p-6 pt-2" key={index}>
-              <header className="mx-2 flex justify-between">
-                <h1 className="inline text-3xl">
+              <header className="mx-2 flex justify-between items-center text-gray-900">
+                <h1 className="inline text-base">
                   {`${index + 1}.`}
                 </h1>
-                <h1 className="inline text-xl">
+                <h1 className="inline text-2xl font-semibold">
                   {`Semester-${semester}` || "-----"}
                 </h1>
-                <h1 className="inline text-lg">
+                <h1 className="inline text-base">
                   {`Credits-${totalCredits}`}
                 </h1>
               </header>
@@ -72,9 +75,33 @@ export default function SemestersPage() {
                 data={semesters[semester] || []}
                 keys={keyOrder}
               />
+              <div className="mt-4 w-full flex justify-end text-white">
+                <button className="bg-secondary-500 py-1.5 px-2.5 rounded" onClick={()=>{setShowAddStudent(true); setSemester(semester)}}>
+                  Add Subject
+                </button>
+              </div>
           </CardWrapper>
         )
       })
+    }
+    {
+      showAddStudent && 
+      <AddSubject 
+        id={common_id}
+        name="subjects"
+        inputFields={[
+          {type: "text", title: "code",}, 
+          {type: "text", title: "title",},
+          {type: "text", title: "category",},
+          {type: "number", title: "semester", value: semester},
+          {type: "number", title: "l",},
+          {type: "number", title: "t",},
+          {type: "number", title: "p",},
+          {type: "text", title: "credits",},
+          {type: "text", title: "weeklyHours",},
+        ]}
+        onClose={()=>setShowAddStudent(false)} 
+      />
     }
 
     {/* Subject Modal */}
