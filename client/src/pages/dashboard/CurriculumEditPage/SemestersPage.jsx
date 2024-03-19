@@ -57,14 +57,14 @@ export default function SemestersPage() {
         )
         return (
           <CardWrapper classNames="m-8 p-6 pt-2" key={index}>
-              <header className="mx-2 flex justify-between">
-                <h1 className="inline text-3xl">
+              <header className="mx-2 flex justify-between items-center text-gray-900">
+                <h1 className="inline text-base">
                   {`${index + 1}.`}
                 </h1>
-                <h1 className="inline text-xl">
+                <h1 className="inline text-2xl font-semibold">
                   {`Semester-${semester}` || "-----"}
                 </h1>
-                <h1 className="inline text-lg">
+                <h1 className="inline text-base">
                   {`Credits-${totalCredits}`}
                 </h1>
               </header>

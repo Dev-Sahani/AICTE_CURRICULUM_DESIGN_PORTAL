@@ -3,8 +3,9 @@ import { Label, Modal } from "../";
 
 export default function ChangesModal({ name, subName, onClose }) {
   const [propertyName, index] = name.split(".");
-  let {[propertyName]: propertyValue} = useCourseContext();
-
+  const {[propertyName]: actualPropertyValue} = useCourseContext();
+  
+  let propertyValue = actualPropertyValue;
   if(propertyValue === undefined || !propertyValue.cur) return;
   if(!subName && index!==undefined && index!=="" && Array.isArray(propertyValue.cur) && index*1 < propertyValue.cur.length && propertyValue.cur[index*1].cur) {
     propertyValue = propertyValue.cur[index];
@@ -12,8 +13,14 @@ export default function ChangesModal({ name, subName, onClose }) {
   else if(index!==undefined && index!=="" && Array.isArray(propertyValue.cur) && index*1 < propertyValue.cur.length && propertyValue.cur[index*1].cur && propertyValue.cur[index*1].cur[subName])  {
     propertyValue = {
       cur: propertyValue.cur[index*1].cur[subName],
-      new: propertyValue.cur[index*1].new?.reduce((currSub, newSub)=>newSub?.value[subName] ? [...currSub, {by: newSub.by, value: newSub.value[subName]}] : currSub, [])
+      new: propertyValue.cur[index*1].new?.reduce((currSub, newSub)=>newSub?.value[subName] ? [...currSub, {by: newSub.by, value: newSub.value[subName]}] : currSub, []), 
     };
+  }
+  
+  if((propertyValue?.new && propertyValue.new[propertyValue.new.length - 1]?.value) !== "deleted" && !subName) {
+    actualPropertyValue?.del?.forEach((item)=>{
+      if(item?.index === index*1) propertyValue?.new?.push({by: item.by, value: "deleted"})
+    });
   }
   
   return ( 
@@ -21,7 +28,7 @@ export default function ChangesModal({ name, subName, onClose }) {
       <div className="h-full p-6 flex flex-col gap-6 overflow-y-auto">
 
         <h1 className="w-full text-center text-2xl font-semibold text-primary-500">
-            Changes
+          Changes
         </h1>
 
         <div className="w-full flex gap-4 items-start justify-between">
@@ -64,8 +71,8 @@ export default function ChangesModal({ name, subName, onClose }) {
                   <p className="w-full text-end text-gray-500">by: {item.by}</p>
                 </div>
                 :
-                  <div className="mb-4 flex flex-col gap-1 items-end" key={ind}>
-                    <div className="max-h-56 w-full px-1.5 py-1 border border-black bg-white rounded-md overflow-y-auto">
+                  <div className={`mb-4 flex flex-col gap-1 items-end`} key={ind}>
+                    <div className={`max-h-56 w-full px-1.5 py-1 border border-black ${item?.value==="deleted" ? "bg-red-400 text-white text-center capitalize" : "bg-white"} rounded-md overflow-y-auto`}>
                       <p>{item?.value}</p>
                     </div>
                     <p className="text-gray-500 text-sm">by: {item?.by}</p>
@@ -75,21 +82,41 @@ export default function ChangesModal({ name, subName, onClose }) {
           </div>
         </div>
 
-        {
-          propertyName.del && propertyName.del.length > 0 && 
+        {/* {
+          propertyValue.del && propertyValue.del.length > 0 && 
           <div>
-            <h3>Delete</h3>
+            <h3>Deleting Values</h3>
             {
-              propertyValue.new &&
-              propertyValue.new.map((item)=>
+              propertyValue.del &&
+              propertyValue.del.map((item)=>
                 <div>
-                  <p>{item?.value}</p>
-                  <p>{item?.by}</p>
+                  {
+                    actualPropertyValue[item?.index] && actualPropertyValue[item?.index].cur && 
+                    (
+                      typeof actualPropertyValue[item?.index].cur === "object"
+                      ?
+                      Object.keys(actualPropertyValue[item?.index])?.map(key=>
+                        <div className="w-full flex justify-between" key={key}>
+                          <Label>{key}</Label>
+                          <input 
+                            className="p-1.5 w-full outline-none border-2 border-gray-200" 
+                            value={actualPropertyValue[item?.index].cur[key]} 
+                            onChange={()=>{}}
+                          />
+                        </div>
+                      )
+                      :
+                      <div>
+                        {actualPropertyValue[item?.index].cur}
+                      </div>
+                    )
+                  }
+                  <p>by: {item.by}</p> 
                 </div>
               )
             }
           </div>
-        }
+        } */}
 
       </div>
 
