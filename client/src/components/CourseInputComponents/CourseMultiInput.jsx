@@ -3,6 +3,7 @@ import { useCourseContext } from "../../context";
 import Loading from "../Loading";
 import { useParams } from "react-router-dom";
 import Label from "../Label";
+import ViewChangesButton from "./ViewChangesButton";
 
 export default function CourseMultiInput({ 
     name, 
@@ -83,28 +84,26 @@ export default function CourseMultiInput({
   return (
     <div className={className}>
       {subNames.map((subProperty) =>
-            <div className="flex justify-between gap-1" key={subProperty}>
-                {
-                subProperty && 
-                <Label>{subProperty}</Label>
-                }
-                <input 
-                    type={type}
-                    value={value[subProperty]}
-                    onChange={(e)=>setValue({...value, [subProperty]: e.target.value})}
-                    placeholder={placeholder ? placeholder:`Enter ${subProperty}`}
-                    className={`my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none ${hasChanges ? "bg-accent-400" : ""}`}
-                />
-            </div>
-        )}
+        <div className="flex justify-between gap-1" key={subProperty}>
+          {
+          subProperty && 
+          <Label className="capitalize !text-base !font-medium">{subProperty}</Label>
+          }
+          <input 
+              type={type}
+              value={value[subProperty]}
+              onChange={(e)=>setValue({...value, [subProperty]: e.target.value})}
+              placeholder={placeholder ? placeholder:`Enter ${subProperty}`}
+              className={`my-1 w-[70%] p-1 border-2 border-gray-400 rounded focus:outline-none ${hasChanges ? "bg-accent-400" : ""}`}
+          />
+        </div>
+      )}
 
       <div className="mt-2 flex items-center gap-4">
         {
           hasChanges
           &&
-          <button className="px-2 py-1 bg-accent-500 rounded overflow-hidden text-white">
-            View Changes
-          </button>
+          <ViewChangesButton name={name + "." + index.toString()} />
         }
         {
           (

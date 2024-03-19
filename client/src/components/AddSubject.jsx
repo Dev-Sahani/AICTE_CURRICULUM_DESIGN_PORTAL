@@ -3,7 +3,7 @@ import {Loading, Modal} from "./";
 import { useCourseContext } from "../context";
 import { useParams } from "react-router-dom";
 
-export default function AddSubject({inputFields, name, index, id, onClose, inCourse=true}) 
+export default function AddSubject({inputFields, name, index, id, onClose, inCourse=true, modalClassName, loadingCount}) 
 {
   const formRef = useRef(null); 
   const { common_id } = useParams();
@@ -34,15 +34,16 @@ export default function AddSubject({inputFields, name, index, id, onClose, inCou
 
   if(localLoading) {
     return (
-      <Modal onClose={onClose}>
-        <Loading count={8} cardClassName="!h-12" />
+      <Modal onClose={onClose} className={modalClassName}>
+        <Loading count={loadingCount || 8} cardClassName="!h-12" />
       </Modal>
     )
   }
   return (
-    <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit} className="h-full w-full p-4 flex flex-col gap-2" ref={formRef}>
+    <Modal onClose={onClose} className={modalClassName}>
+      <form onSubmit={handleSubmit} className="h-full w-full p-4 flex flex-col gap-2 justify-between" ref={formRef}>
         <h1 className="w-full text-center text-3xl text-semibold text-primary-500">Enter basics details</h1>
+        <div className="w-full flex flex-col gap-2">
         {
           inputFields.map((input, ind)=>{ 
             let inputBox;
@@ -53,17 +54,20 @@ export default function AddSubject({inputFields, name, index, id, onClose, inCou
                 inputBox = <textarea type="text" className="p-1 rounded w-full border-2 border-gray-300" name={input?.title} required {...input} />
             }
             return (
-              <div className="w-full flex justify-between items-center" key={ind}>
+              <div className="w-full flex justify-between items-center gap-4" key={ind}>
                 { input?.title && <label className="font-medium text-lg capitalize min-w-[120px]">{input?.title}</label> }
                 { inputBox }
               </div>
             )
           })
         } 
-        {/* <div className="mt-4 w-full flex items-center">
-        <button className="min-w-[200px] py-1.5 px-2 text-white rounded bg-primary-500" onClick={(e)=>{e.preventDefault()}}>
-          Add pre-existed Subject
-        </button> */}
+        </div>
+        {/* 
+          <div className="mt-4 w-full flex items-center">
+            <button className="min-w-[200px] py-1.5 px-2 text-white rounded bg-primary-500" onClick={(e)=>{e.preventDefault()}}>
+              Add pre-existed Subject
+            </button> 
+        */}
         <div className="w-full flex gap-4 justify-end items-center">
           <button type="submit" className="bg-secondary-500 py-1.5 px-2.5 text-white rounded">Create</button>
           <button onClick={onClose} className="py-1.5 px-2.5 rounded text-white bg-red-500">Cancel</button>

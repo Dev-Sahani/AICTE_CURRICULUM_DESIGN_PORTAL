@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 export default function ViewChangesButton({ name, subName, className, showImage, imageClassName }) {
   const [showModal, setShowModal] = useState(false);
-  if(!name || name==="") return <div></div>;
+  if(!name || name==="") return <div>Name is not provided</div>;
 
   className = classNames(
     "bg-accent-500 rounded overflow-hidden text-white",
