@@ -89,7 +89,7 @@ const courseSchema = new mongoose.Schema({
         common_id:mongoose.SchemaTypes.ObjectId,
         version:{
             type:Number,
-            require:[true, "course's subject.common_id is missin"]
+            // require:[true, "course's subject.common_id is missing"]
         },
         title:String,
         credits:Number,

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Table({data, keys, primaryHeader=true, secondaryHeader=false, to}) {
   if(!data || !keys || !Array.isArray(keys)) return <div>Data is not passed</div>;
 
-  const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-400";
+  const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-400"
 
   return (
     <div className="w-full flex justify-center items-center">
@@ -35,7 +35,7 @@ export default function Table({data, keys, primaryHeader=true, secondaryHeader=f
                         <img src="/deleteButton.png" className="h-6 min-w-6" alt="delete" /> 
                       </button>
                       : 
-                      <Link key={ind} to={`${item.cur.common_id}`} className={classes}>
+                      <Link key={ind} to={`${item.cur?.common_id}`} className={classes}>
                         { innerContent }
                       </Link> 
                     )

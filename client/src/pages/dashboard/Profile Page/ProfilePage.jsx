@@ -95,8 +95,8 @@ const ProfilePage = () => {
     <hr className="border-gray-400 border rounded-xl"/>
     <div className={cardContainerClass}>
       {
-        user.courses?.map(el=>(
-          <div className="shadow-lg p-2 rounded-xl">
+        user.courses?.map((el, ind)=>(
+          <div key={ind} className="shadow-lg p-2 rounded-xl">
             <div className="flex justify-between mb-4 items-center">
               <h2 className="text-2xl">
                 {el.id?.title?.cur}

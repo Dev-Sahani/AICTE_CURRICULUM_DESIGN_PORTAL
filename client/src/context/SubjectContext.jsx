@@ -72,7 +72,7 @@ export const SubjectProvider = ({children})=>{
             res = await axiosInstance(url, {
                 isnew: true,
                 prop: name,
-                data: value, 
+                data: value?.cur, 
             });
         } catch(err) {
             console.log(err);

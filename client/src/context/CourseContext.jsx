@@ -113,10 +113,11 @@ export const CourseProvider = ({children})=>{
                 throw new Error("BAD REQUEST. Please pass all the data!");
 
             const url = `/courses/${courseId}/update-by-user`;
+
             res = await axiosInstance.patch(url, {
                 isnew: true,
                 prop: name,
-                data: value, 
+                data: value?.cur, 
             });
         } catch(err) {
             console.log(err);
