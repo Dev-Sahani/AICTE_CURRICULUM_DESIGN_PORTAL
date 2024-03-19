@@ -15,7 +15,7 @@ const intialState = {
 export const SubjectProvider = ({children})=>{
     const [states, dispatch] = useReducer(reducer, intialState);
 
-    const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/"});
+    const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/subjects/"});
 
     axiosInstance.interceptors.response.use(
         (response)=>{
@@ -31,7 +31,7 @@ export const SubjectProvider = ({children})=>{
     const getSubject = async(subjectId)=> {
         let res = undefined
         if(!subjectId || subjectId==="") return res;
-        const url = `subjects/${subjectId}`;
+        const url = `/${subjectId}`;
         try {
             res = await axiosInstance.get(url, {withCredentials: true});
             if(!res || !res.data || !res.data.data) return undefined;
@@ -52,7 +52,7 @@ export const SubjectProvider = ({children})=>{
         if(!name || !value) return res;
         try {
           const data = {prop: name, data: value}
-          const url = `/subjects/update-by-user/${subjectId}`;
+          const url = `/update-by-user/${subjectId}`;
           console.log(url, data);
           res = await axiosInstance.patch(url, data, {withCredentials: true,});
 
@@ -63,12 +63,30 @@ export const SubjectProvider = ({children})=>{
         }
         return res;
     }
+
+    const addProperty = async (name, value, subjectId)=>{
+        let res = undefined;
+        if(!name || !value || !subjectId) return res;
+        try {
+            const url = `/update-by-user/${subjectId}`;
+            res = await axiosInstance(url, {
+                isnew: true,
+                prop: name,
+                data: value, 
+            });
+        } catch(err) {
+            console.log(err);
+            alert(err.message);
+        }
+        return res;
+    }
     return (
         <SubjectContext.Provider
           value ={{
             ...states, 
             getSubject, 
             updateProperty, 
+            addProperty, 
           }}
         >
             {children}

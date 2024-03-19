@@ -182,7 +182,7 @@ function ModuleInput ({module, index}) {
       {
         module.new.length > 0
         &&
-        <ViewChangesButton name={name} index={index} showImage showText imageClassName="h-8" />
+        <ViewChangesButton name={name} index={index} showText imageClassName="h-8" />
       }
       {
         value !== module?.cur

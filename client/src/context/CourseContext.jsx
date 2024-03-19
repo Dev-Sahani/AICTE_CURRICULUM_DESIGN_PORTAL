@@ -105,6 +105,26 @@ export const CourseProvider = ({children})=>{
         }
         return res;
     }
+
+    const addProperty = async (name, value, courseId)=>{
+        let res = undefined;
+        try {
+            if(!name || !value || !value.cur || !courseId) 
+                throw new Error("BAD REQUEST. Please pass all the data!");
+
+            const url = `/courses/${courseId}/update-by-user`;
+            res = await axiosInstance.patch(url, {
+                isnew: true,
+                prop: name,
+                data: value, 
+            });
+        } catch(err) {
+            console.log(err);
+            alert(err.message);
+        }
+        return res;
+    }
+
     return (
         <courseContext.Provider
             value={{
@@ -114,7 +134,7 @@ export const CourseProvider = ({children})=>{
                 getCategoriesWiseSub,
                 getSemestersWiseSub,
                 getAllSubjects,
-
+                addProperty, 
             }}
         >
             {children}

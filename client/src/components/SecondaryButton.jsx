@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {motion} from "framer-motion";
 
-export default function SecondaryButton({children, to, onClick, className, disabled}) {
+export default function SecondaryButton({children, to, onClick, className, disabled, ...others}) {
     return (
         <motion.button
             className={"bg-lime-500 text-white rounded-sm px-4 py-2 w-fit inline-block ".concat(className?className:" ")}
@@ -9,6 +9,7 @@ export default function SecondaryButton({children, to, onClick, className, disab
             whileTap={{scale: 0.95}}
             onClick={onClick}
             disabled={disabled}
+            {...others}
         >
             <Link to={to}>
                 {children}
