@@ -28,21 +28,29 @@ exports.getUser = factoryController.getOne(User)
 exports.postUser = factoryController.postOne(User)
 
 exports.patchUser = async (req, res, next)=>{
-    const fieldsToExclude = ["userId","password","role","headIn","editorIn",
-        "viewerIn","passwordChangedAt","passwordResetToken","passwordResetTokenExpire","active"]
+    const fieldsToExclude = ["password","role","courses",
+        ,"passwordChangedAt","passwordResetToken","passwordResetTokenExpire","active"]
     if(Object.keys(req.body).some((val)=>fieldsToExclude.includes(val))){
         return next(new BAD_REQUEST("Cannot update some property of user like 'password' or 'userId' through this route"))
     }
+
+    if(req.user.email!==req.body.email){
+        return next(new BAD_REQUEST("You're not allowed to performe this action"))
+    }
+
     const user = {
         name:req.body.name,
-        email:req.body.email,
+        // email:undefined,
         gender:req.body.gender,
-        dob:req.body.dob
+        dob:req.body.dob,
+        profileImgUrl:req.body.profileImgUrl
     }
     //FIXME:
-    const resp = await User.findByIdAndUpdate(req.params.id,user)
+    const resp = await User.findOneAndUpdate({email:req.body.email},user,{new:true})
 
-    res.status(200).send(resp)
+    res.status(200).send({
+        user:resp
+    })
 }
 
 exports.deleteUser = async (req, res, next)=>{

@@ -83,16 +83,10 @@ userSchema.pre(/^find/,async function (next){
 
 //middlewares
 userSchema.pre(/^find^/,function(next){
-    this.populate({
-        path:"adminIn",
-        select:"common_id title"
-    }).populate({
-        path:"editorIn",
-        select:"common_id title"
-    }).populate({
-        path:"viewerIn",
-        select:"common_id title"
-    })
+    // this.populate({
+    //     path:"courses.id",
+    //     select:"common_id title"
+    // })
     next()
 })
 
@@ -104,7 +98,7 @@ userSchema.pre("save",async function(next){
 })
 userSchema.pre("save",async function(next){
     if(!this.isModified("password") || this.isNew || this.preRegistered)return next()
-    this.passwordChangedAt = Date.now() - 1000
+    this.passwordChangedAt = Date.now() - 2000
     next()
 })
 

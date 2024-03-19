@@ -19,4 +19,6 @@ router.route("/pre-register-user").post(
 router.post("/register-user", authController.registerDev)
 
 
+router.patch("/update-password", authController.protect, authController.updatePassword)
+
 module.exports = router;
