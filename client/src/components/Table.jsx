@@ -1,25 +1,27 @@
 import { Link, useParams } from "react-router-dom";
 import { useCourseContext } from "../context/CourseContext";
-import { useState } from "react";
-import { Loading }  from "./"
 
-export default function Table({data, newData=[], keys, primaryHeader=true, secondaryHeader=false, to}) {
-  const { subjects, deleteProperty } = useCourseContext();
+export default function Table({data, newData=[], keys, primaryHeader=true, secondaryHeader=false, to, setLoading}) {
+  const { subjects, deleteProperty, getCourse } = useCourseContext();
   const { common_id } = useParams();
-  const [loadingIndex, setLoadingIndex] = useState(-1);
   if(!data || !keys || !Array.isArray(keys)) return <div>Data is not passed</div>;
 
   const rowClasses = "w-full py-2 px-2 lg:px-6 xl:px-10 text-center bg-accent-400"
-  const handleDelete = async(index, subjectId) => {
-    setLoadingIndex(index);
+
+  const handleDelete = async(subjectId) => {
+    if(typeof setLoading === "function") setLoading(true);
+    
     let actualIndex;
-    subjects.cur.find((sub, indx)=>{
+    subjects?.cur?.find((sub, indx)=>{
       if(sub?.cur?.common_id === subjectId) 
         actualIndex = indx; 
       return sub?.cur?.common_id === subjectId;
     })
+
     await deleteProperty("subjects", actualIndex, common_id);
-    setLoadingIndex(-1);
+    await getCourse(common_id);
+
+    if(typeof setLoading === "function") setLoading(false);
   }
 
   return (
@@ -44,23 +46,17 @@ export default function Table({data, newData=[], keys, primaryHeader=true, secon
                     let innerContent = "-"
                     if(item && item.cur && item.cur[value]) 
                       innerContent = item.cur[value];
-                    
+
                     return (
-                      ind === loadingIndex 
+                      value === "-" 
                       ?
-                      <Loading count={1} cardClassName="!h-10" key={ind} />
-                      :
-                      (
-                        value === "-" 
-                        ?
-                        <button className={classes} key={ind} onClick={()=>handleDelete(ind, item?.cur?.common_id)}>
-                          <img src="/deleteButton.png" className="h-6 min-w-6" alt="delete" /> 
-                        </button>
-                        : 
-                        <Link key={ind} to={`${item.cur?.common_id}`} className={classes}>
-                          { innerContent }
-                        </Link> 
-                      )
+                      <button className={classes} key={ind} onClick={()=>handleDelete(item?.cur?.common_id)}>
+                        <img src="/deleteButton.png" className="h-6 min-w-6" alt="delete" /> 
+                      </button>
+                      : 
+                      <Link key={ind} to={`${item.cur?.common_id}`} className={classes}>
+                        { innerContent }
+                      </Link> 
                     )
                   })
                 }

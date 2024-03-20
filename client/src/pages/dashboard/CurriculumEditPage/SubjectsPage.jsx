@@ -39,6 +39,7 @@ export default function SubjectPage() {
         data={allSubjects}
         keys={keyOrder}
         secondaryHeader={true}
+        setLoading={setLocalLoading}
       />
 
       <Outlet />

@@ -107,7 +107,7 @@ export const CourseProvider = ({children})=>{
     }
 
     const addProperty = async (name, value, courseId)=>{
-        let res = undefined;
+        let res = null;
         try {
             if(!name || !value || !value.cur || !courseId) 
                 throw new Error("BAD REQUEST. Please pass all the data!");
@@ -120,6 +120,7 @@ export const CourseProvider = ({children})=>{
                 data: value?.cur, 
             });
         } catch(err) {
+            res = null;
             console.log(err); 
             alert(err.message); 
         }
@@ -127,17 +128,18 @@ export const CourseProvider = ({children})=>{
     }
 
     const deleteProperty = async(prop, index, courseId)=>{
-        const url = `courses/${courseId}/update-bu-user`;
+        const url = `courses/${courseId}/update-by-user`;
         let res = undefined;
         try {
             if(!prop || index===undefined || !courseId) 
                 throw new Error("Please provide all data!");
-            console.log(url, `${prop}.${index}`, courseId)
-            // res = await axiosInstance.patch(url, {
-                // prop: `${prop}.${index}`,  
-                // del: true
-            // });
+
+            res = await axiosInstance.patch(url, {
+                prop: `${prop}.${index}`,  
+                del: true
+            });
         } catch(err) {
+            res = null;
             alert(err.message);
             console.log(err);
         }

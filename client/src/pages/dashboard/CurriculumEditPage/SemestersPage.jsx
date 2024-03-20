@@ -74,6 +74,7 @@ export default function SemestersPage() {
               <Table
                 data={semesters[semester] || []}
                 keys={keyOrder}
+                setLoading={setLocalLoading}
               />
               <div className="mt-4 w-full flex justify-end text-white">
                 <button className="bg-secondary-500 py-1.5 px-2.5 rounded" onClick={()=>{setShowAddStudent(true); setSemester(semester)}}>
