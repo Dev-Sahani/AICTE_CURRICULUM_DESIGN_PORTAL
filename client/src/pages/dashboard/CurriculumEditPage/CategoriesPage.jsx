@@ -104,7 +104,7 @@ export default function CategoriesPage() {
             inputFields={[
               {type: "text", title: "code",}, 
               {type: "text", title: "title",},
-              {type: "text", title: "category", value: newSubjectCategory},
+              {type: "text", title: "category", defaultValue: newSubjectCategory},
               {type: "number", title: "semester",},
               {type: "number", title: "l",},
               {type: "number", title: "t",},

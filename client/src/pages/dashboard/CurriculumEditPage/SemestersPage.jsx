@@ -93,7 +93,7 @@ export default function SemestersPage() {
           {type: "text", title: "code",}, 
           {type: "text", title: "title",},
           {type: "text", title: "category",},
-          {type: "number", title: "semester", value: semester},
+          {type: "number", title: "semester", defaultValue: semester},
           {type: "number", title: "l",},
           {type: "number", title: "t",},
           {type: "number", title: "p",},

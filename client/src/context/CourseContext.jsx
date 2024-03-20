@@ -120,12 +120,29 @@ export const CourseProvider = ({children})=>{
                 data: value?.cur, 
             });
         } catch(err) {
-            console.log(err);
-            alert(err.message);
+            console.log(err); 
+            alert(err.message); 
         }
         return res;
     }
 
+    const deleteProperty = async(prop, index, courseId)=>{
+        const url = `courses/${courseId}/update-bu-user`;
+        let res = undefined;
+        try {
+            if(!prop || index===undefined || !courseId) 
+                throw new Error("Please provide all data!");
+            console.log(url, `${prop}.${index}`, courseId)
+            // res = await axiosInstance.patch(url, {
+                // prop: `${prop}.${index}`,  
+                // del: true
+            // });
+        } catch(err) {
+            alert(err.message);
+            console.log(err);
+        }
+        return res;
+    }
     return (
         <courseContext.Provider
             value={{
@@ -136,6 +153,7 @@ export const CourseProvider = ({children})=>{
                 getSemestersWiseSub,
                 getAllSubjects,
                 addProperty, 
+                deleteProperty, 
             }}
         >
             {children}

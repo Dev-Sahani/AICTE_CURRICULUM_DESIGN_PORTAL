@@ -103,7 +103,7 @@ function Module({module}) {
               module.topics.map((topic, ind) => 
                 <input 
                   key={ind}
-                  value={module.topics[ind]}
+                  defaultValue={module.topics[ind]}
                   className="px-2 py-1 outline-none border-2 border-gray-300 w-full rounded"
                 />
               )
