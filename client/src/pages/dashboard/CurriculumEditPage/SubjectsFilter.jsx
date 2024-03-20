@@ -22,8 +22,8 @@ export default function SubjectsFilter({localSubjects, setLocalSubjects}) {
     setLocalSubjects((prev)=>{
       if(subjects && subjects.cur && Array.isArray(subjects.cur)) {
         prev = subjects.cur.filter((item)=>{
-          if(!item || !item.cur || !item.cur.title || !item.cur.code) return false;
-          return re.test(item.cur.title) || re.test(item.cur.code)
+          // if(!item || !item.cur || !item.cur.title || !item.cur.code) return false;
+          return re.test(item?.cur?.title) || re.test(item?.cur?.code)
         })
       }
       return prev;

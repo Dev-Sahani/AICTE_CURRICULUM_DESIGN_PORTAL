@@ -1,15 +1,14 @@
 import { useEffect,useState } from "react";
 import { Outlet, useParams } from "react-router-dom";
-import { Table, Loading } from "../../../components"
+import { Table, Loading, NewAndDeletedSubjectsList } from "../../../components"
 import SubjectsFilter from "./SubjectsFilter"
 import { useCourseContext } from "../../../context";
-import NewSubjectsList from "../../../components/NewSubjectsList";
 
 export default function SubjectPage() {
   const { common_id } = useParams();
   const { subjects, getCourse } = useCourseContext();
   const keyOrder = ["code", "title", "semester", "l", "t", "p", "credits"];
-  const [ allSubjects, setAllSubjects] = useState([]);
+  const [allSubjects, setAllSubjects] = useState([]);
   const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(()=>{
@@ -43,8 +42,16 @@ export default function SubjectPage() {
         setLoading={setLocalLoading}
       />
 
-      <h1 className="w-full text-3xl text-primary-700 text-center font-semibold mt-6 mb-2">New Subjects</h1>
-      <NewSubjectsList />
+      <h1 className="w-full text-3xl text-primary-700 text-center font-semibold mt-6 mb-2">
+        New Subjects
+      </h1>
+      <NewAndDeletedSubjectsList />
+
+      <h1 className="w-full text-3xl text-primary-700 text-center font-semibold mt-6 mb-2">
+        Deleted Subjects
+      </h1>
+      <NewAndDeletedSubjectsList deleted/>
+
       <Outlet />
     </>
   )
