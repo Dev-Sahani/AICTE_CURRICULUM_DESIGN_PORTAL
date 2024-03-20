@@ -13,6 +13,39 @@ exports.getSubjectById = async (req, res)=>{
     })
 }
 
+exports.postSubject = async (req, res)=>{
+    ["common_id","version","title","objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]
+    const sub = req.body;
+    sub.title = {
+        new:[],
+        cur:req.body.title
+    }
+    for(let field of ["objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]){
+        if(!req.body[field])continue
+        
+        const cur = req.body[field].map(el=>({
+            new:[],
+            cur:el
+        }))
+
+        sub[field] = {
+            add:[],
+            del:[],
+            cur
+        }
+    }
+    const data = await Subject.create(sub);
+    const sub2 = data._doc;
+    sub2.common_id = sub2._id
+    sub2.version = 1
+    const data2 = await Subject.findByIdAndUpdate(sub2._id, sub2)
+
+    res.status(200).send({
+        status:"success",
+        data:data2
+    })
+}
+
 exports.getSubjectForUser = async (req, res, next)=>{
     let user = req.user
     if(!user ){

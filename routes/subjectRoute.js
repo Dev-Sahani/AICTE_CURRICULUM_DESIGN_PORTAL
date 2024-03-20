@@ -7,6 +7,8 @@ const authController = require('../controllers/authController')
 router.route('/')
     .get(authController.protect,
         subjectController.getAllSubjects)
+    .post(authController.protect,
+        subjectController.postSubject)
 router.route('/:commonId')
     .get(authController.protect, subjectController.getSubjectById)
     

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require("bcrypt")
 const crypto = require('crypto')
+const { userRoleEnum, userGenderEnum, accessEnum } = require("./types")
 
 const userSchema = new mongoose.Schema({
     password:{
@@ -12,7 +13,7 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         require:[true,"type of User is missing"],
-        enum:["administrator","faculty","expert"]
+        enum:userRoleEnum,
     },
     name:{
         type:String,
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     gender:{
         type:String,
-        enum:["male","female","other"],
+        enum:userGenderEnum,
         // require:[true,"User's gender is Missing"]
     },
     dob:Date,
@@ -40,7 +41,7 @@ const userSchema = new mongoose.Schema({
             },
             access:{
                 type:String,
-                enum:["head","edit","view"]
+                enum:accessEnum,
             }
         },
         unique:[true, "user already enrolled"],
