@@ -35,7 +35,7 @@ export default function Table({data, newData=[], keys, primaryHeader=true, secon
           `
 
           return (
-            <div className={`w-full flex flex-col ${value==="-" ? "items-start" : "items-center"} justify-between whitespace-nowrap`} key={indx}>
+            <div className={`flex flex-col ${value==="-" ? "w-fit items-start" : "w-full items-center"} justify-between whitespace-nowrap`} key={indx}>
               <header className={`${secondaryHeader ? `text-center text-white bg-primary-700 p-2` : "text-primary-500"} ${value==="-" ? "w-fit px-5" : "w-full"} text-lg font-semibold capitalize`}>
                 <h2 className={`${value==="-" && "text-transparent"} text-center`}>{value}</h2>
               </header>
