@@ -65,7 +65,7 @@ const CourseDropdown = ({name="", list=[], subjectId})=>
       name={name}
       value={value}
       onChange={onChange}
-      className={`border-2 border-gray-300 m-2 px-4 py-1 focus:outline-none ${(propertyName && propertyName.new && propertyName.new.length > 0) ? "bg-accent-400 rounded-l border-r-0 mr-0" : "rounded"}`}
+      className={`border-2 border-gray-300 m-2 px-4 py-1 focus:outline-none ${(propertyName && propertyName.new && propertyName.new.length > 0) ? "bg-accent-300 rounded-l border-r-0 mr-0" : "rounded"}`}
     >
       {
         list.map( (itemValue, index)=>{

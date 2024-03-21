@@ -180,7 +180,7 @@ exports.updateByUser = async (req, res, next) =>{
     if(del){
         if (!course[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
-        if(ind >= course[prop].cur.length)
+        if(ind >= course[prop].cur.length || ind<0)
                 return next(new BAD_REQUEST("index range out of bond"))
 
         await Course.findOneAndUpdate({_id:course._id},{

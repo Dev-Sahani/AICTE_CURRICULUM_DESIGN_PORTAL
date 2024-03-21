@@ -20,6 +20,18 @@ export const CourseProvider = ({children})=>{
         withCredentials:true
     });
 
+    axiosInstance.interceptors.response.use(
+        (response)=>{
+            return response;
+        }, (err)=>{
+            if(err.response.status >= 401){
+                // logoutUser();
+            }
+            err.message = err.response?.data?.message
+            return Promise.reject(err);
+        }
+    )
+
     const getCourse = async (courseId)=>{
         if(!courseId || courseId==="") return undefined;
         const url = `courses/${courseId}`;
@@ -114,6 +126,11 @@ export const CourseProvider = ({children})=>{
 
             const url = `/courses/${courseId}/update-by-user`;
 
+            const res2 = await axiosInstance.post("/subjects", value?.cur)
+
+            value.cur.common_id = res2.data?.data?.common_id;
+            value.cur.version = res2.data?.data?.version;
+
             res = await axiosInstance.patch(url, {
                 isnew: true,
                 prop: name,
@@ -127,16 +144,16 @@ export const CourseProvider = ({children})=>{
     }
 
     const deleteProperty = async(prop, index, courseId)=>{
-        const url = `courses/${courseId}/update-bu-user`;
+        const url = `courses/${courseId}/update-by-user`;
         let res = undefined;
         try {
             if(!prop || index===undefined || !courseId) 
                 throw new Error("Please provide all data!");
             console.log(url, `${prop}.${index}`, courseId)
-            // res = await axiosInstance.patch(url, {
-                // prop: `${prop}.${index}`,  
-                // del: true
-            // });
+            res = await axiosInstance.patch(url, {
+                prop: `${prop}.${index}`,  
+                del: true,
+            });
         } catch(err) {
             alert(err.message);
             console.log(err);

@@ -38,7 +38,7 @@ exports.postSubject = async (req, res)=>{
     const sub2 = data._doc;
     sub2.common_id = sub2._id
     sub2.version = 1
-    const data2 = await Subject.findByIdAndUpdate(sub2._id, sub2)
+    const data2 = await Subject.findByIdAndUpdate(sub2._id, sub2, {new:true})
 
     res.status(200).send({
         status:"success",
