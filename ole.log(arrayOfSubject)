@@ -1,0 +1,1038 @@
+[33mcommit 1aee228f44def8d389c397c0880a654d41561234[m[33m ([m[1;36mHEAD -> [m[1;32mDaksh[m[33m)[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 20 22:45:32 2024 +0530
+
+    new subjects shown in subjectPage.jsx
+
+[33mcommit 18cb043effb1dcf96ff9bf4fd54016d9ad3df7fe[m[33m ([m[1;31morigin/Daksh[m[33m)[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 20 21:36:25 2024 +0530
+
+    delete button working
+
+[33mcommit c5fce11d8456f300b5df6da4fd05802abc6b2d56[m
+Merge: b3859a9 eaf1bd4
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 20 20:31:14 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit b3859a9081b29f0ac92fb954ca786c64b3252aff[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 20 20:29:32 2024 +0530
+
+    Add Subjects
+
+[33mcommit eaf1bd411e0c811cd5a92de4ae2bdb15fd456211[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Mar 20 20:22:56 2024 +0530
+
+    add Subjects
+
+[33mcommit d29496c54040ef1dd1df3d4b446338d7c874f4b3[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Mar 20 00:46:07 2024 +0530
+
+    addProperty fix
+
+[33mcommit 810b8a32a20175aba494a62500db31d28bcc052e[m
+Merge: 956ee84 a1550d0
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Mar 19 23:40:53 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit 956ee8474f2542574707f069683243e649053877[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Mar 19 23:40:42 2024 +0530
+
+    user Profile Page
+
+[33mcommit a1550d034292c88e03b3c196f71e0038ae12fccc[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 19 22:34:58 2024 +0530
+
+    showing deleted properties implemented
+
+[33mcommit b06837290bb06fe18f1a00810775a9a356adffc8[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 19 18:35:52 2024 +0530
+
+    View Changes implemented for array property in courses
+
+[33mcommit 8d39eb7e310f3de0c5cbd4870f2e097eaecf8e82[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 19 16:58:18 2024 +0530
+
+    some ui changes in add subject
+
+[33mcommit 038434f5a3407df13d10129ea3edf96e0f5bbdfc[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 19 13:53:53 2024 +0530
+
+    add subject at frontend implemented
+
+[33mcommit e201fa482fbcc9ee63539b704e876426260d4cae[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sun Mar 17 23:25:39 2024 +0530
+
+    scroll-bar styled
+
+[33mcommit 2dadaddf8642f0c88a720367af12af08817db249[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sun Mar 17 15:54:24 2024 +0530
+
+    subject modules completed
+
+[33mcommit 40a63cd6ef21a52b6c253907b543469b41b68477[m
+Merge: 91e8b4a c646663
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sun Mar 17 01:09:44 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit 91e8b4a401fdeba177bd257caf227aad65905a04[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sun Mar 17 01:09:28 2024 +0530
+
+    Subject Resource Page
+
+[33mcommit c646663e5d956be8e254a8273434cbb1f046b09b[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sun Mar 17 00:57:20 2024 +0530
+
+    subject syllabus inside subjec modal implemented version 01
+
+[33mcommit b35a1ce3c7c94b197762f221865066cdddc47309[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 16 16:01:44 2024 +0530
+
+    title vanish bug in subject modal refractored
+
+[33mcommit b3fee3a350c9f0a1320387b9d09e5fc55b67b794[m
+Merge: c001b26 1313d9e
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 16 00:23:26 2024 +0530
+
+    conflics resolve
+
+[33mcommit c001b260a1f658017b901fc5e798b9313b35fc5c[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Mar 16 00:16:13 2024 +0530
+
+    Subject Resource
+
+[33mcommit 1313d9e2cbcfa6252990fe8ea78367094f1a3090[m
+Merge: 14299ca 23f822a
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 16 00:11:20 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 14299cab074e4fcba4001d9169276444e4136a51[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 16 00:09:05 2024 +0530
+
+    inputs added in subject modal - basic info
+
+[33mcommit 23f822ad37e7f06ce0fdd44e43b94ba8acd52246[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Mon Mar 11 00:20:20 2024 +0530
+
+    register faculty or expert
+
+[33mcommit 278492e9464e4868d28851ff4229e50d7dc0ffb9[m
+Merge: 6a4ef54 e875902
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 9 16:15:31 2024 +0530
+
+    conflicts resolved
+
+[33mcommit 6a4ef54431f89c9af158fd6400b4b6dc972ed1e9[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 9 16:08:36 2024 +0530
+
+    view changes code implementation stage 1
+
+[33mcommit c4925c8ffc28d7aaad7768b9a0e3da143b597650[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Mar 9 13:10:12 2024 +0530
+
+    login email and password checks added
+
+[33mcommit e875902ad8eede3e85ddb4e78dac2b3fb68d613f[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 8 21:17:25 2024 +0530
+
+    Subjects Sub Routes
+
+[33mcommit ea0fbcbc44417f9ac231f6d2085c226be3ffdfd2[m
+Merge: c49067b 1dcdf7b
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 8 17:12:17 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit c49067b5731367410c53d87e4d5004babdc71811[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 8 17:12:01 2024 +0530
+
+    Subject Modal
+
+[33mcommit 1dcdf7b413000b60a955e34d840523969be67726[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Fri Mar 8 16:49:38 2024 +0530
+
+    listining changes stage 3
+
+[33mcommit 93bfb42ace12edd96e24fda28ce857f2939d9bca[m
+Merge: dbc63cd 273b665
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Fri Mar 8 14:22:47 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit dbc63cd4d8ae7bfc48a8c66099710c814ca741f6[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Fri Mar 8 14:22:25 2024 +0530
+
+    listning changes stage 2
+
+[33mcommit 273b66587861d3c690dba88272006bd95f40b12c[m
+Merge: 5b25748 ca54a70
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 8 00:35:37 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit 5b25748dd3f08cbcd0e2235dcb55f3988ca6c594[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 8 00:35:25 2024 +0530
+
+    Resource page Edit
+
+[33mcommit ca54a70882dd2ace1dd200879c7f246b767f8456[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Fri Mar 8 00:31:18 2024 +0530
+
+    listing changes code started
+
+[33mcommit cff56aa245efb6cc7c57c69837ca93b3642145a0[m
+Merge: ed684e4 36ebaba
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Mar 7 21:46:28 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit ed684e4100e42a34bdc009c68b5899618f452758[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Mar 7 21:45:50 2024 +0530
+
+    Subject Page is ready
+
+[33mcommit 36ebaba136b42295e4f36d9174bf054c865aa763[m
+Merge: d314056 fbe0515
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Thu Mar 7 13:26:54 2024 +0530
+
+    Merge and Modal Component
+
+[33mcommit d314056e71df830f851b0078d677620df43aa5b7[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Thu Mar 7 00:28:15 2024 +0530
+
+    resourse Page Add resource
+
+[33mcommit fbe0515b5185833806940132313820475d458492[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 22:46:50 2024 +0530
+
+    refractored Categories and Semester page
+
+[33mcommit 1c3a7dc5f889dd5b3d2a80f432c95c4ae9a90490[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 21:52:15 2024 +0530
+
+    CategoriesPage.jsx code refractored
+
+[33mcommit e4427648dd27f2cf041881b595b881646f68eaeb[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 18:38:39 2024 +0530
+
+    refractoring BasicInfo.jsx code
+
+[33mcommit 9b57bb99ea8e7e9a6444ebad97a18a67f954ccc6[m
+Merge: ebfcc7b 24eef61
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 18:11:07 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit ebfcc7b0fb5a092d5f9626ddc6f2ca463e3f3d5b[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 18:10:36 2024 +0530
+
+    refractored initial loading, FullPageLoading.jsx component added
+
+[33mcommit 5dcd15640dfce354254f787f4702472614a9ce6d[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 17:40:30 2024 +0530
+
+    AddCourseInput.jsx updated
+
+[33mcommit 24eef6148af002fcb30d4309677dc5b8899ffc01[m
+Merge: 76706d1 77f4557
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Mar 6 00:40:57 2024 +0530
+
+    Merge branch 'Daksh' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into Daksh
+
+[33mcommit 77f4557d81edc546ec9f561472edb0b510568e7f[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Mar 6 00:40:12 2024 +0530
+
+    some changes in AddCourseInput.jsx or at BasicInfo Page of Template Edit Page
+
+[33mcommit 76706d1e93bbb5c43e5790fa966ccbd9cc84039f[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Mar 6 00:38:45 2024 +0530
+
+    Resources Page serach functionality
+
+[33mcommit 678242fb737c1469ac6b37b50fd808a200691f63[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 5 23:22:34 2024 +0530
+
+    showing common_id and version on the card of allTemplates
+
+[33mcommit afff7daedea9736e7d9d8cd87a089317e7432332[m
+Merge: 17ef348 44d7add
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Mar 5 22:42:51 2024 +0530
+
+    merging main
+
+[33mcommit 17ef348ce3893acf44898ecbf2ef2e7b4fdb84cf[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Mar 5 22:35:09 2024 +0530
+
+    Login correction UserPage
+
+[33mcommit 44d7add4e887fcdfa10c25b88289a14b0fa5816d[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Mar 5 22:29:18 2024 +0530
+
+    removing warnings at frontend
+
+[33mcommit 3936136240100ab33eedbf676cb6e7efde1b0c30[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Mar 1 19:33:50 2024 +0530
+
+    Login/Logout changes and loading state
+
+[33mcommit 84d7dcfdee1615bca5ba8549bd4ee1cbebf317b0[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Feb 27 23:16:15 2024 +0530
+
+    User Page -issue Add User button
+
+[33mcommit a3e3a25114ad9c3435a6e1060d2586430974b1d0[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Feb 27 18:25:17 2024 +0530
+
+    collaborative editing/Version Page/Course-User Backend
+
+[33mcommit 840c02c7a37bf78ca98e25de9b534cc7285db162[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Feb 3 17:18:06 2024 +0530
+
+    commits and versions
+
+[33mcommit 0fb4492a5edb6cdeb39f95db7d8216f36ecff60d[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Feb 3 15:54:59 2024 +0530
+
+    subject changes done
+
+[33mcommit 73e8bb5a0eb372d3622fafca3aaa65b2cd16c6dd[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Thu Feb 1 18:29:04 2024 +0530
+
+    course save changes
+
+[33mcommit edef77de65dd9d72a69bf4711be76b594eae18e7[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Thu Jan 25 19:53:11 2024 +0530
+
+    categories page 01
+
+[33mcommit 93311ca5eca847813005f207e4b3714be8ab347b[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Jan 23 16:03:26 2024 +0530
+
+    curriculum/basicinfo page modified
+
+[33mcommit 40d14e3f738aceea9ecf61e0f07c2acadb010e4d[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Jan 17 19:58:03 2024 +0530
+
+    minor changes
+
+[33mcommit c16e82285ea0ea89ce9ec7ff72c7a1b49bc0f4b2[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Jan 16 16:02:52 2024 +0530
+
+    Login/Registration
+
+[33mcommit 4252f3c89c98624f9b82828c55b42ec4dca3da54[m
+Merge: 68c1d37 5a549b1
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Mon Jan 1 22:54:40 2024 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 5a549b1cb46a8c3a596f61ec61675693a628c4e7[m
+Merge: 4c1f4a6 8687763
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Mon Jan 1 22:43:33 2024 +0530
+
+    Merge pull request #13 from Akshat-1403/main
+    
+    Resources1.jsx by akshat
+
+[33mcommit 68c1d373769c0b6c629cea39d3e971871b2fbbf9[m
+Merge: 3c9e1ca 4c1f4a6
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 17:32:33 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 3c9e1ca74cec4053e51ab248aff3024365c9668c[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 16:49:15 2023 +0530
+
+    reset
+
+[33mcommit 4c1f4a6dc0c77ebdea496c99f625c1aa06c2442f[m
+Merge: f8849f2 977e1ef
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 16:34:15 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit f8849f28328d3a92964ee176efbc2d69b09bf5e4[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 16:32:22 2023 +0530
+
+    final01
+
+[33mcommit 977e1efd3c08d25dda11c5fa1cb2959e5121c364[m
+Merge: ce63b4e f971f78
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Dec 20 15:00:11 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit ce63b4e91bda09c1694c409d407cb52aa64dca6e[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Dec 20 14:58:46 2023 +0530
+
+    remove isStudent from feedbackController
+
+[33mcommit f971f78e70af437a2380ab67f7dd491ff7af305b[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 14:15:58 2023 +0530
+
+    faculty-app
+
+[33mcommit 450819603e8e2d98e78a2703b9cb07d6f2fd1bab[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 13:19:31 2023 +0530
+
+    filter01
+
+[33mcommit e8180ea0cedbcf6606d373bb6c70da861ef9ebaa[m[33m ([m[1;31morigin/auth[m[33m)[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 08:28:07 2023 +0530
+
+    resource
+
+[33mcommit 8687763b24188b75e340e81869af5b88231038a8[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Wed Dec 20 08:08:26 2023 +0530
+
+    Update Resources1.jsx
+    
+    Changed the tailwind classes for better layout
+
+[33mcommit 29ee672fd53fd0f4b49fda21bcfba1d04029cd1f[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 05:47:16 2023 +0530
+
+    experiments
+
+[33mcommit fbdab7101bf72128fe35099a85091811f9b7a2df[m
+Merge: 387efe6 76ca358
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Dec 20 04:16:22 2023 +0530
+
+    Version Control Frontend 01
+
+[33mcommit 76ca35869b7aa38013e31aba0a2e430186e085c5[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 04:14:11 2023 +0530
+
+    chats 02
+
+[33mcommit 387efe68540d020a9a391041fe51fb8a5cb4e173[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Dec 20 04:13:58 2023 +0530
+
+    Creating Version Control
+
+[33mcommit 46426412df2377a93bd3e95470e0560a284fca43[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 04:11:17 2023 +0530
+
+    chats component
+
+[33mcommit 720265fa53cbe39268d907eb4fae32a29553aba9[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 02:11:24 2023 +0530
+
+    verify otp 04
+
+[33mcommit 147f244faff6ae39980c047a7d077097ff49fde8[m
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Wed Dec 20 02:00:43 2023 +0530
+
+    verify otp 03
+
+[33mcommit 37094f1d9fdeda498b0cd168cc695c090cf113de[m
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Wed Dec 20 01:43:24 2023 +0530
+
+    verify otp 02
+
+[33mcommit e687db6d4a41b35dad6581d50832fde72b4316e7[m
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Wed Dec 20 01:37:54 2023 +0530
+
+    verify otp 01
+
+[33mcommit d75991263587cf0fc957847122a227d25ea71005[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Dec 20 00:22:21 2023 +0530
+
+    resources-test
+
+[33mcommit 8a85f4d96934566b013d375e2029236f13bcb84d[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Dec 19 18:28:51 2023 +0530
+
+    Version Control
+
+[33mcommit e0527fb8c42537aceea5534ffb81c51c1a3f8c1b[m
+Merge: fb696b9 0967d34
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 19 17:57:36 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit fb696b9dc96e85f612a98ac926546261c0356069[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 19 17:55:32 2023 +0530
+
+    auth02
+
+[33mcommit 0967d34ef6cd531375d6c8a2f20e336f14442951[m
+Merge: e43b007 ee044d1
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Tue Dec 19 17:48:05 2023 +0530
+
+    Merge pull request #10 from Akshat-1403/main
+    
+    Update firebase config files for chat
+
+[33mcommit ee044d11460cbb671a5bd353328a12ddbcc2660e[m
+Merge: ccc2e9b 5c37604
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Tue Dec 19 16:48:57 2023 +0530
+
+    Merge pull request #1 from Akshat-1403/revert-firebase-config-files
+    
+    Update firebase-config.js
+
+[33mcommit 5c37604ee8481865aa97da843bb0f28bef545772[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Tue Dec 19 16:48:12 2023 +0530
+
+    Update firebase-config.js
+
+[33mcommit ccc2e9b86f88cc90d61bd30f253378cd36e95273[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Tue Dec 19 16:25:03 2023 +0530
+
+    Add firebase config files for chat
+
+[33mcommit e43b007e2d8c966ddbcc4ee6b72ffdf81080d365[m
+Merge: 37416f4 dda6f76
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 19 10:51:59 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL into auth
+
+[33mcommit 37416f4516209bf3ee0547d4b678af3a9533c326[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 19 10:51:29 2023 +0530
+
+    login/register
+
+[33mcommit dda6f76b4d8f25cee2a7c384cf18688083ff6a6b[m
+Merge: 8c46b46 e49d633
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Sun Dec 17 19:15:34 2023 +0530
+
+    Merge pull request #8 akshat
+    
+    Update resources Controller, model and route
+
+[33mcommit e49d633f7e06d4c924e401754b5a514669d3b99d[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 19:03:33 2023 +0530
+
+    Update resourceContoller.js
+
+[33mcommit 7f03d4fccb7ad832207a55a0d9d1d440ce8dabf4[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 19:00:10 2023 +0530
+
+    Update resourceModel.js
+
+[33mcommit fd2cf671f923e7f4b2cdffc7d3078b14167bd0cf[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 18:58:22 2023 +0530
+
+    Update resourcesRoute.js
+    
+    Add delete resource functionality
+
+[33mcommit 8c46b4663eb91ddf66ccded3dfb56bbb17178114[m
+Merge: 8d0c5f7 0c3ea81
+Author: DakshSahani <107054051+DakshSahani@users.noreply.github.com>
+Date:   Sun Dec 17 18:10:24 2023 +0530
+
+    Merge pull request #7 from Akshat-1403/main
+    
+    Update Resources section
+
+[33mcommit 0c3ea81dd6d94cfc653abb984d84f4486f1a22b9[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 17:14:16 2023 +0530
+
+    Update resourceModel.js
+
+[33mcommit 722bffe79e8dee5b524c70457100ebde34bfb9da[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 17:05:40 2023 +0530
+
+    Add files via upload
+
+[33mcommit d2596dadcb9aaaa5ceb7c69f165893f6aadbd10e[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 17:02:44 2023 +0530
+
+    Update resourcesRoute.js
+
+[33mcommit 52c11f47d0041b6d7a29af675c766c52279dcc0d[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sun Dec 17 16:58:51 2023 +0530
+
+    Update resourceModel.js
+
+[33mcommit 8d0c5f7dced67548aa06691a1a8fc3641c3c9d3f[m
+Merge: 08752a3 95bcf49
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Dec 16 22:56:55 2023 +0530
+
+    Merge branch 'ritik' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 08752a37467560106bae19ee8f28ad63273356cb[m
+Merge: 45acd72 353d284
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Dec 16 22:55:58 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 45acd723837e533e0c3d9ca38d71ad596cb3bb0a[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Dec 16 22:46:54 2023 +0530
+
+    Creating Basic Info Page
+
+[33mcommit 95bcf49a5b7f7428f1a2e62f34ca610b44147ec2[m
+Merge: 353d284 d2c8442
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Sat Dec 16 22:34:38 2023 +0530
+
+    Merge pull request #6 from ritik240sharma/main
+    
+    created draft folder and updated explore ,resources
+
+[33mcommit d3c1d464ac2ba71461e824eb1e87a5893e27921c[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sat Dec 16 21:31:17 2023 +0530
+
+    Update resourcesRoute.js
+
+[33mcommit 8dc6605052c590f8b82718d76372010d1a922bcf[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sat Dec 16 21:29:57 2023 +0530
+
+    Update resourceModel.js
+
+[33mcommit d2c84425e5751193bfc57625250633c7ee3d2284[m
+Merge: 1ae48d6 353d284
+Author: ritik sharma <138618220+ritik240sharma@users.noreply.github.com>
+Date:   Sat Dec 16 21:06:17 2023 +0530
+
+    Merge branch 'Dev-Sahani:main' into main
+
+[33mcommit 1ae48d61beea852c0b9a780d55b86e427a61e76f[m
+Merge: e5e7e28 df1a88d
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 16 17:13:22 2023 +0530
+
+    Merge branch 'main' of https://github.com/ritik240sharma/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit e5e7e280442822da86d289e768adee4d13be16ba[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 16 17:12:40 2023 +0530
+
+    added draft and updated resource,explore
+
+[33mcommit 4cd84f8dadf57ab9cee73dde321773b1b608e009[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 16 17:11:28 2023 +0530
+
+    added draft and u[date explore , resource folder
+
+[33mcommit 353d284043da321cf4d943acc72557f8d00545a5[m
+Merge: 5f5661f 02c5044
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 16 01:32:45 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 5f5661f294202c986a9be759b6c3c2e5b7f8a847[m[33m ([m[1;31morigin/version-control-01[m[33m)[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 16 01:18:34 2023 +0530
+
+    course Routes
+
+[33mcommit 02c504425baccd66b4e1398d495f399100f4f07b[m
+Merge: ffe68ee 6501646
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Dec 14 10:46:27 2023 +0530
+
+    Merge branch 'main' of https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 70e2c0c430f9cacfe0169a4bb1e8d2f3a7397bef[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Thu Dec 14 02:35:02 2023 +0530
+
+    update draft
+
+[33mcommit ffe68eef02a424ae5b526df281063de637e0dd92[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Dec 13 22:54:19 2023 +0530
+
+    Curriculum Page Routes Created
+
+[33mcommit df1a88d672c1e344b1b1d4eecd5b3605b56d3192[m
+Merge: 6501646 108562c
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Wed Dec 13 22:46:24 2023 +0530
+
+    Merge pull request #4 from ritik240sharma/main
+    
+    updated explore and resource
+
+[33mcommit 108562c3c32ef256fb3ecc366e6136f818956363[m
+Merge: 471f02c 6501646
+Author: ritik sharma <138618220+ritik240sharma@users.noreply.github.com>
+Date:   Wed Dec 13 21:52:26 2023 +0530
+
+    Merge branch 'Dev-Sahani:main' into main
+
+[33mcommit 6501646328bfe8c3209d1bcfb3c998eaebf10e50[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 12 18:08:00 2023 +0530
+
+    version-controll-done
+
+[33mcommit 471f02c11a76d02091ab9d8e53ed4e56d44202be[m
+Merge: af5d9fb 3283336
+Author: ritik sharma <138618220+ritik240sharma@users.noreply.github.com>
+Date:   Tue Dec 12 15:18:59 2023 +0530
+
+    Merge branch 'Dev-Sahani:main' into main
+
+[33mcommit 32833363af1fbd983f8ddd7892d09c73153f7bc0[m
+Merge: 752cc2b 2b988d6
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 12 15:13:21 2023 +0530
+
+    Merge branch 'version-control-02'
+
+[33mcommit 2b988d67e8b5687152eb1d8b673cdeb4b300bc8c[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Tue Dec 12 15:01:43 2023 +0530
+
+    version-control-course
+
+[33mcommit af5d9fbefe1294b88b926630975bbe29e76815a4[m
+Merge: 1338c99 752cc2b
+Author: ritik sharma <138618220+ritik240sharma@users.noreply.github.com>
+Date:   Tue Dec 12 11:48:24 2023 +0530
+
+    Merge branch 'Dev-Sahani:main' into main
+
+[33mcommit 1338c995a1fb436318993fe4150ca9ee221f1928[m
+Merge: 866f316 36d8057
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Tue Dec 12 11:46:08 2023 +0530
+
+    Merge branch 'main' of https://github.com/ritik240sharma/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 866f3162dd77ea41473ade3d58ffed225209f801[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Tue Dec 12 11:45:18 2023 +0530
+
+    added resource and explore folder
+
+[33mcommit 752cc2b3d871e9df81f479a7d4b41f9a60edf991[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Mon Dec 11 19:52:53 2023 +0530
+
+    app.js refactored
+
+[33mcommit 14d707c40ccbf3fd62362633105efda792d1900b[m
+Merge: ef33927 5ad114b
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 9 11:39:16 2023 +0530
+
+    Merge branch 'main' into version-control-02
+
+[33mcommit 36d8057346aee91e4fe3f5763832c655a13e8d4e[m
+Merge: 5ad114b e4faea1
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Dec 9 11:34:40 2023 +0530
+
+    Merge branch 'feedback-backend'
+
+[33mcommit 5ad114bdd56b4b9dedacbb7bb66bdcc7b34bede0[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 9 11:32:25 2023 +0530
+
+    error-handler removing import-export
+
+[33mcommit e4faea17af6fa2c73321bf3f7edd41b9a3007c04[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Dec 9 11:28:12 2023 +0530
+
+    Feedback-backend Improved
+
+[33mcommit ef339279b657539f7ec6622aba21b66454eb714e[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 9 11:22:36 2023 +0530
+
+    before import-export in error-handler
+
+[33mcommit 1b5e8a654ba891212b03b7fca0a1bdbbb85f9b1b[m
+Merge: 1e577d9 47f46dd
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Sat Dec 9 10:14:27 2023 +0530
+
+    Merge pull request #3 from Akshat-1403/main
+    
+    Add other-curriculum model and controller files.
+
+[33mcommit 47f46dd85fc079b431d5401a33595830de1d26e9[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sat Dec 9 09:32:50 2023 +0530
+
+    Add other curriculum controller
+
+[33mcommit 06d7a810975a6b11eff7b71f392846d27b422198[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sat Dec 9 09:29:38 2023 +0530
+
+    Update otherCurriculumsRoute.js
+    
+    Add get, post and delete methods
+
+[33mcommit 3f341d8e85df48b65b5d6eb7e9420066ccd82e9c[m
+Author: Akshat Tripathi <114927070+Akshat-1403@users.noreply.github.com>
+Date:   Sat Dec 9 09:27:06 2023 +0530
+
+    Add other curriculums model
+
+[33mcommit 1e577d942ee06c137d97a31c133ef4f8a7aaf7e6[m
+Merge: 038b156 3e142b7
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Dec 8 22:58:22 2023 +0530
+
+    error-handler
+
+[33mcommit 038b1561506e7cabc35a06658fb52106472df687[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Fri Dec 8 22:47:44 2023 +0530
+
+    error-handler
+
+[33mcommit 3e142b79fc3622c74d339f9920aa8970abd1a70e[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Dec 7 12:07:43 2023 +0530
+
+    implemented feedback-analysis api version-01
+
+[33mcommit f8c7d804eeafce0019dc03fa12cf41a4e1dd810d[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Dec 5 08:59:56 2023 +0530
+
+    TemplatePage Refractored
+
+[33mcommit d94a6501d6dd0ace8ea26f925a16b260bbd4d216[m
+Merge: 73206dc cbbb648
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sun Dec 3 11:52:01 2023 +0530
+
+    Merge branch 'backend'
+
+[33mcommit cbbb648fdd3a99f7e6fd8ff5d1f581284a1f8132[m[33m ([m[1;31morigin/backend[m[33m)[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sun Dec 3 11:43:22 2023 +0530
+
+    Version Control01
+
+[33mcommit 73206dcf93ea9dd9a2f3d2d0566cd10bd30732d3[m
+Merge: 2db81ec 1a47224
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Sun Dec 3 00:02:54 2023 +0530
+
+    Merge pull request #2 from ritik240sharma/main
+    
+    Updated pages/dashboard
+
+[33mcommit 1a47224f3c9e7d4da1b733b13f86193ee4da4ffb[m
+Merge: 25943ba 2db81ec
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 2 22:01:31 2023 +0530
+
+    Merge branch 'main' of https://github.com/ritik240sharma/AICTE_CURRICULUM_DESIGN_PORTAL
+
+[33mcommit 25943baec05b0b1b7384359c7779c4afa2502bbc[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 2 22:00:58 2023 +0530
+
+    added new file in pages/dashboard
+
+[33mcommit cbe9c897bc7ef119b4a5947b383781c98d231378[m
+Author: ritik <ritik240gwalior@gmail.com>
+Date:   Sat Dec 2 21:39:31 2023 +0530
+
+    updated and added some pages in dashboard
+
+[33mcommit 2db81ecb5c1172573c8da448e6c2e268b0c709cc[m
+Merge: 72956a9 4d2c7d1
+Author: Dev-Sahani <124420043+Dev-Sahani@users.noreply.github.com>
+Date:   Sat Dec 2 17:50:28 2023 +0530
+
+    Merge pull request #1 from Dev-Sahani/backend
+    
+    Backend
+
+[33mcommit 4d2c7d11ce44747cc2ca66297554e671ec36f7a9[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Sat Dec 2 17:28:22 2023 +0530
+
+    Creating Models
+
+[33mcommit 7c5104d4c43fe18a76611871a0e8f906d2055731[m
+Author: DakshSahani <dakshsahani8123@gmail.com>
+Date:   Wed Nov 22 23:35:56 2023 +0530
+
+    Models created 01
+
+[33mcommit 72956a9e31160c9c3689e86b394b07d01bda67dd[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Nov 22 21:24:22 2023 +0530
+
+    Refratoring Sidebar code, adding env file in git
+
+[33mcommit b5f27b44b56dbc4e35482cfc9d3578ff5fb0f9bb[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Nov 22 18:08:41 2023 +0530
+
+    routes files added
+
+[33mcommit 7027f4dbfb1effb0ca8049b153e1f10c1749e72c[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Nov 22 16:04:26 2023 +0530
+
+    initial server code
+
+[33mcommit 434d3a341bf3edbbdf44a556d0f4f6c78ee18b15[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Sat Nov 4 21:05:29 2023 +0530
+
+    Colors imported in tailwind.config, colors added in sidebar
+
+[33mcommit 30436af5bb2009b96719f29376e07f0a9bd712e9[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Nov 2 20:40:59 2023 +0530
+
+    Sidebar created
+
+[33mcommit 30b39e46c48769c298806bcacd808c2ce9386ccc[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Thu Nov 2 15:42:25 2023 +0530
+
+    Sidebar structure created (toggle sidebar functionality is left)
+
+[33mcommit 98585462ed1113e0722279059f271ea3a064942e[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Wed Nov 1 14:36:14 2023 +0530
+
+    Logo Added
+
+[33mcommit 7aba8c62d7b50c753c1a959faa8e82d71e183ddb[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Oct 31 22:05:08 2023 +0530
+
+    Some more folders added (at Frontend)
+
+[33mcommit 045260cadeeaf898668dfe87aaeb1aba0ff543d3[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Oct 31 21:59:21 2023 +0530
+
+    Route (SideBar) Created at Frontend
+
+[33mcommit d76758bf658071166a319b5cd9dd43b11076fa80[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Oct 31 18:54:18 2023 +0530
+
+    Added some more Folders
+
+[33mcommit 8b01372abbb9c3df917382df25b9e87b6d4e18e2[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Oct 31 17:36:15 2023 +0530
+
+    Adding Folders
+
+[33mcommit 937b3845f50121cc0f8e6a7d56284c30edf3af46[m
+Author: Dev-Sahani <devdaksh8102003@gmail.com>
+Date:   Tue Oct 31 17:24:59 2023 +0530
+
+    Initial Commit - Folder Structure Created

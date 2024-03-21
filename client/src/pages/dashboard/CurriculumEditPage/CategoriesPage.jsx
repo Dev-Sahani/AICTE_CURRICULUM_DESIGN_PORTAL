@@ -79,6 +79,7 @@ export default function CategoriesPage() {
               <Table
                 data={categories[category] || []}
                 keys={keyOrder}
+                setLoading={setLocalLoading}
               />
 
 

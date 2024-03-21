@@ -9,6 +9,7 @@ import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import NavButton from "./NavButton";
 import NavList from "./NavList";
+import NewAndDeletedSubjectsList from "./NewAndDeletedSubjectsList";
 import {  
     AddCourseInput, 
     CourseDropdown, 
@@ -38,7 +39,8 @@ export {
     SecondaryButton, 
     SubjectMultiInput, 
     NavButton,
-    NavList,
+    NavList, 
+    NewAndDeletedSubjectsList, 
     CourseMultiInput, 
     CourseTextArea, 
     CourseDropdown, 
