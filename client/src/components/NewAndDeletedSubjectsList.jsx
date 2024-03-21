@@ -17,7 +17,7 @@ export default function NewAndDeletedSubjectsList({deleted=false}) {
   }
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full my-4">
       {
         keys.map((key, indx)=>{
           const classes = `
