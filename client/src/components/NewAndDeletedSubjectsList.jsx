@@ -37,8 +37,9 @@ export default function NewAndDeletedSubjectsList({deleted=false}) {
                   arrayOfSubject?.map((item, ind)=>{
                     if(!item) return null;
                     return (
-                      <div className="w-full flex flex-col items-end gap-1 relative overflow-visible">
-                        <Link key={ind} to={`${item?.cur?.common_id}`} className={classes}>
+                      <div className="w-full flex flex-col items-end gap-1 relative overflow-visible" key={ind}>
+                        {/* -------- Add to={} property to open modal having modules deatils --------- */}
+                        <Link key={ind} className={classes}>
                           { 
                             key === "by"
                             ?

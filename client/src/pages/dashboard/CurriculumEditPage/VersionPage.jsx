@@ -1,38 +1,95 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import {Loading} from "../../../components";
+import {Loading, Modal, SecondaryButton} from "../../../components";
 
 export default function VersionPage(){
     const {common_id} = useParams();
     const [data, setData] = useState()
     const [loading, setLoading] = useState(false)
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [createVersion, setCreateVersion] = useState(false);
 
-    useEffect(()=>{
+    const getData = async ()=>{
         setLoading(true)
-        axios.get("http://localhost:8080/api/v1/commit/get-all-commits/"+common_id,{
-            withCredentials:true
-        }).then((res)=>{
-            setData(res.data.data.commits)
-        }).catch((err)=>window.alert(err.message))
-        .finally(()=>setLoading(false))
-  // eslint-disable-next-line
+        try {
+            const res = await axios.get("http://localhost:8080/api/v1/commit/get-all-commits/"+common_id,{
+                withCredentials:true
+            })
+            if(res?.data?.data?.commits) setData(res.data.data.commits)
+            else throw new Error("Data has not come in desired format!");
+        } catch(err) {
+            window.alert(err.message);
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    }
+    useEffect(()=>{
+        getData();
+    // eslint-disable-next-line
     },[])
     
+    const createNewVersion = async(e)=>{
+        setShowConfirmModal(false);
+        setLoading(true);
+        axios.post(`http://localhost:8080/api/v1/commit/save/${common_id}/`, {withCredentials: true})
+          .then(async (res)=>{
+            await getData();
+          })
+          .catch(err=>{
+            // handle Error
+            window.alert(err.message);
+            console.log(err);
+          })
+          .finally(()=>{
+            setLoading(false);
+          })
+    }
+
     return <div className="">
-        <h1 className="w-[80%] text-2xl text-center">Previous versions</h1>
-        <div className="flex flex-col m-4 gap-2">
+        <header className="px-4 flex justify-between">
+            <h1 className="text-3xl text-center text-primary-500 font-bold">Previous versions</h1>
+            <SecondaryButton onClick={()=>{setShowConfirmModal(true); setCreateVersion(true)}}>
+                Create Version
+            </SecondaryButton>
+        </header>
+        <div className="flex flex-col m-4 gap-3">
             {
                 loading?
                 <Loading count={5} cardClassName="!w-[80%]"/>
                 :
                 data?.map((version,ind)=>(
-                    <div key={ind} className="w-[80%] rounded-2xl flex justify-evenly p-4 border-2 border-gray-500">
-                        <h2>{version.dateOfCommit.substring(11,19) +"   "+  version.dateOfCommit.substring(0,10)}</h2>
-                        <h2>{version.title?.cur}</h2>
+                    <div key={ind} className="w-[92%] rounded-2xl flex justify-between items-center p-4 border-2 border-gray-500">
+                        <h2 className="bg-primary-500 p-2 px-4 text-white font-semibold rounded-full">{ind}</h2>
+                        <h2 className="text-gray-600">{version.dateOfCommit.substring(0,10)}</h2>
+                        <h2 className="text-lg font-medium">{version.title?.cur}</h2>
+                        <div className="flex gap-2 items-center">
+                            <button className="py-1 px-2 text-white bg-secondary-500">Open</button>
+                            <button className="py-1 px-2 text-white bg-primary-500" onClick={()=>setShowConfirmModal(true)}>Apply</button>
+                        </div>
                     </div> 
                 ))
             }
         </div>
+        
+        {
+            showConfirmModal && 
+            <Modal onClose={()=>setShowConfirmModal(false)} className="!h-[10rem] !w-[22rem]">
+              <p className="mt-8 px-4 text-center">
+                {
+                createVersion ?
+                "Are you sure you want to create a new version?"
+                :
+                "Are you sure you want to apply previous version?"
+                }
+              </p>
+              <div className="mt-4 w-full flex justify-evenly items-center">
+                  <button className="min-w-[80px] px-2 py-1 bg-primary-500 text-white" onClick={()=>createVersion ? createNewVersion() : ()=>{}}>Yes</button>
+                  <button className="min-w-[80px] px-2 py-1 bg-red-500 text-white" onClick={()=>setShowConfirmModal(false)}>Cancel</button>
+              </div>
+            </Modal>
+        }
+
     </div>
 }

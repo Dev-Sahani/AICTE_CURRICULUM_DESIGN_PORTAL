@@ -37,7 +37,7 @@ export default function ChangesModal({ name, index, onClose }) {
               propertyValue.new.map((item, ind)=> 
               {  
                 if(name === "modules") return (
-                  <div>
+                  <div key={ind}>
                     <Module module={item?.value} />
                     <p className="text-gray-500 text-sm">by: {item?.by}</p>
                   </div>
