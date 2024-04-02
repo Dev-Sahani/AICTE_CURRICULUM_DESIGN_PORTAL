@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { SecondaryButton } from "../../../components";
+import { SecondaryButton, Modal } from "../../../components";
 
 export default function AddResourceForm({onClose}) {
     const [state, setState] = useState({
@@ -49,7 +49,7 @@ export default function AddResourceForm({onClose}) {
     }
 
     return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} className="!w-[40rem] overflow-y-auto">
         <form  className="mt-4 w-full p-4 pt-8 flex flex-col gap-2 overflow-auto">
             <div className="flex justify-between items-center px-2">
                 <label className="" for="title@add">Title</label>
@@ -110,10 +110,10 @@ export default function AddResourceForm({onClose}) {
                     />
             </div>
 
-            <div className="flex justify-start gap-12 items-center px-2">
+            <div className="flex justify-between gap-16 items-center px-2">
                 <label className="" for="type@invite">Format</label>
                 <select 
-                    className="border-2 border-gray-400 rounded px-2 py-1 focus:outline-none"
+                    className="w-full border-2 border-gray-400 rounded ml-1 px-2 py-1 focus:outline-none"
                     name="type"
                     id="type@invite"
                     onChange={handleChange} 
@@ -126,8 +126,8 @@ export default function AddResourceForm({onClose}) {
                 </select>
             </div>
 
-            <div className="items-center px-2">
-                <label className="block" for="text@invite">Description</label>
+            <div className="mt-4 items-center px-2">
+                <label className="ml-px mb-1 block" for="text@invite">Description</label>
                 <textarea
                     type="text"
                     value={state.description}
@@ -147,23 +147,5 @@ export default function AddResourceForm({onClose}) {
             </SecondaryButton>
         </form>
     </Modal>
-    )
-}
-
-function Modal({onClose, children}){
-    return (
-    <div className="overflow-y-auto bg-[#3c3c5066] overflow-x-hidden fixed top-0 left-0 z-50 w-full md:inset-0 h-full max-h-full">
-        <div className="relative flex items-center justify-center h-full w-full">
-            {/* Modal content */} 
-            <div className="h-[36rem] w-[34rem] relative rounded-lg shadow bg-primary-50">
-                <button onClick={()=>onClose()} className="bg-secondary-400 rounded-full w-8 h-8 text-2xl font-semibold absolute top-[4px] right-[4px]">
-                    x
-                </button>
-
-                {children}
-            
-            </div>
-        </div>
-    </div>
     )
 }

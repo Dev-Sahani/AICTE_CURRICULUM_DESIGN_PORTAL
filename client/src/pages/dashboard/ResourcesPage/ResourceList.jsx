@@ -102,9 +102,11 @@ export default function ResourceList({ searchReqFunc }) {
       {addResource && <AddResourceForm onClose={handleAddButtonClose} />}
   
       {/* Resources List Section */}
+      <ul className="mt-2 flex flex-col gap-2">
       {
         Array.map((x, indx) => <Resources key={indx} resource={x} />)
       }
+      </ul>
     </>
   )
   }
