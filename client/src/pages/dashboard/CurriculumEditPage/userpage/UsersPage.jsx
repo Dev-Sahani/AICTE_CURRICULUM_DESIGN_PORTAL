@@ -13,8 +13,10 @@ export default function UsersPage(){
     const [inviteButton, setInviteButton] = useState(false)
     const [loading, setLoading] = useState(false)
 
+    const base_url = process.env.REACT_APP_URL
+
     const axiosInstance = axios.create({
-        baseURL:"http://localhost:8080/api/v1/courses/"+common_id+"/users",
+        baseURL:base_url+"/api/v1/courses/"+common_id+"/users",
         withCredentials:true
     })
     const fetchData = async ()=>{

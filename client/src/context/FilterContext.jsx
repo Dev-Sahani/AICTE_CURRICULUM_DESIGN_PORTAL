@@ -16,8 +16,9 @@ export const initialStates = {
 export const FilterProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, initialStates);
     
+    const base_url = process.env.REACT_APP_URL
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8080/api/v1/',
+        baseURL: base_url+'/api/v1/',
         timeout: 10000, 
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +26,6 @@ export const FilterProvider = ({children})=>{
       });
 
     const handleChange = ({name, value})=>{
-        console.log(`Name = ${name}, Value = ${value}`);
         dispatch({
             type: HANDLE_CHANGE,
             payload: {
@@ -45,7 +45,7 @@ export const FilterProvider = ({children})=>{
         const url = `courses${query}`
         let response = undefined;
         try {
-            response = await axiosInstance.get(url);
+            response = await axiosInstance.get(url, {withCredentials:true});
             if(response.request.status === 200) {
                 return response.data;
             }

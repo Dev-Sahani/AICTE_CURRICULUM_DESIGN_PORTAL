@@ -3,6 +3,25 @@ const Subject = require('../models/subjectModel')
 const Resource = require('../models/resourceModel')
 const User = require('../models/userModel')
 
+async function findReferenceMaterials({commonId, }){
+    const data = (await 
+        Subject.find({common_id:commonId})
+        .sort({version:-1})
+        .limit(1)
+        .select("referenceMaterial")  
+    )[0]
+    const ids = data?.referenceMaterial?.cur?.map(el=>el.cur)
+    const addIds = data?.referenceMaterial?.add.map(el=>el.value)
+    const delIndex = data?.referenceMaterial?.del.map(el=>el.index)
+
+    const referenceMaterial = await Resource.find({_id:{$in:ids}}).select("-description")
+    const addReferenceMaterial = await Resource.find({_id:{$in:addIds}}).select("-description")
+    
+    return {referenceMaterial,addReferenceMaterial,delIndex}
+}
+
+exports.findReferenceMaterials = findReferenceMaterials
+
 exports.getSubjectById = async (req, res)=>{
     const data = (await Subject.find({common_id:req.params.commonId})
         .sort({version:-1})
@@ -115,22 +134,11 @@ exports.getAllSubjects = async function (req,res, next){
 exports.getReferenceMaterial = async function(req, res, next){
     const commonId = req.params.commonId;
 
-    const data = (await 
-        Subject.find({common_id:commonId})
-        .sort({version:-1})
-        .limit(1)
-        .select("referenceMaterial")  
-    )[0]
-    const ids = data?.referenceMaterial?.cur?.map(el=>el.cur)
-    const addIds = data?.referenceMaterial?.add.map(el=>el.value)
-    const delIndex = data?.referenceMaterial?.del.map(el=>el.index)
-
-    const referenceMaterial = await Resource.find({_id:{$in:ids}}).select("-description")
-    const addReferenceMaterial = await Resource.find({_id:{$in:addIds}}).select("-description")
+    const data = await findReferenceMaterials({commonId})
 
     res.status(200).send({
         status:"success",
-        data:{referenceMaterial,addReferenceMaterial,delIndex}
+        data
     })
 }
 

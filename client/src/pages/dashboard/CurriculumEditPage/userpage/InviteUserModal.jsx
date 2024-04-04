@@ -10,6 +10,8 @@ export default function AddUserModal({onClose}){
         text:""
     })
     const [loading, setLoading] = useState(false)
+
+    const base_url = process.env.REACT_APP_URL
     
     const handleChange = (e)=>{
         setState(prev=>{
@@ -26,7 +28,7 @@ export default function AddUserModal({onClose}){
             if(!["faculty","expert"].includes(state.role) || !state.mail || !state.name ){
                 throw new Error("Please enter role or mail or name correctly")
             }
-            await axios.post("http://localhost:8080/api/v1/auth/pre-register-user",{
+            await axios.post(base_url+"/api/v1/auth/pre-register-user",{
                 name:state.name,
                 email:state.mail,
                 role:state.role,

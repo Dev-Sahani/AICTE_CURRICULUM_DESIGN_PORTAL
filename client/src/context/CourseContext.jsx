@@ -15,8 +15,10 @@ const courseContext = React.createContext();
 
 export const CourseProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, intialCourse);
+
+    const base_url = process.env.REACT_APP_URL
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:8080/api/v1/",
+        baseURL: base_url+"/api/v1/",
         withCredentials:true
     });
 

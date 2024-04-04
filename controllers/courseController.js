@@ -2,9 +2,56 @@ const { NOT_FOUND, BAD_REQUEST } = require('../errors');
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
 
-exports.getAllCourses = async (req,res,next)=>{
+const findCourse = async ({commonId, next, select})=>{
+    const query = Course.find({common_id:commonId})
+        .sort({version:-1})
+        .limit(1)
+
+    if(select)query.select(select)
+    const data = (await query)[0]
+
+    if(!data)return next(new NOT_FOUND("The doc not found"));
+    
+    return data
+}
+const findCourseSubjects = async ({commonId, next})=>{
+    const course = await findCourse({
+        commonId:commonId,
+        next,
+        select:"subjects"
+    })
+    const subjectsIds = course.subjects.cur.map((val)=>val.cur.common_id)
+    
+    let data = await (Subject.aggregate()
+    .match({common_id:{$in:subjectsIds}})
+    .group({ 
+        _id: "$common_id",
+        maxVer: { $max: "$version" },
+        docs: { $push: "$$ROOT" } 
+    })
+    .project({
+        doc: { 
+            $filter: { 
+                input: "$docs",
+                as: "curDoc",
+                cond: { $eq: ["$$curDoc.version", "$maxVer"] }
+            }
+        }
+    })
+    .unwind("doc"))
+    return data
+}
+exports.findCourse = findCourse
+exports.findCourseSubjects = findCourseSubjects
+
+exports.getAllCoursesUserWise = async (req,res,next)=>{
     let {search, program, level, page} = req.query
+    let ids = []
     const matchObj = {}
+    if(req.user?.role !== "administrator"){
+        ids = req.user?.courses.map(el=>el.id?._id)
+        matchObj.common_id = {"$in":ids}
+    }
 
     if(search && search !== ""){
         search = new RegExp(`${search}`)
@@ -64,12 +111,7 @@ exports.getAllCourses = async (req,res,next)=>{
 }
 
 exports.getCourse = async (req, res, next)=>{
-    const data = (await Course.find({common_id:req.params.commonId})
-        .sort({version:-1})
-        .limit(1) )[0]
-
-    if(!data)return next(new NOT_FOUND("The doc not found"));
-
+    const data = await findCourse({commonId:req.params.commonId, next})
     res.status(200).send({
         status:"success",
         data
@@ -77,10 +119,15 @@ exports.getCourse = async (req, res, next)=>{
 }
 
 exports.getBasicInfo = async(req, res, next)=>{
-    const data = (await Course.find({common_id:req.params.commonId})
-        .sort({version:-1})
-        .limit(1)
-        .select("-version -subjects -categories -semesters"))
+    const data = await findCourse({
+        commonId:req.params.commonId, 
+        next, 
+        select:"-version -subjects -categories -semesters"
+    })
+    // const data = (await Course.find({common_id:req.params.commonId})
+    //     .sort({version:-1})
+    //     .limit(1)
+    //     .select("-version -subjects -categories -semesters"))
 
     res.status(200).send({
         status:"success",
@@ -88,10 +135,15 @@ exports.getBasicInfo = async(req, res, next)=>{
     })
 }
 exports.getCategory = async(req, res, next)=>{
-    const data = (await Course.find({common_id:req.params.commonId})
-        .sort({version:-1})
-        .limit(1)
-        .select("subjects categories common_id") )[0]
+    const data = await findCourse({
+        commonId:req.params.commonId,
+        next,
+        select:"subjects categories common_id"
+    })
+    // const data = (await Course.find({common_id:req.params.commonId})
+    //     .sort({version:-1})
+    //     .limit(1)
+    //     .select("subjects categories common_id") )[0]
     
     res.status(200).send({
         status:"success",
@@ -102,10 +154,15 @@ exports.getCategory = async(req, res, next)=>{
     })
 }
 exports.getSemester = async(req, res, next)=>{
-    const data = (await Course.find({common_id:req.params.commonId})
-        .sort({version:-1})
-        .limit(1)
-        .select("subjects semesters common_id") )[0]
+    const data = await findCourse({
+        commonId:req.params.commonId,
+        next,
+        select:"subjects semesters common_id"
+    })
+    // const data = (await Course.find({common_id:req.params.commonId})
+    //     .sort({version:-1})
+    //     .limit(1)
+    //     .select("subjects semesters common_id") )[0]
     
     res.status(200).send({
         status:"success",
@@ -116,28 +173,7 @@ exports.getSemester = async(req, res, next)=>{
     })
 }
 exports.getSubjects = async(req, res, next)=>{
-    const course = (await Course.find({common_id:req.params.commonId})
-        .sort({version:-1})
-        .limit(1)
-        .select("subjects"))[0]
-    const subjectsIds = course.subjects.cur.map((val)=>val.cur.common_id)
-    
-    let data = await (Subject.aggregate()
-    .match({common_id:{$in:subjectsIds}}).group({ 
-        _id: "$common_id",
-        maxVer: { $max: "$version" },
-        docs: { $push: "$$ROOT" } 
-    })
-    .project({
-        doc: { 
-            $filter: { 
-                input: "$docs",
-                as: "curDoc",
-                cond: { $eq: ["$$curDoc.version", "$maxVer"] }
-            }
-        }
-    })
-    .unwind("doc"))
+    const data = await findCourseSubjects({commonId:req.params.commonId})
 
     // data.forEach((val, index)=>{
     //     const ind = course.subjects.findIndex((subVal)=>subVal.common_id===val.common_id)
@@ -171,9 +207,13 @@ exports.updateByUser = async (req, res, next) =>{
     //find the course By id and update the Course
     const userId = req.user._id
     const courseCommonId = req.params.commonId
-    const course = (await Course.find({common_id:courseCommonId})
-        .sort({version:-1})
-        .limit(1))[0]
+    const course = await findCourse({
+        commonId:courseCommonId,
+        next,
+    })
+    // const course = (await Course.find({common_id:courseCommonId})
+    //     .sort({version:-1})
+    //     .limit(1))[0]
 
     if(!course)return next(new BAD_REQUEST("Invalid Course Id"))
     if(!course[prop])return next(new BAD_REQUEST("Field does not exists"))
@@ -256,9 +296,13 @@ exports.acceptUpdates = async function(req,res,next){
 
     //find the course By id and update the Course
     const courseCommonId = req.params.commonId
-    const course = (await Course.find({common_id:courseCommonId})
-        .sort({version:-1})
-        .limit(1))[0]
+    const course = await findCourse({
+        commonId:courseCommonId,
+        next,
+    })
+    // const course = (await Course.find({common_id:courseCommonId})
+    //     .sort({version:-1})
+    //     .limit(1))[0]
     
     if(!course)return next(new BAD_REQUEST("Invalid Course Id"))
     if(!course[prop])return next(new BAD_REQUEST("Field does not exists"))

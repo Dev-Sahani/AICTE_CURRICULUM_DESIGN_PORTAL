@@ -5,8 +5,8 @@ import { useUserContext } from "../../../context"
 export default function EditProfile({ onClose }) {
   const {user, updateUserProfile} = useUserContext();
   const inputClass= "w-[80%] m-2 px-2 border-[1.4px] border-gray-500 outline-none rounded items-center";
-  const inputContainerClass = "flex justify-between items-center text-lg";
-  const labelClass = "h-fit"
+  const inputContainerClass = "flex justify-between items-center text-lg text-start";
+  const labelClass = "h-fit text-start"
 
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
@@ -14,7 +14,7 @@ export default function EditProfile({ onClose }) {
     profileImgUrl:user.profileImgUrl,
     gender:user.gender,
     dob:user.dob,
-    // specialization:user.areaOfSpecialization,
+    areaOfSpecialization:user.areaOfSpecialization,
   })
 
   const handleChange = async (e)=>{
@@ -33,7 +33,7 @@ export default function EditProfile({ onClose }) {
     setLoading(false)
   }
 
-  const profileImgClass = "w-64 h-64 rounded-full overflow-hidden bg-cover bg-center my-4"
+  const profileImgClass = "w-60 h-60 rounded-full overflow-hidden bg-cover bg-center my-4"
 
   return <Modal onClose={onClose} className="!w-[48rem] h-[32rem]">
     <header className="h-10 mt-4 flex justify-center">
@@ -47,7 +47,7 @@ export default function EditProfile({ onClose }) {
           <img className={profileImgClass} src={data.profileImgUrl} alt="profile"/>
           Profile Image
         </div>
-        <div className="w-[55%] flex flex-col gap-4">
+        <div className="w-[60%] flex flex-col gap-3">
           <div className={inputContainerClass}>
             <label className={labelClass}>Name</label>
             <input
@@ -75,12 +75,42 @@ export default function EditProfile({ onClose }) {
           <div className={inputContainerClass}>
             <label className={labelClass}>dob</label>
             <input
-              value={data.dob.substr(0,10)}
+              value={data.dob?.substr(0,10)}
               onChange={handleChange}
               className={inputClass}
               type="date"
               name="dob"
             />
+          </div>
+          <div className={inputContainerClass + " !flex-col"}>
+            <label className={labelClass + " max-w-12"}>Area of Specialization</label>
+            <div className="flex flex-wrap overflow-y-auto max-h-28 justify-between">
+              {
+                data.areaOfSpecialization.map((el, ind)=>
+                  <input
+                    value={el}
+                    onChange={(e)=>{
+                      const area = data.areaOfSpecialization
+                      area[ind] = e.target.value;
+                      setData(prev=>({...prev,areaOfSpecialization:area}))
+                    }}
+                    className={inputClass + " !w-48"}
+                    type="text"
+                    name={`areaOfSpecialization.${ind}`}
+                  />
+                )
+              }
+              <button
+                className="font-bold text-xl bg-white border-[1.4px] border-gray-500 rounded-full px-3"
+                onClick={(e)=>{
+                  e.preventDefault();
+                  const newArea = data.areaOfSpecialization
+                  newArea.push("")
+                  setData(prev=>({...prev, areaOfSpecialization:newArea}))
+                }}
+              >+</button>
+
+            </div>
           </div>
           <div className={inputContainerClass}>
             <label className={labelClass + " max-w-12"}>Image Url</label>

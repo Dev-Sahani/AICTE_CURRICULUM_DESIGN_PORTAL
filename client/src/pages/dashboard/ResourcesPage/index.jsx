@@ -2,8 +2,10 @@ import ResourceList from "./ResourceList";
 import axios from 'axios';
 
 function ResourcesPage() {
+  const base_url = process.env.REACT_APP_URL
+
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/v1/resources",
+    baseURL: base_url+"/api/v1/resources",
     withCredentials: true
   })
 

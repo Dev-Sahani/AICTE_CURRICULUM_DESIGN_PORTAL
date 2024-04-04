@@ -5,6 +5,8 @@ import { Loading, SecondaryButton } from "./../../components";
 import axios from 'axios';
 import SearchImg from "./../../assets/Search.png"
 
+const BASE_URL = process.env.REACT_APP_URL
+
 const NotificationPage = () => {
   const [Array, setArray] = useState([]);
   const [state, setState] = useState({
@@ -14,7 +16,7 @@ const NotificationPage = () => {
   const [loading, setLoading] = useState(false)
 
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/v1/resources",
+    baseURL: BASE_URL+"/api/v1/resources",
     withCredentials: true
   })
 

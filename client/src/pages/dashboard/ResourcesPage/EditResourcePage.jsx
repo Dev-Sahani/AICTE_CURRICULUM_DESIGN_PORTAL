@@ -2,6 +2,8 @@ import { useState } from "react";
 // import axios from "axios";
 import { SecondaryButton } from "../../../components";
 
+// const BASE_URL = process.env.REACT_APP_URL
+
 export default function AddResourceForm({onClose, resource}) {
     const [state, setState] = useState({
         title:resource?.title || "",
