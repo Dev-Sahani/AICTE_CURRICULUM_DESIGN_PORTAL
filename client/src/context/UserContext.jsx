@@ -19,7 +19,8 @@ const UserContext = createContext();
 export const UserProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, initialState);
     
-    const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/"});
+    const base_url = process.env.REACT_APP_URL
+    const axiosInstance = axios.create({baseURL: base_url+"/api/v1/"});
 
     axiosInstance.interceptors.response.use(
         (response)=>{

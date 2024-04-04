@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { SecondaryButton, Modal } from "../../../components";
 
+const BASE_URL = process.env.REACT_APP_URL
+
 export default function AddResourceForm({onClose}) {
     const [state, setState] = useState({
         title:"",
@@ -29,7 +31,7 @@ export default function AddResourceForm({onClose}) {
             if(!state.type || state.type==="select format" || !state.author || !state.title || !state.url || !state.coverImageUrl || !state.description){
                 throw new Error("Please enter details correctly")
             }
-            await axios.post("http://localhost:8080/api/v1/resources/",{
+            await axios.post(BASE_URL+"/api/v1/resources/",{
                 title:state.title,
                 author:state.author,
                 type:state.type,

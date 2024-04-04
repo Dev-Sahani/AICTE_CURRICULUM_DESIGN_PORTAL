@@ -15,7 +15,8 @@ const intialState = {
 export const SubjectProvider = ({children})=>{
     const [states, dispatch] = useReducer(reducer, intialState);
 
-    const axiosInstance = axios.create({baseURL: "http://localhost:8080/api/v1/subjects/"});
+    const base_url = process.env.REACT_APP_URL
+    const axiosInstance = axios.create({baseURL: base_url+"/api/v1/subjects/"});
 
     axiosInstance.interceptors.response.use(
         (response)=>{

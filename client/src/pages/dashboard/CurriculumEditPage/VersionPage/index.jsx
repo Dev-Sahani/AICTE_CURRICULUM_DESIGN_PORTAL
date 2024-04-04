@@ -10,11 +10,12 @@ export default function VersionPage(){
     const [createVersion, setCreateVersion] = useState(false);
     const [version, setVersion] = useState(-1);
     const {common_id} = useParams();
+    const base_url = process.env.REACT_APP_URL;
 
     const getData = async ()=>{
         setLoading(true)
         try {
-            const res = await axios.get("http://localhost:8080/api/v1/commit/get-all-commits/"+common_id,{
+            const res = await axios.get(base_url+"/api/v1/commit/get-all-commits/"+common_id,{
                 withCredentials:true
             })
             if(res?.data?.data?.commits) setData(res.data.data.commits)
@@ -35,7 +36,7 @@ export default function VersionPage(){
     const resetToOldVersion = async()=>{
         setLoading(true)
         try {
-            await axios.delete(`http://localhost:8080/api/v1/reset-commit/${common_id}/${version}`, {
+            await axios.delete(`${base_url}/api/v1/reset-commit/${common_id}/${version}`, {
                 withCredentials:true
             })
             await getData(setData, setLoading);
@@ -50,7 +51,7 @@ export default function VersionPage(){
     const createNewVersion = ()=>{
         setShowConfirmModal(false);
         setLoading(true);
-        axios.post(`http://localhost:8080/api/v1/commit/save/${common_id}/`, {}, {withCredentials: true})
+        axios.post(`${base_url}/api/v1/commit/save/${common_id}/`, {}, {withCredentials: true})
           .then(async (res)=>{
             await getData(setData, setLoading);
           })

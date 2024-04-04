@@ -9,9 +9,10 @@ export default function SubjectResource() {
   const { subject_common_id } = useParams();
   const [data, setData] = useState();
   const [addMaterial, setAddMaterial] = useState(false)
+  const base_url = process.env.REACT_APP_URL
 
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api/v1/subjects/',
+    baseURL: base_url+'/api/v1/subjects/',
     withCredentials: true
   })
   const fetch = async () => {

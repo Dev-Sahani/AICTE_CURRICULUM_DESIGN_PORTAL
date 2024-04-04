@@ -10,8 +10,10 @@ export default function AddUserModal({ onClose }) {
 
     const { common_id } = useParams();
 
+    const base_url = process.env.REACT_APP_URL
+
     const axiosInstance = axios.create({
-        baseURL: "http://localhost:8080/api/v1/users",
+        baseURL: base_url+"/api/v1/users",
         withCredentials: true
     })
     const fetchData = async (search) => {
@@ -60,7 +62,7 @@ export default function AddUserModal({ onClose }) {
         if (!["head", "edit", "view"].includes(access)) return;
         setLoading(true)
         try {
-            await axios.patch("http://localhost:8080/api/v1/courses/" + common_id + "/users", {
+            await axios.patch(base_url + "/api/v1/courses/" + common_id + "/users", {
                 _id: user._id,
                 access
             }, {
