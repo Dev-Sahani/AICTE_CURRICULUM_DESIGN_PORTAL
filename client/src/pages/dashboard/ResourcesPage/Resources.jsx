@@ -8,12 +8,14 @@ export default function Resources({ resource }) {
   const [expand, setExpand] = useState(false)
   const [editResource, setEditResource] = useState(false)
 
-  const truncatedDescription = (resource.description.length > 25 && !expand)
+  const truncatedDescription = 
+    (resource.description.length > 25 && !expand)
     ? (`${resource.description.substr(0, 25)}...`)
     : (resource.description);
+  
   return (
-  <div className='mx-1 my-2 flex flex-col w-full min-w-fit '>
-    <div className='rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.03]'>
+  <li className='mx-1 my-2 flex flex-col w-full min-w-fit shadow-lg'>
+    <div className='rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]'>
       <Link
         to={resource.url}
       >
@@ -48,6 +50,6 @@ export default function Resources({ resource }) {
     </div>
 
     {editResource && <EditResoursePage onClose={()=>setEditResource(false)} resource={resource}/>}
-  </div>
+  </li>
   )
 }

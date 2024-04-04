@@ -4,11 +4,9 @@ import { Modal } from "./";
 export default function NewAndDeleteProperty({propertyName, onClose}) {
   let { [propertyName]: { add: newValues, del: deletedValues, cur: originalValues}} = useCourseContext();
   deletedValues = deletedValues.map(({by, index})=>{
-    console.log(index, originalValues);
     const value = index!==undefined && originalValues && originalValues[index]?.cur
     return {by, value}
   })  
-  console.log(deletedValues);
 
   return (
     <Modal onClose={onClose} className="!overflow-y-auto">
