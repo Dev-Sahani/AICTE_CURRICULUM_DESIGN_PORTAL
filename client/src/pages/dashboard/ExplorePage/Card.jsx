@@ -1,34 +1,53 @@
-import Array from "./ResourceUtility"
+import data from "./ResourceUtility"
 import { Link } from 'react-router-dom';
 
-function Explore1(){
-    return (
-      <>
-    <div className=" w-full grid grid-cols-2 my-4 gap-6 min-w-fit ">
-      {
-         Array.map((x,index)=>{ 
-          return(
-         <Link to={x.url} key={index} >   
-          <div className=' flex flex-col shadow-md transform transition-transform duration-300 hover:scale-[1.03] gap-3 p-4 border-[1px] border-slate-100 bg-white rounded-[10px]  min-h-fit min-w-fit '>
-            
-            <div className=' flex flex-col gap-2'>
-               <div className='text-[#04314D] text-xl font-semibold flex-start'>{x.subjectname}</div>
-               <div className='flex flex-row gap-4'>
-                  <div className='w-8 h-8 p-1 items-center justify-center flex-shrink-0 bg-[#F6F6F6] rounded-[100px]'><img src={"error mono"} alt=""/></div>
-                  <div className='font-medium text- text-[#04314D] content-center justify-center'>{x.instituteName}</div>
-               </div>
-            </div>
+function Explore1() {
+  const  getImageUrl = (url)=>{
+    let domain = (new URL(url)).hostname?.split(".");
+    domain = domain.splice(domain.length - 3, domain.length).join(".")
 
-            <div className='flex flex-row gap-4'>
-              <div className='px-3 py-1 rounded-2xl bg-[#FFF9C5] text-[#7C3D0B] text-sm  font-medium justify-center items-center w-fit'>{x.level}</div>
-              <div className='px-3 py-1 rounded-2xl bg-[#F2E3FF] text-[#521486] text-sm  font-medium justify-center items-center w-fit'>{x.program}</div>
-            </div>
+    return `https://www.google.com/s2/favicons?domain=${domain}`
+  }
 
-          </div>
-          </Link>     )
-       } )
-       }
-    </div>
-   </> );
+  return (
+    <>
+      <div className=" w-full grid grid-cols-2 my-4 gap-6 min-w-fit ">
+        {
+          data.map((x,index)=>{ 
+            return(
+              <Link to={x.url} key={index} >   
+                <div className=' flex flex-col shadow-md transform transition-transform duration-300 hover:scale-[1.03] gap-3 p-4 border-[1px] border-slate-100 bg-white rounded-[10px]  min-h-fit min-w-fit '>
+                  <div className=' flex flex-col gap-2'>
+                    <div className='text-[#04314D] text-xl font-semibold flex-start'>
+                      {x.subjectname}
+                    </div>
+                    <div className='flex flex-row gap-4'>
+                      <img 
+                        src={getImageUrl(x.url)}  
+                        alt="favicon"  
+                      />
+                    </div>
+                    <div className='font-medium text- text-[#04314D] content-center justify-center'>
+                      {x.instituteName}
+                    </div>
+                  </div>
+                </div>  
+                
+                <div className='flex flex-row gap-4'>
+                  <div className='px-3 py-1 rounded-2xl bg-[#FFF9C5] text-[#7C3D0B] text-sm  font-medium justify-center items-center w-fit'>
+                    {x.level}
+                  </div>
+                  <div className='px-3 py-1 rounded-2xl bg-[#F2E3FF] text-[#521486] text-sm  font-medium justify-center items-center w-fit'>
+                    {x.program}
+                  </div>
+                </div>
+              </Link>     
+            )
+          })
+        }
+      </div>
+    </> 
+  );
 }
+
 export default Explore1
