@@ -33,9 +33,11 @@ const sendRes = (res,statusCode,token, user,msg)=>{
     })
 }
 
-const createJWT = (user)=>jwt.sign({id:user._id, role:user.role},process.env.JWT_SECRET, {
-    expiresIn:(process.env.JWT_COOKIE_EXPIRE * 24*60*60)
-})
+const createJWT = (user)=>jwt.sign(
+    {id:user._id, role:user.role},
+    process.env.JWT_SECRET, 
+    {expiresIn:(process.env.JWT_COOKIE_EXPIRE * 24*60*60)}
+)
 
 
 module.exports.registerAdmin = async (req,res, next)=>{
@@ -54,6 +56,7 @@ module.exports.registerAdmin = async (req,res, next)=>{
         role:"administrator"
     });
     const token = createJWT(newUser)
+    newUser._doc._id = undefined
     sendRes(res,201,token,newUser)
 }
 module.exports.preRegisterDev = async (req,res, next)=>{
@@ -123,11 +126,16 @@ module.exports.registerDev = async (req,res, next)=>{
     const isMatch = await user.checkPassword(password,user.password);
     if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
 
-    query = User.findOneAndUpdate({email},{name, preRegistered:false})
+    query = User.findOneAndUpdate({email},{name, preRegistered:false}, {new:true})
     query.skipPreMiddleware = true;
-    user = await query;
-
+    await query;
+    user = await User.findOne({email}).populate({
+        path:"courses.id",
+        select:"common_id title level program"
+    })
     const token = createJWT(user)
+    user._doc.password = undefined
+    User._doc._id = undefined
     sendRes(res,200,token,user)
 }
 
@@ -154,14 +162,19 @@ module.exports.verifyByToken = async (req, res, next)=>{
 module.exports.login = async (req,res,next)=>{
     const {email,password} = req.body
     if(!email || !password)return next(new BAD_REQUEST('User mail-id or password not provide'));
-    const newUser = await User.findOne({email}).select('+password')
+    const newUser = await User.findOne({email}).select('+password').populate({
+        path:"courses.id",
+        select:"common_id title level program"
+    })
 
     if(!newUser)return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
     
     const isMatch = await newUser.checkPassword(password,newUser.password);
     if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
-
+   
     const token = createJWT(newUser)
+    newUser.password = undefined
+    newUser._doc._id = undefined
     sendRes(res,200,token,newUser);
 };
 
@@ -182,6 +195,7 @@ module.exports.protect = async (req, res, next)=>{
 
     //Checking that user still exists.
     const freshUser = await User.findById(decoded.id)
+    
     if(!freshUser)
         return next(new UNAUTHORIZED_USER('User belonging to token no longer exits'));
     

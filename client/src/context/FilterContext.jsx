@@ -25,7 +25,6 @@ export const FilterProvider = ({children})=>{
       });
 
     const handleChange = ({name, value})=>{
-        console.log(`Name = ${name}, Value = ${value}`);
         dispatch({
             type: HANDLE_CHANGE,
             payload: {
@@ -45,7 +44,7 @@ export const FilterProvider = ({children})=>{
         const url = `courses${query}`
         let response = undefined;
         try {
-            response = await axiosInstance.get(url);
+            response = await axiosInstance.get(url, {withCredentials:true});
             if(response.request.status === 200) {
                 return response.data;
             }

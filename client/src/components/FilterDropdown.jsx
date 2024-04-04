@@ -13,6 +13,8 @@ const FilterDropdown = ({name, defaultValue, list})=>
 
   const onChange = (e)=>{
     setValue(e.target.value);
+    if(e.target.value === defaultValue)
+      e.target.value = ""
     handleChange({name: e.target.name, value: e.target.value})
   }
   if(!list.includes(defaultValue)) list.unshift(defaultValue);

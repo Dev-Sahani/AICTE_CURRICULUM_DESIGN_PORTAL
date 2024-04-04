@@ -75,7 +75,7 @@ export default function EditProfile({ onClose }) {
           <div className={inputContainerClass}>
             <label className={labelClass}>dob</label>
             <input
-              value={data.dob.substr(0,10)}
+              value={data.dob?.substr(0,10)}
               onChange={handleChange}
               className={inputClass}
               type="date"
