@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize')
 const xssClean = require('xss-clean')
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser')
+const path = require("path");
 
 const errorHandlerMiddleware = require("./middlewares/errorHandler");
 const {BAD_REQUEST} = require('./errors/index')
@@ -76,8 +77,11 @@ app.use('/api/v1/users',
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/subjects',subjectRouter)
 
+// const __dirname = path.dirname(__filename);
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
 app.all('*',(req,res,next)=>{
-    throw new BAD_REQUEST("This route is Not defined")
+    res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 })
 
 app.use(errorHandlerMiddleware);
