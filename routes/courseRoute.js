@@ -40,7 +40,7 @@ onIdRouter
         authController.protect,
         courseController.updateByUser
     )
-    .patch("/accept-updates/", 
+    .patch("/accept-updates", 
         authController.protect,
         courseController.acceptUpdates
     )

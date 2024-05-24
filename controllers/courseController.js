@@ -221,7 +221,7 @@ exports.updateByUser = async (req, res, next) =>{
         if (!course[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
         if(ind >= course[prop].cur.length || ind<0)
-                return next(new BAD_REQUEST("index range out of bond"))
+            return next(new BAD_REQUEST("index range out of bond"))
 
         await Course.findOneAndUpdate({_id:course._id},{
             "$push":{
@@ -283,7 +283,7 @@ exports.acceptUpdates = async function(req,res,next){
     // }
 
     let {index, isnew , del , prop} = req.body
-    if(prop===undefined || index===undefined)return next(new BAD_REQUEST("improper request body"))
+    if(prop===undefined || index===undefined) return next(new BAD_REQUEST("improper request body"))
 
     let ind = -1
     if(prop.indexOf('.') !== -1){
@@ -304,9 +304,9 @@ exports.acceptUpdates = async function(req,res,next){
     //     .sort({version:-1})
     //     .limit(1))[0]
     
-    if(!course)return next(new BAD_REQUEST("Invalid Course Id"))
-    if(!course[prop])return next(new BAD_REQUEST("Field does not exists"))
-    if(del){
+    if(!course) return next(new BAD_REQUEST("Invalid Course Id"))
+    if(!course[prop]) return next(new BAD_REQUEST("Field does not exists"))
+    if(del) {
         if (!course[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
         if(index >= course[prop].del.length)
@@ -326,7 +326,7 @@ exports.acceptUpdates = async function(req,res,next){
                 [`${prop}.cur`]:course[prop].cur
             }
         })
-    }else if(isnew){
+    } else if(isnew) {
         if (!course[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         if(index >= course[prop].add.length)
@@ -345,7 +345,7 @@ exports.acceptUpdates = async function(req,res,next){
                 [`${prop}.cur`]:current
             }
         })
-    }else{
+    } else {
         if(ind !== -1){
             if (!course[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));

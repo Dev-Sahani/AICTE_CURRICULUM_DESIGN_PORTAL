@@ -9,12 +9,14 @@ import {
 
 import reducer from "./CourseReducer";
 import axios from "axios";
+import { useUserContext } from "./UserContext";
 
 const intialCourse = {};
 const courseContext = React.createContext();
 
 export const CourseProvider = ({children})=>{
     const [state, dispatch] = useReducer(reducer, intialCourse);
+    const { setLoading } = useUserContext();
 
     const base_url = process.env.REACT_APP_URL
     const axiosInstance = axios.create({
@@ -164,6 +166,29 @@ export const CourseProvider = ({children})=>{
         }
         return res;
     }
+
+    const acceptChanges = async (propertyName, index)=>{
+        const url = `courses/${state.common_id}/accept-updates`;
+        let res = undefined;
+        try { 
+            if(!propertyName || index===undefined || !state.common_id) 
+                throw new Error("Cannot make request!");
+            
+            setLoading(true);
+            res = await axiosInstance.patch(url, {
+                prop: propertyName,
+                index,
+            });
+            await getCourse(state.courseId);
+        } catch(err) {
+            res = null;
+            alert(err.message);
+            console.log(err);
+        }
+        setLoading(false);
+        return res;
+    }
+
     return (
         <courseContext.Provider
             value={{
@@ -175,6 +200,7 @@ export const CourseProvider = ({children})=>{
                 getAllSubjects,
                 addProperty, 
                 deleteProperty, 
+                acceptChanges, 
             }}
         >
             {children}
