@@ -60,3 +60,25 @@
 /* For Edge and Internet Explorer */
 /* Note: Edge and IE currently don't support styling the scrollbar */
 /* You can still style the scrollbar but rounded corners won't apply */
+
+
+/* Conic Gradient for PIE Charts */
+.pie {
+  --w:150px;
+  width: var(--w);
+  aspect-ratio: 1;
+  display: inline-grid;
+  place-content: center;
+  margin: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  position: relative;
+}
+
+.pie::before{
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 0;
+  background: conic-gradient(var(--color1) calc(var(--percent)*1%),var(--color2) 0);
+}

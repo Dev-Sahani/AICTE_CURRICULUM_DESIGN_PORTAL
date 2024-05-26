@@ -62,28 +62,38 @@ const subjectRouter = require('./routes/subjectRoute')
 
 const authController = require('./controllers/authController')
 
-// APIs
-app.use("/api/v1/feedback", feedbackRouter);
-app.use('/api/v1/commit',
+// API routes
+const apiRouter = new express.Router()
+app.use("/api/v1/", apiRouter);
+
+apiRouter.use("/feedback", feedbackRouter);
+apiRouter.use('/commit',
     authController.protect,
     commitRouter);
-app.use('/api/v1/explore', otherCurriculumRouter)
-app.use('/api/v1/courses',courseRouter)
-app.use('/api/v1/resources',resourceRouter)
-app.use('/api/v1/users', 
+apiRouter.use('/explore', otherCurriculumRouter)
+apiRouter.use('/courses',courseRouter)
+apiRouter.use('/resources',resourceRouter)
+apiRouter.use('/users', 
     authController.protect, 
     authController.restrictTo("administrator") ,
     userRouter)
-app.use('/api/v1/auth',authRouter)
-app.use('/api/v1/subjects',subjectRouter)
+apiRouter.use('/auth',authRouter)
+apiRouter.use('/subjects',subjectRouter)
 
-// const __dirname = path.dirname(__filename);
-app.use(express.static(path.resolve(__dirname, "./client/build")));
-
-app.all('*',(req,res,next)=>{
-    res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+// Undefined Routes
+apiRouter.all("*", (req, res)=>{
+    throw new BAD_REQUEST("This route doesn't exits")
 })
 
 app.use(errorHandlerMiddleware);
+
+
+// Serving Frontend files
+// const __dirname = path.dirname(__filename);
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
+app.all('*',(req,res)=>{
+    res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+})
 
 module.exports = app;

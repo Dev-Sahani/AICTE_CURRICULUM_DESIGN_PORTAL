@@ -39,7 +39,7 @@ async function postFeedback(req, res) {
 async function getFeedbackAnalysis(req, res) {
     // TO-DO -------------------------------
     // Verify User 
-    const {subjectId } = req.body;
+    const {subjectId } = req.params;
     
     const data = await FeedbackResponse.aggregate([
         {
