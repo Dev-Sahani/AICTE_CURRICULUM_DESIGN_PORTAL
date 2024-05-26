@@ -1,12 +1,13 @@
-import { useCourseContext } from "../../context";
+import { useCourseContext, useUserContext } from "../../context";
 import { Label, Modal } from "../";
 
 export default function ChangesModal({ name, subName, onClose }) {
   const [propertyName, index] = name.split(".");
-  const {[propertyName]: actualPropertyValue} = useCourseContext();
-  
+  const {[propertyName]: actualPropertyValue, acceptChanges} = useCourseContext();
+  const { user: {role} } = useUserContext();
+
   let propertyValue = actualPropertyValue;
-  if(propertyValue === undefined || !propertyValue.cur) return;
+  if(propertyValue === undefined) return;
   if(!subName && index!==undefined && index!=="" && Array.isArray(propertyValue.cur) && index*1 < propertyValue.cur.length && propertyValue.cur[index*1].cur) {
     propertyValue = propertyValue.cur[index];
   }
@@ -75,7 +76,15 @@ export default function ChangesModal({ name, subName, onClose }) {
                     <div className={`max-h-56 w-full px-1.5 py-1 border border-black ${item?.value==="deleted" ? "bg-red-400 text-white text-center capitalize" : "bg-white"} rounded-md overflow-y-auto`}>
                       <p>{item?.value}</p>
                     </div>
-                    <p className="text-gray-500 text-sm">by: {item?.by}</p>
+                    <div className="py-px w-full flex justify-between items-center">
+                      <p className="text-gray-500 text-sm">by: {item?.by}</p>
+                      {
+                        role === "administrator" && 
+                        <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName, ind)}>
+                          Accept
+                        </button>
+                      }
+                    </div>
                   </div>
               )
             }
