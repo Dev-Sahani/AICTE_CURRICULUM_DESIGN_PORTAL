@@ -3,8 +3,13 @@ const StatusCodes = require("http-status-codes").StatusCodes
 const errorHandlerMiddleware = (err, req, res, next)=>{
     const defaultErr = {
         statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-        message: err.message || "Something went wrong. Please try again later!"
+        message: err.message
     }
+    
+    if(defaultErr.statusCode >= 500 || !defaultErr.message){
+        defaultErr.message = "Something went wrong. Please try again later!"
+    }
+
     const isDev = (process.env.NODE_ENV === 'development')
     
     if(err.name === "ValidationError") {
