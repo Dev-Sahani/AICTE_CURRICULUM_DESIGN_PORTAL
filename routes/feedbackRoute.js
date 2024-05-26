@@ -12,6 +12,6 @@ router.route("/form")
     .get(getAllQuestions)
     .post(postFeedback);
 
-router.route("/analysis").get(getFeedbackAnalysis);
+router.route("/analysis/:subjectId").get(getFeedbackAnalysis);
 
 module.exports = router;

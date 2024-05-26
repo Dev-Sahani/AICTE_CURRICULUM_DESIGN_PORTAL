@@ -1,8 +1,18 @@
-import { useCourseContext } from "../context";
+import { useCourseContext, useUserContext } from "../context";
 import { Modal } from "./";
 
 export default function NewAndDeleteProperty({propertyName, onClose}) {
-  let { [propertyName]: { add: newValues, del: deletedValues, cur: originalValues}} = useCourseContext();
+  let { 
+    [propertyName]: { 
+      add: newValues, 
+      del: deletedValues, 
+      cur: originalValues
+    }, 
+    acceptChanges
+  } = useCourseContext();
+
+  const {user: {role}} = useUserContext();
+
   deletedValues = deletedValues.map(({by, index})=>{
     const value = index!==undefined && originalValues && originalValues[index]?.cur
     return {by, value}
@@ -25,12 +35,22 @@ export default function NewAndDeleteProperty({propertyName, onClose}) {
                     Object.keys(newValue?.value).map((key,index) => 
                       <li className="flex gap-2 items-center" key={index}>
                         <label className="min-w-[100px] font-medium capitalize">{key}</label>
-                        <div className="w-full p-2 bg-white border-2 border-gray-300">{newValue?.value[key] || "-"}</div>
+                        <div className="w-full p-2 border-2 border-gray-300 bg-secondary-500 text-white rounded">
+                          {newValue?.value[key] || "-"}
+                        </div>
                       </li>     
                     )
                     
                   }
-                  <p className="w-full text-end text-gray-400">by: {newValue?.by}</p>
+                  <div className="w-full flex justify-between items-center">
+                    <p className="ml-[110px] text-gray-400">by: {newValue?.by}</p>
+                    {
+                      role === "administrator" && 
+                      <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName, index, true)}>
+                        Accept
+                      </button>
+                    }
+                  </div>
                 </ul>
               )
             }
@@ -50,12 +70,22 @@ export default function NewAndDeleteProperty({propertyName, onClose}) {
                   Object.keys(deletedValue?.value).map((key,index) => 
                     <li className="flex gap-2 items-center" key={index}>
                       <label className="min-w-[100px] text-red-500 font-medium capitalize">{key}</label>
-                      <div className="w-full p-2 bg-red-500 text-white border-2 border-gray-300">{deletedValue?.value[key] || "-"}</div>
+                      `<div className="w-full p-2 bg-red-500 text-white border-2 border-gray-300 rounded">
+                        {deletedValue?.value[key] || "-"}
+                      </div>
                     </li>     
                   )
                   
                 }
-                <p className="w-full text-end text-gray-400">by: {deletedValue?.by}</p>
+                <div className="w-full flex justify-between items-center">
+                    <p className="ml-[110px] text-gray-400">by: {deletedValue?.by}</p>
+                    {
+                      role === "administrator" && 
+                      <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName, index, false, true)}>
+                        Accept
+                      </button>
+                    }
+                  </div>
               </ul>
             )
           }

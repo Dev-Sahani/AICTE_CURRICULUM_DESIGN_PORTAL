@@ -1,6 +1,6 @@
 import {
-    HANDLE_COURSE_CHANGE,
-    HANDLE_SUBJECT_CHANGE,
+    // HANDLE_COURSE_CHANGE,
+    // HANDLE_SUBJECT_CHANGE,
     GET_COURSE,
     GET_ALL_SUBJECTS,
 } from "./CourseAction";

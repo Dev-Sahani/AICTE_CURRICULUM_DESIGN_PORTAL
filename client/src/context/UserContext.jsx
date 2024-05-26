@@ -68,7 +68,7 @@ export const UserProvider = ({children})=>{
         } catch(err) {
             dispatch({
                 type:ALERT,
-                payload:"Invalid Credentials while login"
+                payload:err.message
             })
         } finally{
             setLoading(false)

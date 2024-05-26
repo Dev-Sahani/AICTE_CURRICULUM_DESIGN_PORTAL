@@ -77,7 +77,9 @@ export default function CourseMultiInput({
   }
 
   const handleDelete = async (e)=>{
+    setLocalLoading(true);
     await deleteProperty(name, index, common_id)
+    setLocalLoading(false);
   }
 
   if(localLoading) {
