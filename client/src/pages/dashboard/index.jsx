@@ -1,4 +1,4 @@
-import AnalyticsPage from "./AnalyticsPage";
+import AnalyticsPage from "./AnalyticsPage/AnalyticsPage";
 import ExplorePage from "./ExplorePage";
 import NotificationPage from "./NotificationPage";
 import ProfilePage from "./Profile Page/ProfilePage";
