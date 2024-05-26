@@ -309,17 +309,21 @@ exports.acceptUpdates = async function(req,res,next){
     if(del) {
         if (!course[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
+
         if(index >= course[prop].del.length)
             return next(new BAD_REQUEST("index range out of bond"))
 
         const delInd = (course[prop].del[index].index)*1
+        
+        course[prop].del = course[prop].del.filter(update => (update?.index)*1 !== delInd);
+
         for(let i in course[prop].del){
             if(course[prop].del[i].index > delInd){
                 course[prop].del[i].index --;
             }
         }
-        course[prop].del.splice(index,1)
         course[prop].cur.splice(delInd, 1)
+
         await Course.findOneAndUpdate({_id:course._id},{
             "$set":{
                 [`${prop}.del`]:course[prop].del,

@@ -159,6 +159,7 @@ export const CourseProvider = ({children})=>{
                 prop: `${prop}.${index}`,  
                 del: true
             });
+            await getCourse(state?.common_id);
         } catch(err) {
             res = null;
             alert(err.message);
@@ -167,7 +168,7 @@ export const CourseProvider = ({children})=>{
         return res;
     }
 
-    const acceptChanges = async (propertyName, index)=>{
+    const acceptChanges = async (propertyName, index, isNew=false, del=false)=>{
         const url = `courses/${state.common_id}/accept-updates`;
         let res = undefined;
         try { 
@@ -178,8 +179,10 @@ export const CourseProvider = ({children})=>{
             res = await axiosInstance.patch(url, {
                 prop: propertyName,
                 index,
+                isnew: isNew,
+                del,
             });
-            await getCourse(state.courseId);
+            await getCourse(state?.common_id);
         } catch(err) {
             res = null;
             alert(err.message);
