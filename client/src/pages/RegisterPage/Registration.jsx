@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useUserContext } from "../../context";
+import showPassword from "./../../assets/show-password.png"
+import hidePassword from "./../../assets/hide-password.png"
 
 export default function Registration({setIsLogin, isAdmin}) {
   const { verifyAdminOTPAndRegister, sendAdminOTP, registerDev , loading } = useUserContext();
@@ -11,6 +13,7 @@ export default function Registration({setIsLogin, isAdmin}) {
     otp: "",
   });
   const [otpSend, setOtpSend] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   const handleChange = (e) => {
     setLocalState({
@@ -60,14 +63,22 @@ export default function Registration({setIsLogin, isAdmin}) {
           </div>
           <div className='flex justify-between my-1'>
             <label className='mr-2 self-center'>password</label>
-            <input
-              className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
-              placeholder='Enter password'
-              name="password"
-              type="password"
-              value={localState.password}
-              onChange={handleChange}
-            />
+            <div className="w-[70%] flex justify-between border-2 border-gray-300 outline-none rounded-lg bg-white self-center">
+              <input
+                className="p-4 py-2 rounded-lg w-full h-full outline-none"
+                placeholder='Enter password'
+                name="password"
+                type={showPass? "text":"password"}
+                value={localState.password}
+                onChange={handleChange}
+              />
+              <button 
+                type="button"
+                onClick={()=>setShowPass(prev=>!prev)}
+              >
+                <img className="w-5 h-5" src={showPass? showPassword: hidePassword} alt="password"/>
+              </button>
+            </div>
           </div>
           <div className='flex justify-between my-1'>
             <label className='mr-2 self-center'>

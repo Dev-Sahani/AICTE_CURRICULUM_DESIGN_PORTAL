@@ -135,7 +135,7 @@ module.exports.registerDev = async (req,res, next)=>{
     })
     const token = createJWT(user)
     user._doc.password = undefined
-    User._doc._id = undefined
+    user._doc._id = undefined
     sendRes(res,200,token,user)
 }
 
