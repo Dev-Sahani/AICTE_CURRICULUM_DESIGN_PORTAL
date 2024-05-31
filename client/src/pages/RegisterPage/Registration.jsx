@@ -104,7 +104,7 @@ export default function Registration({setIsLogin, isAdmin}) {
             <label className='my-2 self-center block'>Enter the otp send to your mail</label>
             <input
               className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
-              placeholder='Enter AICTE email'
+              placeholder='Enter OTP'
               name="otp"
               value={localState.otp}
               onChange={handleChange}

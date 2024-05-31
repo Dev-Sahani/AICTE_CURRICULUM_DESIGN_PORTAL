@@ -4,7 +4,7 @@ const util = require('util')
 const jwt = require('jsonwebtoken')
 const bcrypt = require("bcrypt");
 const { CustomAPIError, UNAUTHORIZED_USER, BAD_REQUEST ,NOT_FOUND } = require('../errors');
-const {sendEmailToUser, sendOTP} = require('../utils/email')
+const {sendEmailToUser, sendOTP} = require('../utils/email');
 
 function generateRandomKey(length) {
     const charset = '0123456789abcdefghijklmlopqrtsuvwxyz';
@@ -129,10 +129,8 @@ module.exports.registerDev = async (req,res, next)=>{
     query = User.findOneAndUpdate({email},{name, preRegistered:false}, {new:true})
     query.skipPreMiddleware = true;
     await query;
-    user = await User.findOne({email}).populate({
-        path:"courses.id",
-        select:"common_id title level program"
-    })
+    user = await User.findOne({email})
+
     const token = createJWT(user)
     user._doc.password = undefined
     user._doc._id = undefined
@@ -145,10 +143,8 @@ module.exports.verifyByToken = async (req, res, next)=>{
         throw new UNAUTHORIZED_USER("Invalid Authentication!")
     }
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(payload.id).select("-_id").populate({
-            path:"courses.id",
-            select:"common_id title level program"
-        })
+    const user = await User.findById(payload.id)
+        .select("-_id")
 
     if(!user || payload.role!==user.role)
     throw new UNAUTHORIZED_USER("")
@@ -162,10 +158,7 @@ module.exports.verifyByToken = async (req, res, next)=>{
 module.exports.login = async (req,res,next)=>{
     const {email,password} = req.body
     if(!email || !password)return next(new BAD_REQUEST('User mail-id or password not provide'));
-    const newUser = await User.findOne({email}).select('+password').populate({
-        path:"courses.id",
-        select:"common_id title level program"
-    })
+    const newUser = await User.findOne({email}).select('+password')
 
     if(!newUser)return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
     
