@@ -65,6 +65,7 @@ const resourceRouter = require("./routes/resourcesRoute");
 const userRouter = require('./routes/userRoute')
 const authRouter = require('./routes/authRoute')
 const subjectRouter = require('./routes/subjectRoute')
+const notificationRouter = require('./routes/notificationRoute')
 
 const authController = require('./controllers/authController')
 
@@ -85,7 +86,7 @@ apiRouter.use('/users',
     userRouter)
 apiRouter.use('/auth',authRouter)
 apiRouter.use('/subjects',subjectRouter)
-
+apiRouter.use('/notifications', notificationRouter)
 // Undefined Routes
 apiRouter.all("*", (req, res)=>{
     throw new BAD_REQUEST("This route doesn't exits")

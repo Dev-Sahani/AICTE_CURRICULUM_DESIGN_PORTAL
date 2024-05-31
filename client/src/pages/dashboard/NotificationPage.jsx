@@ -2,23 +2,24 @@ import { useState, useEffect, useMemo } from "react";
 import Resource from "./ResourcesPage/Resources";
 // import AddResourceForm from "./ResourcesPage/AddResourceForm"
 import { Loading, SecondaryButton } from "./../../components";
-import axios from 'axios';
-import SearchImg from "./../../assets/Search.png"
+import axios from "axios";
+import SearchImg from "./../../assets/Search.png";
 
-const BASE_URL = process.env.REACT_APP_URL
+const BASE_URL = process.env.REACT_APP_URL;
 
 const NotificationPage = () => {
-  const [Array, setArray] = useState([]);
-  const [state, setState] = useState({
+  const [resources, setResources] = useState([]);
+  const [searchState, setSearchState] = useState({
     search: "",
-    format: ""
-  })
-  const [loading, setLoading] = useState(false)
+    format: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   const axiosInstance = axios.create({
-    baseURL: BASE_URL+"/api/v1/resources",
-    withCredentials: true
-  })
+    baseURL: BASE_URL + "/api/v1/resources",
+    withCredentials: true,
+  });
 
   const searchFunc = async ({ search, format }) => {
     if (!search) search = "";
@@ -27,46 +28,47 @@ const NotificationPage = () => {
       const res = await axiosInstance.get("", {
         params: {
           search,
-          type: format
-        }
-      })
-      if (res.status >= 400) throw new Error(res.data.message)
-      setArray(res.data.data)
+          type: format,
+        },
+      });
+      if (res.status >= 400) throw new Error(res.data.message);
+      setResources(res.data.data);
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.message);
     }
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
-    searchFunc({ search: "", format: "" })
-      .finally(() => setLoading(false))
+    searchFunc({ search: "", format: "" }).finally(() => setLoading(false));
     //eslint-disable-next-line
-  }, [])
+  }, []);
 
   const debounce = () => {
     let timeOutId;
     return (e) => {
       let stateTemp;
-      setState(prev => {
+      setSearchState((prev) => {
         stateTemp = {
           ...prev,
-          [e.target.name]: e.target.value
-        }
-        return stateTemp
+          [e.target.name]: e.target.value,
+        };
+        return stateTemp;
       });
       clearTimeout(timeOutId);
       timeOutId = setTimeout(() => {
-        console.log(stateTemp)
+        console.log(stateTemp);
         searchFunc(stateTemp);
       }, 900);
-    }
-  }
-  const handleChange = useMemo(() => debounce(),
-    // eslint-disable-next-line
-    []);
+    };
+  };
+  const handleChange = useMemo(() => debounce(), []);
 
-  if (loading) return <Loading count={5} cardClassName="!h-28" />
+  const sendNotification = (message) => {
+    setNotifications((prevNotifications) => [...prevNotifications, message]);
+  };
+
+  if (loading) return <Loading count={5} cardClassName="!h-28" />;
 
   return (
     <>
@@ -77,7 +79,7 @@ const NotificationPage = () => {
           <input
             type="text"
             name="search"
-            value={state.search}
+            value={searchState.search}
             onChange={handleChange}
             placeholder=" Search..."
             className="rounded focus:outline-none w-[28vw] h-8"
@@ -85,7 +87,7 @@ const NotificationPage = () => {
         </div>
 
         {/* Date Filter if aplicable */}
-        
+
         {/* <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
           <img src={SearchImg} alt="search" className="w-8 h-8" />
           <select
@@ -102,19 +104,24 @@ const NotificationPage = () => {
         </div> */}
 
         <SecondaryButton
-          onClick={()=>{}}
+          onClick={() => sendNotification("New notification message")}
           className=""
         >
           Send New Notification+
         </SecondaryButton>
       </div>
 
-      {/* Resources List Section */}
-      {
-        Array.map((x, indx) => <Resource key={indx} resource={x} />)
-      }
-    </>
-  )
-}
+      {/* Display Notifications */}
+      {notifications.map((notification, index) => (
+        <div key={index} className="notification">
+          {notification}
+        </div>
+      ))}
 
-export default NotificationPage;
+      {/* Resources List Section */}
+      {resources.map((resource, index) => (
+        <Resource key={index} resource={resource} />
+      ))}
+    </>
+  );
+};
