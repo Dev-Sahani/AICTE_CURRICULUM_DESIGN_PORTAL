@@ -22,13 +22,13 @@ app.use(express.json({limit:'1mb'}));
 app.use(cors({origin: process.env.CLIENT_URL,credentials:true}))
 app.use(cookieParser())
 //Secure Header
-app.use(helmet.contentSecurityPolicy({
-    useDefaults: true,
-    directives: {
-      "img-src": ["'self'", "https: data:"]
-    }
-  })
-);
+// app.use(helmet.contentSecurityPolicy({
+//     useDefaults: true,
+//     directives: {
+//       "img-src": ["'self'", "https: data:"]
+//     }
+//   })
+// );
 //Mongo db sanitization
 app.use(mongoSanitize())
 //xss-

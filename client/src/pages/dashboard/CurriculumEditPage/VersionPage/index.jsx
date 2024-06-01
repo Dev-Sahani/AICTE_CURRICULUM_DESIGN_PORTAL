@@ -36,7 +36,7 @@ export default function VersionPage(){
     const resetToOldVersion = async()=>{
         setLoading(true)
         try {
-            await axios.delete(`${base_url}/api/v1/reset-commit/${common_id}/${version}`, {
+            await axios.delete(`${base_url}/api/v1/commit/reset-commit/${common_id}/${version}`, {
                 withCredentials:true
             })
             await getData(setData, setLoading);

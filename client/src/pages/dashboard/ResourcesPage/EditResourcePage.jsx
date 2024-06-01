@@ -26,6 +26,7 @@ export default function AddResourceForm({onClose, resource}) {
     }
 
     const handleEdit = async (e)=>{
+        e.preventDefault();
         // ----------------- HANDLE NOTIFICATION -----------------------
 
         setLoading(true)

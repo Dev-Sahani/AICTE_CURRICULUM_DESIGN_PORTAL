@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require("bcrypt")
 const crypto = require('crypto')
 const { userRoleEnum, userGenderEnum, accessEnum } = require("./types")
+const Course = require("./courseModel")
 
 const userSchema = new mongoose.Schema({
     password:{
@@ -73,6 +74,7 @@ const userSchema = new mongoose.Schema({
 //Indexes
 
 
+//middlewares
 userSchema.pre(/^find/,async function (next){
     //this refers to the query here 
     this.find({ active: {$ne:false} })
@@ -82,12 +84,13 @@ userSchema.pre(/^find/,async function (next){
     next()
 })
 
-//middlewares
-userSchema.pre(/^find^/,function(next){
-    // this.populate({
-    //     path:"courses.id",
-    //     select:"common_id title"
-    // })
+userSchema.post(/^find/, async function(doc, next){
+    const ids = doc.courses.map(el => el.id);
+    const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
+
+    for(let indx=0; indx<ids.length; indx++){
+        doc.courses[indx].id = courses[indx]
+    }
     next()
 })
 

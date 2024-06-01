@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useUserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import showPassword from "./../../assets/show-password.png"
+import hidePassword from "./../../assets/hide-password.png"
 
 export default function Login({setIsLogin}) {
   const { login, loading } = useUserContext();
   const navigate = useNavigate()
 
+  const [showPass, setShowPass] = useState(false);
   const [localState, setLocalState] = useState({
     password: "",
     email: "",
@@ -52,14 +55,22 @@ export default function Login({setIsLogin}) {
         </div>
         <div className='flex justify-between my-1'>
           <label className='mr-2 self-center'>password</label>
-          <input
-            className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
-            placeholder='Enter password'
-            name="password"
-            type="password"
-            value={localState.password}
-            onChange={handleChange}
-          />
+          <div className="w-[70%] flex justify-between border-2 border-gray-300 outline-none rounded-lg bg-white self-center">
+            <input
+              className="p-4 py-2 rounded-lg w-full h-full outline-none"
+              placeholder='Enter password'
+              name="password"
+              type={showPass? "text":"password"}
+              value={localState.password}
+              onChange={handleChange}
+            />
+            <button 
+              type="button"
+              onClick={()=>setShowPass(prev=>!prev)}
+            >
+              <img className="w-5 h-5" src={showPass? showPassword: hidePassword} alt="password"/>
+            </button>
+          </div>
         </div>
         <button type="submit" disabled={loading} className={`bg-secondary-400 my-4 p-4 py-2 rounded-lg ${loading && "bg-opacity-50"}`} onClick={onSubmit}>
           {
