@@ -14,9 +14,12 @@ const Resource = require('../models/resourceModel');
 // Function to convert course data to HTML
 async function generateHTML(commonId, next) {
   const course = await findCourse({ commonId, next });
-  const committee = await User.find({
+  const committee = await User.find( 
+    {
     "courses.id": { $in: [commonId] }
-  })
+    }
+  ).setOptions({ skipPostHook: true });
+
   const subjects = await findCourseSubjects({ commonId, next })
   let referenceIds = await subjects.map(el => {
     const ids = el.doc.referenceMaterial?.cur?.map(el => el.cur)
