@@ -14,6 +14,6 @@ COPY . .
 # Copy the React build files from the client
 COPY --from=client /app/build ./client/build
 
-EXPOSE 4000
+EXPOSE 8080
 
 CMD ["node", "server.js"]
