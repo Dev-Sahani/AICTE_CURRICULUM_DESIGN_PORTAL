@@ -74,7 +74,10 @@ exports.generateHTML = generateHTML
 // Function to generate PDF from HTML using Puppeteer
 
 exports.generatePDF = async function (commonId, res, next) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium',
+    args: ['--no-sandbox'],
+  });
   const page = await browser.newPage();
 
   const html = await generateHTML(commonId, next);
