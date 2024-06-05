@@ -6,6 +6,9 @@
   "scripts": {
     "install-all": "npm install && npm run install-client",
     "install-client": "cd client && npm install && npm run build",
+    "docker-build-client": "cd client && docker build -t client .",
+    "docker-build": "docker build -t server-image .",
+    "docker-run": "docker run -it -p 8080:8080 server-image",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "dev": "nodemon server.js"
