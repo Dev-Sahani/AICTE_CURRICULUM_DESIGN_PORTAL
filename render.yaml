@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: client
+    runtime: docker
+    plan: free
+    region: singapore
+    repo: https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL.git
+    dockerfilePath: ./client/Dockerfile
+    branch: production
+
+  - type: web
+    name: server
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: Dockerfile
+    repo: https://github.com/Dev-Sahani/AICTE_CURRICULUM_DESIGN_PORTAL.git
+    branch: production
