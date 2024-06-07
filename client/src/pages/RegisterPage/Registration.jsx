@@ -72,12 +72,9 @@ export default function Registration({setIsLogin, isAdmin}) {
                 value={localState.password}
                 onChange={handleChange}
               />
-              <button 
-                type="button"
-                onClick={()=>setShowPass(prev=>!prev)}
-              >
+              <p className="w-8" onClick={()=>setShowPass(prev=>!prev)}>
                 <img className="w-5 h-5" src={showPass? showPassword: hidePassword} alt="password"/>
-              </button>
+              </p>
             </div>
           </div>
           <div className='flex justify-between my-1'>
