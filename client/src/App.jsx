@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {     
     AnalyticsPage,
     ExplorePage,
-    NotificationPage,
+    // NotificationPage,
     ProfilePage,
     ResourcesPage, 
     SharedLayout, 

@@ -85,6 +85,10 @@ userSchema.pre(/^find/,async function (next){
 })
 
 userSchema.post(/^find/, async function(doc, next){
+    if(this.options && this.options.skipPostHook) {
+        return next();
+    }
+
     const ids = doc.courses.map(el => el.id);
     const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
 

@@ -14,9 +14,12 @@ const Resource = require('../models/resourceModel');
 // Function to convert course data to HTML
 async function generateHTML(commonId, next) {
   const course = await findCourse({ commonId, next });
-  const committee = await User.find({
+  const committee = await User.find( 
+    {
     "courses.id": { $in: [commonId] }
-  })
+    }
+  ).setOptions({ skipPostHook: true });
+
   const subjects = await findCourseSubjects({ commonId, next })
   let referenceIds = await subjects.map(el => {
     const ids = el.doc.referenceMaterial?.cur?.map(el => el.cur)
@@ -71,7 +74,10 @@ exports.generateHTML = generateHTML
 // Function to generate PDF from HTML using Puppeteer
 
 exports.generatePDF = async function (commonId, res, next) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium',
+    args: ['--no-sandbox'],
+  });
   const page = await browser.newPage();
 
   const html = await generateHTML(commonId, next);
