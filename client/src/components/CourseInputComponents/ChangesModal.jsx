@@ -80,7 +80,7 @@ export default function ChangesModal({ name, subName, onClose }) {
                       <p className="text-gray-500 text-sm">by: {item?.by}</p>
                       {
                         role === "administrator" && 
-                        <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName, ind)}>
+                        <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName + (index ? "." + index : ""), ind)}>
                           Accept
                         </button>
                       }

@@ -117,6 +117,7 @@ exports.getAllSubjects = async function (req,res, next){
             }
         })
         .unwind("doc")
+    
     if(page && Number.isInteger(page*1)){
         aggregateQuery.skip((page-1)*12).limit(12)
     }
@@ -143,14 +144,16 @@ exports.getReferenceMaterial = async function(req, res, next){
 }
 
 exports.updateByUser = async (req, res, next) =>{
-    let {data, isnew , del , prop} = req.body
-    if(prop==undefined || !((del==undefined) ^ (data==undefined)) )return next(new BAD_REQUEST("improper request body"))
+    let {data, isnew , del , prop} = req.body;
+    if(prop === undefined || (del === undefined && data === undefined)) 
+        return next(new BAD_REQUEST("improper request body"))
 
     let ind = -1
     if(prop.indexOf('.') != -1){
         [prop,ind] = prop.split('.')
         ind *= 1;
     }
+
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
         return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
@@ -181,7 +184,8 @@ exports.updateByUser = async (req, res, next) =>{
                 }
             }
         })
-    }else if(isnew){
+    } 
+    else if(isnew) {
         if (!sub[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         
@@ -193,12 +197,14 @@ exports.updateByUser = async (req, res, next) =>{
                 }
             }
         })
-    }else{
-        if(ind!=-1){
+    }
+    else {
+        if(ind!=-1) {
             if (!sub[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= sub[prop].cur.length)
                 return next(new BAD_REQUEST("index range out of bond"))
+
             await Subject.findOneAndUpdate({_id:sub._id},{
                 "$push":{
                     [`${prop}.cur.${ind}.new`]:{
@@ -208,7 +214,7 @@ exports.updateByUser = async (req, res, next) =>{
                 }
             })
         }
-        else{
+        else {
             await Subject.findOneAndUpdate({_id:sub._id},{
                 "$push":{
                     [`${prop}.new`]:{
@@ -235,9 +241,9 @@ exports.acceptUpdates = async function(req,res,next){
     let {index, isnew , del , prop} = req.body
     if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
 
-    let ind = -1
-    if(prop.indexOf('.') != -1){
-        [prop,ind] = prop.split('.')
+    let ind = -1;
+    if(prop.indexOf('.') != -1) {
+        [prop,ind] = prop.split('.');
         ind *= 1;
     }
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
@@ -253,9 +259,10 @@ exports.acceptUpdates = async function(req,res,next){
         .sort({version:-1})
         .limit(1))[0]
     
-    if(!sub)return next(new BAD_REQUEST("Invalid sub Id"))
-    if(!sub[prop])return next(new BAD_REQUEST("Field does not exists"))
-    if(del){
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+    if(!sub[prop]) return next(new BAD_REQUEST("Field does not exists"))
+    
+    if(del) {
         if (!sub[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
         if(index >= sub[prop].del.length)
@@ -267,7 +274,7 @@ exports.acceptUpdates = async function(req,res,next){
                 sub[prop].del[i].index --;
             }
         }
-        sub[prop].del.splice(index,1)
+        sub[prop].del = sub[prop].del.filter(({index, by})=>index!==delInd);
         sub[prop].cur.splice(delInd, 1)
         await Subject.findOneAndUpdate({_id:sub._id},{
             "$set":{
@@ -275,11 +282,12 @@ exports.acceptUpdates = async function(req,res,next){
                 [`${prop}.cur`]:sub[prop].cur
             }
         })
-    }else if(isnew){
+    } else if(isnew) {
         if (!sub[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
-        if(index >= sub[prop].add.length)
+        if(index >= sub[prop].add.length) 
             return next(new BAD_REQUEST("index range out of bond"))
+        
         
         const current = {
             new:[],
@@ -294,8 +302,8 @@ exports.acceptUpdates = async function(req,res,next){
                 [`${prop}.cur`]:current
             }
         })
-    }else{
-        if(ind!=-1){
+    } else {
+        if(ind !== -1) {
             if (!sub[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= sub[prop].cur.length)

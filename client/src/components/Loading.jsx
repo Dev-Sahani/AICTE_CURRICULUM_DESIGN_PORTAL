@@ -1,11 +1,22 @@
+import classNames from "classnames";
 
 export default function Loading({containerClassName, cardClassName, count=1}){    
     const ar = []
+    const cardClassNames = classNames(
+        cardClassName,
+        "animate-pulse w-full bg-gray-300 h-12 rounded",
+    );
+
     for(let i=0; i<count; i++)
-        ar.push(<div key={i} className={`animate-pulse w-full bg-gray-300 h-16 rounded-xl ${cardClassName}`} />)
+        ar.push(<div key={i} className={cardClassNames} />)
+
+    const containerClassNames = classNames(
+        containerClassName,
+        "flex flex-col gap-4 p-2",
+    )
 
     return (
-        <div className={`flex flex-col gap-2 p-2 ${containerClassName}`}>
+        <div className={containerClassNames}>
             {ar}
         </div>
     );

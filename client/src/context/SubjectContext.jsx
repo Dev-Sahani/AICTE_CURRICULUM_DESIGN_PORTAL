@@ -1,6 +1,7 @@
 import { useReducer, useContext, createContext } from "react";
 import { reducer } from "./SubjectReducer";
 import axios from "axios";
+import { useUserContext } from "./UserContext";
 import {
     UPDATE_SUBJECT_DETAILS, 
 } from "./SubjectAction";
@@ -14,9 +15,13 @@ const intialState = {
 
 export const SubjectProvider = ({children})=>{
     const [states, dispatch] = useReducer(reducer, intialState);
+    const { setLoading } = useUserContext();
 
     const base_url = process.env.REACT_APP_URL
-    const axiosInstance = axios.create({baseURL: base_url+"/api/v1/subjects/"});
+    const axiosInstance = axios.create({
+        baseURL: base_url+"/api/v1/subjects",
+        withCredentials:true
+    });
 
     axiosInstance.interceptors.response.use(
         (response)=>{
@@ -34,7 +39,7 @@ export const SubjectProvider = ({children})=>{
         if(!subjectId || subjectId==="") return res;
         const url = `/${subjectId}`;
         try {
-            res = await axiosInstance.get(url, {withCredentials: true});
+            res = await axiosInstance.get(url);
             if(!res || !res.data || !res.data.data) return undefined;
             dispatch({
                 type: UPDATE_SUBJECT_DETAILS,
@@ -48,14 +53,17 @@ export const SubjectProvider = ({children})=>{
         return res.data;
     }
 
-    const updateProperty = async (name, value, subjectId)=>{
+    const updateProperty = async (name, value, subjectId, del=false)=>{
         let res = undefined;
-        if(!name || !value) return res;
+        if(!name || (!value && !del) || subjectId===undefined) return res;
         try {
-          const data = {prop: name, data: value}
           const url = `/update-by-user/${subjectId}`;
-          console.log(url, data);
-          res = await axiosInstance.patch(url, data, {withCredentials: true,});
+          console.log(subjectId, name, value, del); 
+          res = await axiosInstance.patch(url, {
+            prop: name, 
+            data: value, 
+            del: del
+          });
 
         } catch(err) {
             res = undefined;
@@ -70,15 +78,45 @@ export const SubjectProvider = ({children})=>{
         if(!name || !value || !subjectId) return res;
         try {
             const url = `/update-by-user/${subjectId}`;
-            res = await axiosInstance(url, {
+            
+            res = await axiosInstance.patch(url, {
                 isnew: true,
                 prop: name,
-                data: value?.cur, 
+                data: value, 
             });
+
+            await getSubject(subjectId);
         } catch(err) {
             console.log(err);
             alert(err.message);
         }
+        return res;
+    }
+
+    const acceptChanges = async (subjectId, prop, index, isNew, del=false)=> {
+        const url = `/accept-updates/${subjectId}`;
+        let res = undefined;
+        try { 
+            if(!prop || index===undefined || !subjectId) 
+                throw new Error("Bad Request!");
+            
+            setLoading(true);
+            console.log(subjectId, prop, index, isNew, del);
+            res = await axiosInstance.patch(url, {
+                prop,
+                index,
+                isnew: isNew,
+                del,
+            });
+            if(!res) throw new Error("Something went wrong!");
+
+            await getSubject(subjectId);
+        } catch(err) {
+            res = null;
+            alert(err.message);
+            console.log(err);
+        }
+        setLoading(false);
         return res;
     }
     return (
@@ -88,6 +126,7 @@ export const SubjectProvider = ({children})=>{
             getSubject, 
             updateProperty, 
             addProperty, 
+            acceptChanges, 
           }}
         >
             {children}

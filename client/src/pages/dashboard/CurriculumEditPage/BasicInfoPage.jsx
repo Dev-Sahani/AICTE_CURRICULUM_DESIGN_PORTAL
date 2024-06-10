@@ -32,10 +32,10 @@ export default function BasicInfoPage() {
 
   if(loading) return (
     <>
-      <Loading count={1} cardClassName="w-[40%] h-8" />
-      <Loading count={2} />
-      <Loading count={2} containerClassName="w-[60%] !flex-row" cardClassName="!h-12" />
-      <Loading count={1} cardClassName="w-[40%] h-8" />
+      <Loading count={1} cardClassName="!h-14" />
+      <Loading count={2} containerClassName="w-[60%] !flex-row" />
+      <Loading count={1} cardClassName="w-[40%] !h-28" />
+      <Loading count={2} cardClassName="!h-28" />
       <Loading count={2} />
     </>
   )
