@@ -12,6 +12,7 @@ export default function ChangesModal({ name, index, onClose }) {
   }
   
   const handleAccept = async(item, ind)=>{
+    console.log(item);
     await acceptChanges(
       subject_common_id, 
       name + (item?.value==="deleted" ? "" : "." + index.toString()), 

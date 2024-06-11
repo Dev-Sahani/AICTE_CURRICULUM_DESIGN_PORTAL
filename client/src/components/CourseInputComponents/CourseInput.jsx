@@ -43,7 +43,12 @@ export default function CourseInput({
   )
 
   if(localLoading) {
-    return <Loading count={1} cardClassName="!h-12 w-full" containerClassName="w-full" />
+    return (
+      <div className="w-full flex items-center my-1.5 mx-2 gap-3">
+        <label className="min-w-[110px] capitalize">{name}</label>
+        <Loading count={1} cardClassName="h-[2.75rem] w-full" containerClassName="w-full !p-0" />
+      </div>
+    );
   }
 
   return (

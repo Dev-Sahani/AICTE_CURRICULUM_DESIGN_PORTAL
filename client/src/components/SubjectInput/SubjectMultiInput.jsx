@@ -9,10 +9,10 @@ export default function SubjectMultiInput({name, showName}) {
   
   if(!propertyValue || !propertyValue.cur || !Array.isArray(propertyValue.cur)) return <div>No such '{name}' exists!</div>
 
-  propertyValue.del?.forEach((item)=>{
+  propertyValue.del?.forEach((item, index)=>{
     const len = propertyValue.cur[item?.index]?.new?.length;
     if(len===0 || (len!==undefined && propertyValue.cur[item?.index]?.new[len - 1]?.value !== "deleted"))
-      propertyValue.cur[item?.index]?.new?.push({by: item?.by, value: "deleted", index: item.index});
+      propertyValue.cur[item?.index]?.new?.push({by: item?.by, value: "deleted", index: index});
   })
 
   return (

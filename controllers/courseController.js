@@ -356,18 +356,22 @@ exports.acceptUpdates = async function(req,res,next){
             if(ind >= course[prop].cur.length)
                 return next(new BAD_REQUEST("index range out of bond"))
             
-            const val = course[prop].cur[ind].new[index].value
+            const valueToRemove = course[prop].cur[ind].new[index];
+            const val = JSON.parse(JSON.stringify(valueToRemove.value));
             if(typeof(val) === 'object'){
                 for(let i in course[prop].cur[ind].cur){
-                    if(val[i]===undefined){
-                        val[i]=course[prop].cur[ind].cur[i]
+                    if(val[i] === undefined){
+                        val[i] = course[prop].cur[ind].cur[i]
                     }
                 }
             }
-            
+            console.log(valueToRemove);
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
-                    [`${prop}.cur.${ind}.cur`]:val
+                    [`${prop}.cur.${ind}.cur`]: val
+                },
+                "$pull": {
+                    [`${prop}.cur.${ind}.new`]: valueToRemove
                 }
             })
         }
@@ -377,6 +381,9 @@ exports.acceptUpdates = async function(req,res,next){
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
                     [`${prop}.cur`]:course[prop].new[index].value
+                },
+                "$pull": {
+                    [`${prop}.new`]:course[prop].new[index]
                 }
             })
         }
