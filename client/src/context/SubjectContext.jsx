@@ -101,7 +101,7 @@ export const SubjectProvider = ({children})=>{
                 throw new Error("Bad Request!");
             
             setLoading(true);
-            console.log(subjectId, prop, index, isNew, del);
+
             res = await axiosInstance.patch(url, {
                 prop,
                 index,
@@ -119,6 +119,53 @@ export const SubjectProvider = ({children})=>{
         setLoading(false);
         return res;
     }
+
+    const acceptChangesInModule = async (subjectId, moduleIndex, changeIndex, isNew, del=false)=> {
+        const url = `/accept-modules-updates/${subjectId}`;
+        let res = undefined;
+        try { 
+            setLoading(true);
+            console.log(subjectId,  moduleIndex, changeIndex, isNew, del);
+            res = await axiosInstance.patch(url, {
+                moduleIndex, 
+                changeIndex,
+                isnew: isNew,
+                del,
+            });
+            if(!res) throw new Error("Something went wrong!");
+
+            await getSubject(subjectId);
+        } catch(err) {
+            res = null;
+            alert(err.message);
+            console.log(err);
+        }
+        setLoading(false);
+        return res;
+    }
+
+    const updateModule = async (subjectId, data, isNew, index, del) => {
+        let res = undefined;
+        if((!isNew && !del) || subjectId===undefined) return res;
+        try {
+          const url = `/update-module-by-user/${subjectId}`;
+
+          res = await axiosInstance.patch(url, {
+            data,  
+            isnew: isNew, 
+            index, 
+            del,
+          });
+
+          await getSubject(subjectId);
+
+        } catch(err) {
+            res = undefined;
+            alert(err.message);
+            console.log(err);
+        }
+        return res;
+    }
     return (
         <SubjectContext.Provider
           value ={{
@@ -127,6 +174,8 @@ export const SubjectProvider = ({children})=>{
             updateProperty, 
             addProperty, 
             acceptChanges, 
+            acceptChangesInModule, 
+            updateModule, 
           }}
         >
             {children}

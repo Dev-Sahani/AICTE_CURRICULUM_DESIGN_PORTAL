@@ -20,6 +20,9 @@ import {
 } from "./CourseInputComponents"; 
 import {
     SubjectMultiInput, 
+    ModuleNewValues, 
+    ModuleInput,
+    Module, 
 } from "./SubjectInput"; 
 import Instructions from "./Instructions";
 import Table from "./Table";
@@ -53,5 +56,8 @@ export {
     CardWrapper,
     Table,
     Loading,
-    Modal
+    Modal, 
+    Module,
+    ModuleInput,
+    ModuleNewValues,
 }

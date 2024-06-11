@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-export default function Loading({containerClassName, cardClassName, count=1}){    
+export default function Loading({containerClassName, cardClassName, count=1, key}){    
     const ar = []
     const cardClassNames = classNames(
         cardClassName,
@@ -16,7 +16,7 @@ export default function Loading({containerClassName, cardClassName, count=1}){
     )
 
     return (
-        <div className={containerClassNames}>
+        <div className={containerClassNames} key={key}>
             {ar}
         </div>
     );
