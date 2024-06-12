@@ -53,23 +53,23 @@ export default function Module ({ module, index }) {
               <div className='w-full flex flex-col gap-2'>
                 {
                   value.topics.map((topic, ind) => 
-                    <div className="flex gap-2 items-center">
-                    <input 
-                      key={ind}
-                      name={`module.${index}.topics.${ind}`}
-                      value={value.topics[ind]}
-                      onChange={(e)=>setValue({
-                          ...value, 
-                          topics: value.topics.map((v,i)=> i===ind ? e.target.value : v)
-                      })}
-                      className={`
-                        px-2 py-1 outline-none border-2 border-gray-300 w-full rounded
-                        ${module && module.new && module.new.length > 0 && "bg-accent-300"}
-                      `}
-                    />
-                    <buton onClick={()=>setValue({...value, topics: value.topics.filter((t, i)=>i!==ind)})} className="cursor-pointer">
+                    <div className="flex gap-2 items-center" key={ind}>
+                      <input 
+                        key={ind}
+                        name={`module.${index}.topics.${ind}`}
+                        value={value.topics[ind]}
+                        onChange={(e)=>setValue({
+                            ...value, 
+                            topics: value.topics.map((v,i)=> i===ind ? e.target.value : v)
+                        })}
+                        className={`
+                          px-2 py-1 outline-none border-2 border-gray-300 w-full rounded
+                          ${module && module.new && module.new.length > 0 && "bg-accent-300"}
+                        `}
+                      />
+                      <button onClick={()=>setValue({...value, topics: value.topics.filter((t, i)=>i!==ind)})} className="cursor-pointer">
                         <img src="/deleteButton2.svg" alt="del" className="h-5 w-5"/>
-                    </buton>
+                      </button>
                     </div>
                   )
                 }

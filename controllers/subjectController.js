@@ -189,11 +189,14 @@ exports.updateByUser = async (req, res, next) =>{
         if (!sub[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         
+        if(prop === "referenceMaterial" && sub[prop]?.add?.find(r => r.value === data) !== undefined) 
+            return res.status(200);
+
         await Subject.findOneAndUpdate({_id:sub._id},{
             "$push":{
                 [`${prop}.add`]:{
-                    by:userId,
-                    value:data
+                    by: userId,
+                    value: data
                 }
             }
         })
