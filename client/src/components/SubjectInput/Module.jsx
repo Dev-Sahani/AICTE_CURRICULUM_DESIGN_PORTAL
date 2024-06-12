@@ -6,33 +6,27 @@ import { ViewChangesButton } from ".";
 
 export default function Module ({ module, index }) {
   const name = "modules";
-  const {subject_common_id} = useParams();
-  const { updateProperty, getSubject } = useSubjectContext();
+  const { subject_common_id } = useParams();
+  const { updateModule } = useSubjectContext();
   const [value, setValue] = useState(module?.cur);
   const [localLoading, setLocalLoading] = useState(false);
 
   if(!value) return <div>Invalid {name} value</div>;
 
-  const handleUpdate = async ()=> {
-    const fullName = name + "." + index.toString();
+  const handleUpdate = async (del=false) => {
     setLocalLoading(true);
-    updateProperty(fullName, value, subject_common_id)
-      .then(async res=>{
-        if(res) {
-          setValue(module?.cur);
-          // ------------- test for reload remaining ---------------
-          await getSubject(subject_common_id);
-        }
-      })
-      .finally(()=>{
-        setLocalLoading(false);
-      })
+    if(!del) {
+      setValue(value.topics.filter((topic)=>(topic!=="" && topic!==" ")));
+    }
+    await updateModule(subject_common_id, del ? undefined : value, false, index, del);
+    setValue(module?.cur);
+    setLocalLoading(false);
   }
 
-  if(localLoading) return <Loading count={1} cardClassName="!h-12" />
+  if(localLoading) return <Loading count={1} cardClassName="!h-48" />
 
   return (
-    <div className='w-full flex flex-col items-end gap-3 bg-primary-50 rounded p-4' key={index}>
+    <div className='w-full flex flex-col gap-3 bg-primary-50 rounded p-4' key={index}>
       { 
         value &&  
         <div className='w-full'>
@@ -54,11 +48,12 @@ export default function Module ({ module, index }) {
           {
             value.topics && Array.isArray(value.topics) 
             &&
-            <div className='flex gap-3'>
+            <div className='mt-2 flex gap-3'>
               <h4 className='min-w-[100px] font-semibold text-primary-500'>Modules</h4>
-              <div className='w-full grid grid-cols-2 gap-3'>
+              <div className='w-full flex flex-col gap-2'>
                 {
                   value.topics.map((topic, ind) => 
+                    <div className="flex gap-2 items-center">
                     <input 
                       key={ind}
                       name={`module.${index}.topics.${ind}`}
@@ -72,6 +67,10 @@ export default function Module ({ module, index }) {
                         ${module && module.new && module.new.length > 0 && "bg-accent-300"}
                       `}
                     />
+                    <buton onClick={()=>setValue({...value, topics: value.topics.filter((t, i)=>i!==ind)})} className="cursor-pointer">
+                        <img src="/deleteButton2.svg" alt="del" className="h-5 w-5"/>
+                    </buton>
+                    </div>
                   )
                 }
               </div>
@@ -79,24 +78,34 @@ export default function Module ({ module, index }) {
           }
         </div>
       }
-      <div className={`flex gap-3 ${module?.new?.length > 0 || value !== module?.cur ? "block":"hidden"}`}>
-      {
-        module.new.length > 0
-        &&
-        <ViewChangesButton name={name} index={index} showText imageClassName="h-8" />
-      }
-      {
-        value !== module?.cur
-        &&
-        <>
-          <button onClick={handleUpdate} className="px-3 py-1 rounded bg-secondary-500 text-white">
-            Save
+      <div className="w-full flex gap-4 justify-between items-center">
+        <div>
+          <button disabled={localLoading} onClick={()=>setValue({...value, topics: [...value.topics, ""]})} className="px-3 py-1.5 rounded bg-secondary-500 text-white text-sm">
+            Add Module
           </button>
-          <button onClick={()=>setValue(module?.cur)} className="px-3 py-1 rounded bg-red-400 text-white">
-            Cancel
+        </div>
+        <div className="flex gap-3 items-center">
+          {
+            module.new.length > 0 
+            &&
+            <ViewChangesButton name={name} index={index} showText imageClassName="h-8" />
+          }
+          <button disabled={localLoading} onClick={()=>handleUpdate(true)} className="px-3 py-1 rounded bg-red-400 text-white">
+            Delete
           </button>
-        </>
-      }
+          {
+            JSON.stringify(value) !== JSON.stringify(module.cur)
+            &&
+            <div className="flex gap-3">
+              <button disabled={localLoading} onClick={()=>handleUpdate()} className="px-3 py-1 rounded bg-secondary-500 text-white">
+                Save
+              </button>
+              <button disabled={localLoading} onClick={()=>setValue(module?.cur)} className="px-3 py-1 rounded bg-red-400 text-white">
+                Cancel
+              </button>
+            </div>
+          }
+        </div>
       </div>
     </div>
   )

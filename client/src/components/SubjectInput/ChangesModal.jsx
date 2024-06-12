@@ -31,7 +31,7 @@ export default function ChangesModal({ name, index, onClose }) {
 
         <div className="w-full flex gap-4 items-start justify-between">
           <h3 className="text-primary-500 text-lg font-medium">Current Value</h3>
-          <div className="max-h-56 basis-[85%] px-1.5 py-1 border border-black bg-white rounded-md overflow-y-auto">
+          <div className="basis-[85%] px-1.5 py-1 border border-black bg-white rounded-md overflow-y-auto">
             { 
               name === "modules" ?
               <Module module={propertyValue.cur} />
@@ -48,25 +48,28 @@ export default function ChangesModal({ name, index, onClose }) {
               propertyValue.new &&
               propertyValue.new.map((item, ind)=> 
               {  
-                if(name === "modules") return (
-                  <div key={ind}>
-                    <div className="bg-accent-400 rounded">
-                      <Module module={item?.value} whiteHeading/>
+                if(name === "modules") {
+                  const isDeleted = item.value === "deleted";
+                  return (
+                    <div key={ind}>
+                      <div className={`rounded ${isDeleted ? "bg-red" : "bg-accent-400"}`}>
+                        <Module module={item?.value} whiteHeading/>
+                      </div>
+                      <div className="mt-1 mb-4 flex justify-between">
+                        <p className="ml-1 text-gray-500 text-sm">by: {item?.by}</p>
+                        <button 
+                          className="px-3 py-2 bg-secondary-500 rounded text-white" 
+                          onClick={()=>acceptChangesInModule(subjectId, index, isDeleted ? item.delIndex : ind, false, isDeleted)}
+                        >
+                          Accept
+                        </button>
+                      </div>
                     </div>
-                    <div className="mt-1 mb-4 flex justify-between">
-                      <p className="ml-1 text-gray-500 text-sm">by: {item?.by}</p>
-                      <button 
-                        className="px-3 py-2 bg-secondary-500 rounded text-white" 
-                        onClick={()=>acceptChangesInModule(subjectId, index, ind, false)}
-                      >
-                        Accept
-                      </button>
-                    </div>
-                  </div>
-                );
+                  );
+                }
                 return  (                  
                   <div className="mb-4 flex flex-col gap-1 items-end" key={ind}>
-                    <div className={`max-h-56 w-full px-1.5 py-1 border border-black ${item?.value==="deleted" ? "bg-red-500 text-white text-center capitalize" : "bg-white"} rounded-md overflow-y-auto`} > 
+                    <div className={`w-full px-1.5 py-1 border border-black ${item?.value==="deleted" ? "bg-red-500 text-white text-center capitalize" : "bg-white"} rounded-md overflow-y-auto`} > 
                       <p>{item?.value}</p>
                     </div>
                     <div className="w-full flex justify-between">
@@ -93,8 +96,15 @@ export default function ChangesModal({ name, index, onClose }) {
 
 export function Module({ module, whiteHeading }) {
   if(!module) return <div>Some Error</div>;
-
-  return (
+  
+  if(module === "deleted") 
+    return (
+      <p className="px-2 py-1 mb-3 bg-red-400 border-2 border-gray-300 w-full rounded text-center text-white">
+        Deleted
+      </p>
+    );
+  
+    return (
     <div className="p-2 pb-4">
       {
         module.title && 
@@ -110,7 +120,7 @@ export function Module({ module, whiteHeading }) {
         &&
         <div className='flex flex-col gap-3'>
           <h4 className={`${whiteHeading && "text-white"} min-w-[100px] font-semibold`}>Modules</h4>
-          <div className='w-full grid grid-cols-2 gap-3'>
+          <div className='w-full flex flex-col gap-3'>
             {
               module.topics.map((topic, ind) => 
                 <p key={ind} className="px-2 py-1 bg-white border-2 border-gray-300 w-full rounded">

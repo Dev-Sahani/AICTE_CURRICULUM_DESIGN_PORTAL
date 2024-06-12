@@ -16,10 +16,10 @@ export default function ModuleInput() {
     
     if(!subject || subject_common_id !== subject.common_id) {
 
-        getSubject(subject_common_id)
+      getSubject(subject_common_id)
         .then(res => {
-          if(!res || !res.data) 
-          setData(res?.data?.modules)
+          if(!res || !res.data) return;
+          setData(res.data.modules);
         })
         .finally(()=>{
           setLocalLoading(false);

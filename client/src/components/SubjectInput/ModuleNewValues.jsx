@@ -12,6 +12,12 @@ export default function ModuleNewValues({ onClose }) {
       <h1 className="w-full text-center mb-4 text-primary-500 text-2xl font-bold">New Values</h1>
       <div>
         {
+          subject.modules.add.length === 0 
+          ?
+            <div className="w-full h-[30rem] flex justify-center items-center">
+              <h1 className="text-primary-200 text-6xl uppercase font-black">No Values</h1>
+            </div> 
+          :
           subject.modules.add.map((module, ind) => {
             return (
               <div key={ind} className="p-4">

@@ -41,6 +41,15 @@ export const SubjectProvider = ({children})=>{
         try {
             res = await axiosInstance.get(url);
             if(!res || !res.data || !res.data.data) return undefined;
+            
+            if(res.data.data.modules?.del?.length > 0) {
+                res.data.data.modules.del.forEach(({index, by}, delIndex)=>{
+                    res.data.data.modules.cur[index].new.push(
+                        {value: "deleted", by, delIndex}
+                    );
+                })
+            } 
+
             dispatch({
                 type: UPDATE_SUBJECT_DETAILS,
                 payload: res.data.data, 
@@ -58,7 +67,7 @@ export const SubjectProvider = ({children})=>{
         if(!name || (!value && !del) || subjectId===undefined) return res;
         try {
           const url = `/update-by-user/${subjectId}`;
-          console.log(subjectId, name, value, del); 
+
           res = await axiosInstance.patch(url, {
             prop: name, 
             data: value, 
@@ -125,7 +134,7 @@ export const SubjectProvider = ({children})=>{
         let res = undefined;
         try { 
             setLoading(true);
-            console.log(subjectId,  moduleIndex, changeIndex, isNew, del);
+
             res = await axiosInstance.patch(url, {
                 moduleIndex, 
                 changeIndex,
@@ -146,18 +155,21 @@ export const SubjectProvider = ({children})=>{
 
     const updateModule = async (subjectId, data, isNew, index, del) => {
         let res = undefined;
-        if((!isNew && !del) || subjectId===undefined) return res;
+        
         try {
-          const url = `/update-module-by-user/${subjectId}`;
+            const url = `/update-module-by-user/${subjectId}`;
 
-          res = await axiosInstance.patch(url, {
-            data,  
-            isnew: isNew, 
-            index, 
-            del,
-          });
+            if((!del && !isNew && !index) || (isNew && !data) || (del && index===undefined) || subjectId===undefined)
+                throw new Error("Request has some missing parameters!")
+          
+            res = await axiosInstance.patch(url, {
+              data,  
+              isnew: isNew, 
+              index, 
+              del,
+            }); 
 
-          await getSubject(subjectId);
+            await getSubject(subjectId);
 
         } catch(err) {
             res = undefined;

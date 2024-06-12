@@ -356,12 +356,12 @@ exports.modulesUpdateByUser = async function(req, res, next){
     if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
 
     if(del){
-        if(index >= sub.modules.cur.length)
+        if(index === undefined || index >= sub.modules.cur.length)
             return next(new BAD_REQUEST("index range out of bond"))
 
         await Subject.findOneAndUpdate({_id: sub._id},{
             "$push":{
-                ["modules.del"]:{
+                ["modules.del"]: {
                     by: userId,
                     index: index
                 }
@@ -370,6 +370,8 @@ exports.modulesUpdateByUser = async function(req, res, next){
     } 
     else {
         const path = (index === undefined ? "modules.add" : `modules.cur.${index}.new`);
+        
+        data.topics = data.topics?.filter(t => (t!=="" && t!==" "));
 
         await Subject.findOneAndUpdate({_id: sub._id}, {
             "$push": {
