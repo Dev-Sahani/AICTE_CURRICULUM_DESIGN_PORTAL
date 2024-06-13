@@ -23,7 +23,7 @@ async function findReferenceMaterials({commonId, }){
 exports.findReferenceMaterials = findReferenceMaterials
 
 exports.getSubjectById = async (req, res)=>{
-    const data = (await Subject.find({common_id:req.params.commonId})
+    const data = (await Subject.find({common_id: req.params.commonId})
         .sort({version:-1})
         .limit(1) )[0]
     res.status(200).send({
@@ -32,20 +32,25 @@ exports.getSubjectById = async (req, res)=>{
     })
 }
 
-exports.postSubject = async (req, res)=>{
+const createSubject = async(data) => {
     ["common_id","version","title","objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]
-    const sub = req.body;
+    
+    if(!data || !data.title) throw new Error("Please Provide the title.");
+
+    const sub = {};
     sub.title = {
-        new:[],
-        cur:req.body.title
+        new: [],
+        cur: data.title,
     }
+
     for(let field of ["objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]){
-        if(!req.body[field])continue
-        
-        const cur = req.body[field].map(el=>({
-            new:[],
-            cur:el
-        }))
+        let cur = [];
+        if(data[field]) {
+            cur = data[field].map(el => ({
+                new: [],
+                cur: el
+            }));
+        }
 
         sub[field] = {
             add:[],
@@ -53,20 +58,29 @@ exports.postSubject = async (req, res)=>{
             cur
         }
     }
-    const data = await Subject.create(sub);
-    const sub2 = data._doc;
-    sub2.common_id = sub2._id
+    // Error: if res1 is success and res got error => subject will be created with null as common_id
+    const res1 = await Subject.create(sub);
+    const sub2 = res1._doc;
+    sub2.common_id = sub2._id.toString();
     sub2.version = 1
-    const data2 = await Subject.findByIdAndUpdate(sub2._id, sub2, {new:true})
+    const res = await Subject.findByIdAndUpdate(sub2._id, sub2, {new: true})
+    return res;
+}
+exports.createSubject = createSubject;
+
+exports.postSubject = async (req, res)=>{
+    ["common_id","version","title","objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]
+    
+    const data2 = await createSubject(req.body);
 
     res.status(200).send({
         status:"success",
-        data:data2
+        data: data2
     })
 }
 
 exports.getSubjectForUser = async (req, res, next)=>{
-    let user = req.user
+    let user = req.user;
     if(!user ){
         user = await User.findById(req.body.user._id)
     }if(!user || !user.areaOfSpecialization){
@@ -242,7 +256,7 @@ exports.acceptUpdates = async function(req,res,next){
     // }
 
     let {index, isnew , del , prop} = req.body
-    if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
+    if(prop==undefined || index==undefined) return next(new BAD_REQUEST("improper request body"))
 
     let ind = -1;
     if(prop.indexOf('.') != -1) {

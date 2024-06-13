@@ -1,6 +1,7 @@
 const { NOT_FOUND, BAD_REQUEST } = require('../errors');
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
+const { createSubject } = require("./subjectController");
 
 const findCourse = async ({commonId, next, select})=>{
     const query = Course.find({common_id:commonId})
@@ -235,11 +236,11 @@ exports.updateByUser = async (req, res, next) =>{
         if (!course[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         
-        await Course.findOneAndUpdate({_id:course._id},{
+        await Course.findOneAndUpdate({_id: course._id},{
             "$push":{
                 [`${prop}.add`]:{
-                    by:userId,
-                    value:data
+                    by: userId,
+                    value: data
                 }
             }
         })
@@ -274,7 +275,7 @@ exports.updateByUser = async (req, res, next) =>{
     })
 }
 
-exports.acceptUpdates = async function(req,res,next){
+exports.acceptUpdates = async function(req, res, next){
     //req.body = {
     //  prop:"prop.ind",
     //  index:
@@ -322,33 +323,60 @@ exports.acceptUpdates = async function(req,res,next){
                 course[prop].del[i].index --;
             }
         }
+        let common_id = undefined;
+        if(prop === "subjects") common_id = course[prop].cur[delInd].cur.common_id;
         course[prop].cur.splice(delInd, 1)
 
         await Course.findOneAndUpdate({_id:course._id},{
             "$set":{
-                [`${prop}.del`]:course[prop].del,
-                [`${prop}.cur`]:course[prop].cur
+                [`${prop}.del`]: course[prop].del,
+                [`${prop}.cur`]: course[prop].cur
             }
-        })
+        });
+
+        if(common_id !== undefined) {
+            await Subject.deleteMany({common_id: common_id});
+        }
+
     } else if(isnew) {
         if (!course[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         if(index >= course[prop].add.length)
             return next(new BAD_REQUEST("index range out of bond"))
-        
+
         const current = {
-            new:[],
-            cur:course[prop].add.splice(index, 1)[0].value
+            new: [],
+            cur: course[prop].add.splice(index, 1)[0].value
         }
 
-        await Course.findOneAndUpdate({_id:course._id},{
-            "$set":{
-                [`${prop}.add`]:course[prop].add,
-            },
-            "$push":{
-                [`${prop}.cur`]:current
+        if(prop === "subjects") {
+            try {
+                const new_sub = await createSubject(req.body);
+                current.cur.common_id = new_sub.common_id;
+            } 
+            catch(err) {
+                return res.status(500).send({message:"Cannot create the subject."}); 
+            }            
+        } 
+
+        try {
+            await Course.findOneAndUpdate({_id: course._id},{
+                "$set":{
+                    [`${prop}.add`]: course[prop].add,
+                },
+                "$push":{
+                    [`${prop}.cur`]: current
+                }
+            });
+        } catch (err) {
+            if(prop === "subjects") {
+                await Subject.deleteMany({common_id: new_sub.common_id});
+                return res.status(500).send({message: "Cannot update the course."});
             }
-        })
+        }
+
+
+
     } else {
         if(ind !== -1){
             if (!course[prop].add)
@@ -365,7 +393,7 @@ exports.acceptUpdates = async function(req,res,next){
                     }
                 }
             }
-            console.log(valueToRemove);
+
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
                     [`${prop}.cur.${ind}.cur`]: val

@@ -130,10 +130,10 @@ export const CourseProvider = ({children})=>{
 
             const url = `/courses/${courseId}/update-by-user`;
 
-            const res2 = await axiosInstance.post("/subjects", value?.cur)
+            // const res2 = await axiosInstance.post("/subjects", value?.cur)
 
-            value.cur.common_id = res2.data?.data?.common_id;
-            value.cur.version = res2.data?.data?.version;
+            // value.cur.common_id = res2.data?.data?.common_id;
+            // value.cur.version = res2.data?.data?.version;
 
             res = await axiosInstance.patch(url, {
                 isnew: true,
@@ -168,7 +168,7 @@ export const CourseProvider = ({children})=>{
         return res;
     }
 
-    const acceptChanges = async (propertyName, index, isNew=false, del=false)=>{
+    const acceptChanges = async (propertyName, index, isNew=false, del=false, title)=>{
         const url = `courses/${state.common_id}/accept-updates`;
         let res = undefined;
         try { 
@@ -176,12 +176,18 @@ export const CourseProvider = ({children})=>{
                 throw new Error("Cannot make request!");
             
             setLoading(true);
+            console.log(propertyName, isNew, del, index)
             res = await axiosInstance.patch(url, {
                 prop: propertyName,
                 index,
                 isnew: isNew,
-                del,
+                del, 
+                title,
             });
+
+            console.log(res);
+            if(!res || res.status !== 200) throw new Error("Something went wrong!");
+
             await getCourse(state?.common_id);
         } catch(err) {
             res = null;
