@@ -89,12 +89,16 @@ userSchema.post(/^find/, async function(doc, next){
         return next();
     }
 
-    const ids = doc.courses.map(el => el.id);
-    const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
-
-    for(let indx=0; indx<ids.length; indx++){
-        doc.courses[indx].id = courses[indx]
+    // ----------------- TESTING REMAINING -----------------
+    if(doc && doc.courses) {
+        const ids = doc.courses.map(el => el.id);
+        const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
+    
+        for(let indx=0; indx<ids.length; indx++){
+            doc.courses[indx].id = courses[indx]
+        }
     }
+
     next()
 })
 

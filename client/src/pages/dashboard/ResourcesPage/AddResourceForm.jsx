@@ -54,7 +54,7 @@ export default function AddResourceForm({onClose}) {
     <Modal onClose={onClose} className="!w-[40rem] overflow-y-auto">
         <form  className="mt-4 w-full p-4 pt-8 flex flex-col gap-2 overflow-auto">
             <div className="flex justify-between items-center px-2">
-                <label className="" for="title@add">Title</label>
+                <label className="" htmlFor="title@add">Title</label>
                 <input 
                     value={state.title} 
                     className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" 
@@ -66,7 +66,7 @@ export default function AddResourceForm({onClose}) {
             </div>
 
             <div className="flex justify-between items-center px-2">
-                <label className="" for="author@add">Author</label>
+                <label className="" htmlFor="author@add">Author</label>
                 <input 
                     value={state.author}
                     className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" 
@@ -77,7 +77,7 @@ export default function AddResourceForm({onClose}) {
                     />
             </div>
             <div className="flex justify-between items-center px-2">
-                <label className="" for="publisher@add">Publisher</label>
+                <label className="" htmlFor="publisher@add">Publisher</label>
                 <input 
                     value={state.publisher}
                     className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" 
@@ -89,7 +89,7 @@ export default function AddResourceForm({onClose}) {
             </div>
 
             <div className="flex justify-between items-center px-2">
-                <label className="" for="url@add">Url</label>
+                <label className="" htmlFor="url@add">Url</label>
                 <input 
                     value={state.url} 
                     className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" 
@@ -101,7 +101,7 @@ export default function AddResourceForm({onClose}) {
             </div>
 
             <div className="flex justify-between items-center px-2">
-                <label className="" for="imgurl@add">Image Url</label>
+                <label className="" htmlFor="imgurl@add">Image Url</label>
                 <input 
                     value={state.coverImageUrl} 
                     className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" 
@@ -113,7 +113,7 @@ export default function AddResourceForm({onClose}) {
             </div>
 
             <div className="flex justify-between gap-16 items-center px-2">
-                <label className="" for="type@invite">Format</label>
+                <label className="" htmlFor="type@invite">Format</label>
                 <select 
                     className="w-full border-2 border-gray-400 rounded ml-1 px-2 py-1 focus:outline-none"
                     name="type"
@@ -129,7 +129,7 @@ export default function AddResourceForm({onClose}) {
             </div>
 
             <div className="mt-4 items-center px-2">
-                <label className="ml-px mb-1 block" for="text@invite">Description</label>
+                <label className="ml-px mb-1 block" htmlFor="text@invite">Description</label>
                 <textarea
                     type="text"
                     value={state.description}

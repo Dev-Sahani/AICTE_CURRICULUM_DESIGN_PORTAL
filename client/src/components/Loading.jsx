@@ -16,7 +16,7 @@ export default function Loading({containerClassName, cardClassName, count=1, key
     )
 
     return (
-        <div className={containerClassNames} key={key}>
+        <div className={containerClassNames} key={key ? key : 1}>
             {ar}
         </div>
     );
