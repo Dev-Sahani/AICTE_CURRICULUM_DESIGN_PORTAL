@@ -70,6 +70,70 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+userSchema.methods.getAccessedCourses = async function () {
+    const ids = this.courses.map(el => el.id);
+    const courses = await Course.aggregate([
+        // Match documents with specified common_id values
+        { $match: { common_id: { $in: ids } } },
+        
+        // Sort by common_id and version in descending order
+        { $sort: { version: -1 } },
+    
+        // Group by common_id and get the first document in each group
+        {
+            $group: {
+                _id: "$common_id",
+                title: { $first: "$title" },
+                level: { $first: "$level" },
+                program: { $first: "$program" },
+                common_id: { $first: "$common_id" },
+                version: { $first: "$version" }
+            }
+        },
+    
+        // Project the fields we are interested in
+        {
+            $project: {
+                _id: 0,  // Exclude the default _id field
+                title: 1,
+                level: 1,
+                program: 1,
+                common_id: 1,
+                version: 1
+            }
+        }
+    ]);
+
+    const res = [];
+    for(let course of courses){
+        // doc.courses[indx].id = courses[indx]
+        let indxInIds = -1;
+        for(let i=0; i<ids.length && indxInIds===-1; i++) {
+            if(ids[i].toString() === course?.common_id?.toString()) {
+                indxInIds = i;
+            }
+        }
+        res.push({
+            id: course.common_id,
+            access: this.courses[indxInIds]?.access,
+            title: course.title,
+            version: course.version,
+            level: course.level,
+            program: course.program, 
+        })
+    }
+
+    this.populatedCourses = res;
+    return res;
+}
+
+
+userSchema.set("toJSON", {
+    versionKey: false,
+    transform: function (doc, dataInMongoDb) {
+      delete dataInMongoDb._id;
+    },
+});
 
 //Indexes
 
@@ -84,30 +148,13 @@ userSchema.pre(/^find/,async function (next){
     next()
 })
 
-userSchema.post(/^find/, async function(doc, next){
-    if(this.options && this.options.skipPostHook) {
-        return next();
-    }
-
-    // ----------------- TESTING REMAINING -----------------
-    if(doc && doc.courses) {
-        const ids = doc.courses.map(el => el.id);
-        const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
-    
-        for(let indx=0; indx<ids.length; indx++){
-            doc.courses[indx].id = courses[indx]
-        }
-    }
-
-    next()
-})
-
 userSchema.pre("save",async function(next){
     if(!this.isModified("password"))return next();
 
     this.password = await bcrypt.hash(this.password,12)
     next();
 })
+
 userSchema.pre("save",async function(next){
     if(!this.isModified("password") || this.isNew || this.preRegistered)return next()
     this.passwordChangedAt = Date.now() - 2000

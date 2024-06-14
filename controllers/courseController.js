@@ -1,6 +1,8 @@
-const { NOT_FOUND, BAD_REQUEST } = require('../errors');
+const { NOT_FOUND, BAD_REQUEST, CustomAPIError } = require('../errors');
+const mongoose = require("mongoose");
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
+const User = require("../models/userModel");
 const { createSubject } = require("./subjectController");
 
 const findCourse = async ({commonId, next, select})=>{
@@ -15,6 +17,70 @@ const findCourse = async ({commonId, next, select})=>{
     
     return data
 }
+
+const createCourse = async (req, res, next) => {
+    const { title, level, program } = req.body;
+    if(!title || !level || !program) 
+        return next(new BAD_REQUEST("Please provide the necessary details."));
+
+    const newCourse = {
+        title: {new: [], cur: title}, 
+        level: {new:[], cur: level},
+        program: {new:[], cur: program},
+    };
+
+    const properties1 = ["description", "message", "preface", "acknowledgement", "rangeOfCredits"];
+    const properties2 = ["definitionOfCredits", "codesAndDef", "subjects", ""];
+
+    for(const prop of properties1) {
+        newCourse[prop] = {
+            new: [], 
+            cur: ""
+        }
+    }
+    for(const prop of properties2) {
+        newCourse[prop] = {
+            add: [],
+            del: [] ,
+            cur: [],
+        }
+    }
+
+    newCourse.committee = [];
+    newCourse.common_id = new mongoose.mongo.ObjectId("000000000000000000000000");
+
+    const res1 = await Course.create(newCourse);
+    if(!res1.common_id) {
+        return next(new CustomAPIError("Cannot create course. Something went wrong", 500));
+    }
+    try {
+        const res2 = await User.findOneAndUpdate(
+            {userId: req.user._doc.userId}, 
+            {
+                $push: {
+                    courses: {
+                        id: res1.common_id,
+                        // title: res1.title,
+                        // level: res1.level,
+                        // program: res1.program,
+                        access: "head"
+                    }
+                }
+            }, 
+            {new: true}
+        );
+        
+        if(res2?.courses?.length <= req?.user?.courses) 
+            throw new Error("Something went wrong.");
+    } 
+    catch(err) {
+        await Course.deleteOne({common_id: res1.common_id});
+        return next(new CustomAPIError("Cannot update user profile. Something went wrong", 500));
+    }
+
+    res.status(200).send({status: "success", data: {}});
+}
+
 const findCourseSubjects = async ({commonId, next})=>{
     const course = await findCourse({
         commonId:commonId,
@@ -42,8 +108,10 @@ const findCourseSubjects = async ({commonId, next})=>{
     .unwind("doc"))
     return data
 }
-exports.findCourse = findCourse
-exports.findCourseSubjects = findCourseSubjects
+
+exports.findCourse = findCourse;
+exports.createCourse = createCourse;
+exports.findCourseSubjects = findCourseSubjects;
 
 exports.getAllCoursesUserWise = async (req,res,next)=>{
     let {search, program, level, page} = req.query

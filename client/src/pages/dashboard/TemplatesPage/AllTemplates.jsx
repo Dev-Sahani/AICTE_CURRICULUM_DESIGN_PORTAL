@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
 import AddImage from "../../../assets/Add.png"
 import { Link } from 'react-router-dom';
-import { useFilterContext } from "../../../context/FilterContext";
+import { useUserContext } from "../../../context";
+
 export default function AllTemplates() {
-    const {
-        getAllCourses, 
-        courseSearch, 
-        courseLevel, 
-        courseProgram
-    } = useFilterContext();
+    const { accessedCourses } = useUserContext();
 
     const [templates, setTemplates] = useState([]);
     useEffect(()=>{
-        getAllCourses().then(res=>{
-            if(res) setTemplates(res.data);
-        })
+        setTemplates((accessedCourses && Array.isArray(accessedCourses)) ? accessedCourses : []);
     // eslint-disable-next-line
-    }, [courseSearch, courseLevel, courseProgram]);
+    }, [accessedCourses]);
     
     
     const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03] "
@@ -25,21 +19,21 @@ export default function AllTemplates() {
         <div className='w-full grid grid-cols-2 my-4 gap-6 min-w-fit'>
             <Link 
                 className={CardsClasses + " flex flex-col items-center justify-center"} 
-                to="/new-template"
+                to="/curriculum/new-template"
             >
                 <img src={AddImage} alt="add_image" className="h-16 w-16"/>
                 <h1>Start with new Template</h1>
             </Link>
         {
-            templates.map((template) => {
+            templates.map((template, index) => {
                 return (
                     <Link 
-                        key={template?.common_id}
+                        key={index}
                         className={CardsClasses}
-                        to={`/curriculum/${template?.common_id}`} 
+                        to={`/curriculum/${template?.id}`} 
                     >
                         <h1 className='text-xl m-2 mb-0'>{template?.title?.cur}</h1>
-                        <p className='text-xs mx-2 mb-2 text-gray-300'>{template?.common_id}</p>
+                        <p className='text-xs mx-2 mb-2 text-gray-300'>{template?.id}</p>
                         <div className='flex text-xs'>
                             <div className="bg-secondary-100 text-secondary-900 px-2 py-1 m-2 rounded-full">
                                 {template?.level?.cur}

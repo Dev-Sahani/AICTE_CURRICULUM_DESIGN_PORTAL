@@ -10,6 +10,10 @@ router.get("/",
     courseController.getAllCoursesUserWise
 ) // wiht search functionality 
 
+router.post("/", 
+    authController.protect,
+    courseController.createCourse  
+);
 
 const onIdRouter = express.Router({mergeParams:true})
 

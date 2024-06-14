@@ -176,7 +176,7 @@ export const CourseProvider = ({children})=>{
                 throw new Error("Cannot make request!");
             
             setLoading(true);
-            console.log(propertyName, isNew, del, index)
+
             res = await axiosInstance.patch(url, {
                 prop: propertyName,
                 index,
@@ -185,7 +185,6 @@ export const CourseProvider = ({children})=>{
                 title,
             });
 
-            console.log(res);
             if(!res || res.status !== 200) throw new Error("Something went wrong!");
 
             await getCourse(state?.common_id);
