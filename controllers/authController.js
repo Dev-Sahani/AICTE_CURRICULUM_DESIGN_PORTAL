@@ -36,7 +36,7 @@ const sendRes = async (res, statusCode, token, user, msg)=>{
     })
 }
 
-const createJWT = (user)=>jwt.sign(
+const createJWT = (user) => jwt.sign(
     {id:user._id, role:user.role},
     process.env.JWT_SECRET, 
     {expiresIn:(process.env.JWT_COOKIE_EXPIRE * 24*60*60)}
@@ -122,12 +122,12 @@ module.exports.registerDev = async (req,res, next)=>{
     query.skipPreMiddleware = true;
     let user = await query;
 
-    if(!user)return next(new UNAUTHORIZED_USER("user mail id does not match"));
+    if(!user) return next(new UNAUTHORIZED_USER("user mail id does not match"));
     
-    if(!user.preRegistered)return next(new UNAUTHORIZED_USER("user already registered"));
+    if(!user.preRegistered) return next(new UNAUTHORIZED_USER("user already registered"));
 
     const isMatch = await user.checkPassword(password,user.password);
-    if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
+    if(!isMatch) return next(new UNAUTHORIZED_USER("user password does not match"));
 
     query = User.findOneAndUpdate({email},{name, preRegistered:false}, {new:true})
     query.skipPreMiddleware = true;
@@ -204,6 +204,9 @@ module.exports.protect = async (req, res, next)=>{
     }
 
     req.user = freshUser; // May be used in future
+    const accessedCourse = await freshUser.getAccessedCourses();
+    res.accessedCourse = accessedCourse;
+    console.log(res.accessedCourse);
     next();
 }
 

@@ -15,37 +15,44 @@ router.post("/",
     courseController.createCourse  
 );
 
-const onIdRouter = express.Router({mergeParams:true})
+const onIdRouter = express.Router({mergeParams: true})
 
-router.use("/:commonId",authController.protect, onIdRouter)
+router.use("/:commonId", authController.protect, onIdRouter)
 
 onIdRouter
     .get("/",
         authController.protect,
+        courseController.protectCourseByView, 
         courseController.getCourse
     )
     .get("/basic-info", 
         authController.protect,
+        courseController.protectCourseByView, 
         courseController.getBasicInfo
     )
     .get("/categories", 
         authController.protect,
+        courseController.protectCourseByView, 
         courseController.getCategory
     )
     .get("/semesters", 
         authController.protect,
+        courseController.protectCourseByView, 
         courseController.getSemester
     )
     .get("/subjects", 
         authController.protect,
+        courseController.protectCourseByView, 
         courseController.getSubjects
     )
     .patch("/update-by-user/", 
         authController.protect,
+        courseController.protectCourseByEdit, 
         courseController.updateByUser
     )
     .patch("/accept-updates", 
-        authController.protect,
+        authController.protect, 
+        courseController.protectCourseByHead, 
         courseController.acceptUpdates
     )
     .get("/users", 
@@ -54,10 +61,12 @@ onIdRouter
     )
     .patch("/users", 
         authController.protect,
+        courseController.protectCourseByHead, 
         userController.addCourseUser
     )
     .delete("/users", 
         authController.protect,
+        courseController.protectCourseByHead, 
         userController.deleteCourseUser
     )
 

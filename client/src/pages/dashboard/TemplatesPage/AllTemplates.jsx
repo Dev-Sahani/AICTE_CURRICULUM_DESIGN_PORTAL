@@ -13,7 +13,7 @@ export default function AllTemplates() {
     }, [accessedCourses]);
     
     
-    const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.03] "
+    const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.02] "
 
     return (
         <div className='w-full grid grid-cols-2 my-4 gap-6 min-w-fit'>
@@ -50,13 +50,3 @@ export default function AllTemplates() {
     </div>
   )
 }
-
-
-// const getMessage = ()=>{
-//     return [
-//         {message: "The quality of technical education depends on many factors but largely on outcome based socially and industrially relevant curriculum, good quality motivated faculty, teaching learning process, effective industry internship and evaluation of students based on desired outcomes."},
-//         {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
-//         {message: "Mechatronics engineering enables vehicles to be safer, more efficient, and connected, revolutionizing the way we commute and interact with transportation systems"},
-        
-//     ]
-// }

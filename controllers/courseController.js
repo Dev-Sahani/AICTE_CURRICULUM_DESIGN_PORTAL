@@ -1,9 +1,57 @@
-const { NOT_FOUND, BAD_REQUEST, CustomAPIError } = require('../errors');
+const { NOT_FOUND, BAD_REQUEST, CustomAPIError, FORBIDDEN_REQ } = require('../errors');
 const mongoose = require("mongoose");
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
 const User = require("../models/userModel");
 const { createSubject } = require("./subjectController");
+
+exports.protectCourseByView = async(req, res, next) => {
+    const { commonId } = req.params;
+    const { accessedCourse } = res;
+    console.log(accessedCourse);
+    for(let course of accessedCourse) {
+        if(course.id?.toString() === commonId.toString()) {
+            if(course.access === "view" || course.access === "head" || course.access === "edit") 
+                return next();
+            else 
+                break;
+        }
+    }
+
+    return next(new FORBIDDEN_REQ("You don't have access to view this course."));
+}
+
+exports.protectCourseByEdit = async(req, res, next) => {
+    const { commonId } = req.params;
+    const { accessedCourse } = res;
+    for(let course of accessedCourse) {
+        console.log(course, commonId, commonId.toString(), course.id.toString() === commonId.toString());
+        if(course.id?.toString() === commonId.toString()) {
+            console.log("TEST");
+            if(course.access === "head" || course.access === "edit") 
+                return next();
+            else 
+                break;
+        }
+    }
+
+    return next(new FORBIDDEN_REQ("You don't have access to edit the course."));
+}
+
+exports.protectCourseByHead = async(req, res, next) => {
+    const { commonId } = req.params;
+    const { accessedCourse } = res;
+    for(let course of accessedCourse) {
+        if(course?.id?.toString() === commonId.toString()) {
+            if(course.access === "head") 
+                return next();
+            else 
+                break;
+        }
+    }
+
+    return next(new FORBIDDEN_REQ("You don't have access to accept changes in this course."));
+}
 
 const findCourse = async ({commonId, next, select})=>{
     const query = Course.find({common_id:commonId})
