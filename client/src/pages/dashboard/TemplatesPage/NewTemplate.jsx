@@ -32,7 +32,7 @@ export default function NewTemplate() {
             navigate("/");
         } 
         catch(err) {
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
         }
         finally {
             setLocalLoading(false);

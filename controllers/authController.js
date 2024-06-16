@@ -62,7 +62,7 @@ module.exports.registerAdmin = async (req,res, next)=>{
     newUser._doc._id = undefined
     await sendRes(res, 201, token, newUser);
 }
-module.exports.preRegisterDev = async (req,res, next)=>{
+module.exports.preRegisterDev = async (req,res, next) => {
     const {name,email, role, mailText} = req.body;
     if(!(["expert","faculty"].includes(req.body.role))){
         return next(new BAD_REQUEST("role can only include 'expert' or 'faculty'"))
@@ -79,10 +79,10 @@ module.exports.preRegisterDev = async (req,res, next)=>{
     newPass = generateRandomKey(process.env.USER_PASSWORD_LEN)
     if(!user){
         user = new User({
-            name:name, 
-            email:email,
-            role:role,
-            preRegistered:true,
+            name: name, 
+            email: email,
+            role: role,
+            preRegistered: true,
         })
         user.password = newPass
         await user.save()
@@ -92,7 +92,7 @@ module.exports.preRegisterDev = async (req,res, next)=>{
         const encryptPass = await bcrypt.hash(newPass,12)
         const query = User.findOneAndUpdate(
             {email}
-            ,{name,role,password:encryptPass},
+            ,{name, role, password:encryptPass},
             {new:true}
         )
         query.skipPreMiddleware = true
@@ -101,7 +101,7 @@ module.exports.preRegisterDev = async (req,res, next)=>{
     
     
     //email the new user credentials to user.email
-    const mailUser = {...user._doc,password:newPass}
+    const mailUser = {...user._doc, password:newPass}
     await sendEmailToUser(mailUser, mailText)
 
     res.status(200).json({
@@ -206,17 +206,21 @@ module.exports.protect = async (req, res, next)=>{
     req.user = freshUser; // May be used in future
     const accessedCourse = await freshUser.getAccessedCourses();
     res.accessedCourse = accessedCourse;
-    console.log(res.accessedCourse);
+
     next();
 }
 
 module.exports.restrictTo = function(...roles){
-    if(!roles.every(el=>["administrator","faculty","expert"].includes(el))){
+
+    if(!roles.every(el => ["administrator", "faculty", "expert"].includes(el))){
         throw new Error("Operationl Erorr - Invalid roles");
     }
 
     return (req, res, next)=>{        
-        if(!req.user || !roles.includes(req.user.role)){
+        if(req.user?.email && req.body?.email && req.user.email === req.body.email){
+            return next();
+        }
+        if(!req.user || !roles.includes(req.user.role) ){
             return next(new CustomAPIError("You don't have acess to performe this action\nFORBIDDEN", 403))
         }
         next();

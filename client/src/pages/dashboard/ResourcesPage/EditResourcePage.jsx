@@ -47,7 +47,7 @@ export default function AddResourceForm({onClose, resource}) {
         //     })
         
         // }catch(err){
-        //     window.alert(err.message)
+        //     window.alert(err.response?.data?.message || err.message)
         // }
         setLoading(false)
         // onClose();

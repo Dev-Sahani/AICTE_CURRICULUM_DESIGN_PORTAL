@@ -33,7 +33,7 @@ exports.sendEmailToUser = async function (user, mailText) {
 You can register to AICTE curriculum editing platform with:
     Your email: ${user.email}
     Password: ${user.password}
-please register here https://aicte-curriculum-portal.onrender.com/api/v1/auth/login`,
+please register here ${process.env.SERVER_URL}`,
     };
     // Send the email
     const info = await transporter.sendMail(mailOptions);

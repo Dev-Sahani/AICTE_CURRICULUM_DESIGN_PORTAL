@@ -22,7 +22,7 @@ export default function SubjectResource() {
       if (res.status >= 400) throw new Error(res.data.message)
       return res?.data?.data;
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message)
     }
   }
 
@@ -47,7 +47,7 @@ export default function SubjectResource() {
       const res2 = await fetch();
       setData(res2)
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message)
     }
     setLocalLoading(false);
   }
@@ -64,7 +64,7 @@ export default function SubjectResource() {
       setData(res2)
       setAddMaterial(false)
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message)
     }
     setLocalLoading(false);
   }
@@ -84,7 +84,7 @@ export default function SubjectResource() {
       const res2 = await fetch()
       setData(res2)
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message)
     }
     setLocalLoading(false);
   }

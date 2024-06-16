@@ -41,7 +41,7 @@ function ResourceList({ handleAdd }) {
       if (res.status >= 400) throw new Error(res.data.message)
       return res?.data?.data;
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message);
     }
   }
 

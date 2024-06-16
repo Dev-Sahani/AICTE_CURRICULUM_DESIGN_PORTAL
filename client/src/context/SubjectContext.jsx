@@ -55,11 +55,11 @@ export const SubjectProvider = ({children})=>{
                 payload: res.data.data, 
             })
         } catch(err) {
-            alert("Cannot get subject!");
+            alert(err.response?.data?.message || err.message || "Cannot get subject!");
             console.log(err);
             res = undefined;
         }
-        return res.data;
+        return res?.data;
     }
 
     const updateProperty = async (name, value, subjectId, del=false)=>{
@@ -76,7 +76,7 @@ export const SubjectProvider = ({children})=>{
 
         } catch(err) {
             res = undefined;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         return res;
@@ -97,7 +97,7 @@ export const SubjectProvider = ({children})=>{
             await getSubject(subjectId);
         } catch(err) {
             console.log(err);
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
         }
         return res;
     }
@@ -122,7 +122,7 @@ export const SubjectProvider = ({children})=>{
             await getSubject(subjectId);
         } catch(err) {
             res = null;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         setLoading(false);
@@ -146,7 +146,7 @@ export const SubjectProvider = ({children})=>{
             await getSubject(subjectId);
         } catch(err) {
             res = null;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         setLoading(false);
@@ -173,7 +173,7 @@ export const SubjectProvider = ({children})=>{
 
         } catch(err) {
             res = undefined;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         return res;

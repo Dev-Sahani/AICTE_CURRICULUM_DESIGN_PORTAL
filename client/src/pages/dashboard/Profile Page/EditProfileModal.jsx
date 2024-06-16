@@ -10,17 +10,17 @@ export default function EditProfile({ onClose }) {
 
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
-    name:user.name,
-    profileImgUrl:user.profileImgUrl,
-    gender:user.gender,
-    dob:user.dob,
-    areaOfSpecialization:user.areaOfSpecialization,
+    name: user.name,
+    profileImgUrl: user.profileImgUrl,
+    gender: user.gender,
+    dob: user.dob,
+    areaOfSpecialization: user.areaOfSpecialization,
   })
 
   const handleChange = async (e)=>{
     setData(prev=>({
       ...prev,
-      [e.target.name]:e.target.value
+      [e.target.name]: e.target.value
     }))
   }
   const handleCancel = async (e)=>onClose()
@@ -28,7 +28,7 @@ export default function EditProfile({ onClose }) {
     setLoading(true);
     await updateUserProfile({
       ...data,
-      email:user.email,
+      email: user.email,
     })
     setLoading(false)
   }
@@ -64,7 +64,7 @@ export default function EditProfile({ onClose }) {
               name="gender"
               value={data.gender}
               onChange={handleChange}
-              className={inputClass + " px-4 h-8 focus:outline-none"}
+              className={inputClass + " px-4 h-8 focus: outline-none"}
             >
               <option value="Select..." className="text-base">Select...</option>
               <option value="male" className="text-base">male</option>
@@ -92,7 +92,7 @@ export default function EditProfile({ onClose }) {
                     onChange={(e)=>{
                       const area = data.areaOfSpecialization
                       area[ind] = e.target.value;
-                      setData(prev=>({...prev,areaOfSpecialization:area}))
+                      setData(prev=>({...prev,areaOfSpecialization: area}))
                     }}
                     className={inputClass + " !w-48"}
                     type="text"
@@ -106,7 +106,7 @@ export default function EditProfile({ onClose }) {
                   e.preventDefault();
                   const newArea = data.areaOfSpecialization
                   newArea.push("")
-                  setData(prev=>({...prev, areaOfSpecialization:newArea}))
+                  setData(prev=>({...prev, areaOfSpecialization: newArea}))
                 }}
               >+</button>
 

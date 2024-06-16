@@ -1,24 +1,25 @@
 const { BAD_REQUEST } = require('../errors/index')
 const User = require('../models/userModel')
 const factoryController = require('./factoryController')
-const filterAPI =require('../utils/filterAPI')
+const filterAPI = require('../utils/filterAPI')
 
-exports.getAllUser = async (req, res, next)=>{
+exports.getAllUser = async (req, res)=>{
     const {search, areaOfSpecialization} = req.query
     const flt = {}
     if (search) {
         const exp = new RegExp(`${search}`, 'i');
-        flt["$or"] = [{"name":{$regex:exp}}, {"email":{ $regex: exp }}]
+        flt["$or"] = [{"name": {$regex:exp}}, {"email":{ $regex: exp }}]
     }
     const query = User.find(flt)
-    const filteredQuery = new filterAPI(query,req.query)
+    const filteredQuery = new filterAPI(query, req.query)
         .sort()
         .select()
         .paging()
+
     const data = await filteredQuery.query
     res.status(200).send({
-        status:"success",
-        length:data.length,
+        status: "success",
+        length: data.length,
         data
     })
 }
@@ -34,7 +35,7 @@ exports.patchUser = async (req, res, next)=>{
         return next(new BAD_REQUEST("Cannot update some property of user like 'password' or 'userId' through this route"))
     }
 
-    if(req.user.email!==req.body.email){
+    if(req.user.email !== req.body.email){
         return next(new BAD_REQUEST("You're not allowed to performe this action"))
     }
 
@@ -83,13 +84,13 @@ exports.addCourseUser = async (req, res, next)=>{
     const id = req.body._id
     const access = req.body.access
 
-    if(!id)return next(new BAD_REQUEST("Please provide the userId"))
+    if(!id) return next(new BAD_REQUEST("Please provide the userId"))
     if(!["head","edit","view"].includes(access)){
         return next(new BAD_REQUEST("request body must have access with value 'head','editor','view'"))
     }
     const exists = await User.findOne({
-        _id:id,
-        "courses.id":commonId
+        _id: id,
+        "courses.id": commonId
     })
     let result;
     if(exists){

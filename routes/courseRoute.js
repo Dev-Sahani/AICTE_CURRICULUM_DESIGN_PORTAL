@@ -22,37 +22,37 @@ router.use("/:commonId", authController.protect, onIdRouter)
 onIdRouter
     .get("/",
         authController.protect,
-        courseController.protectCourseByView, 
+        courseController.protectCourseByRole("view"), 
         courseController.getCourse
     )
     .get("/basic-info", 
         authController.protect,
-        courseController.protectCourseByView, 
+        courseController.protectCourseByRole("view"), 
         courseController.getBasicInfo
     )
     .get("/categories", 
         authController.protect,
-        courseController.protectCourseByView, 
+        courseController.protectCourseByRole("view"), 
         courseController.getCategory
     )
     .get("/semesters", 
         authController.protect,
-        courseController.protectCourseByView, 
+        courseController.protectCourseByRole("view"), 
         courseController.getSemester
     )
     .get("/subjects", 
         authController.protect,
-        courseController.protectCourseByView, 
+        courseController.protectCourseByRole("view"), 
         courseController.getSubjects
     )
     .patch("/update-by-user/", 
         authController.protect,
-        courseController.protectCourseByEdit, 
+        courseController.protectCourseByRole("edit"),  
         courseController.updateByUser
     )
     .patch("/accept-updates", 
         authController.protect, 
-        courseController.protectCourseByHead, 
+        courseController.protectCourseByRole("head"), 
         courseController.acceptUpdates
     )
     .get("/users", 
@@ -61,12 +61,12 @@ onIdRouter
     )
     .patch("/users", 
         authController.protect,
-        courseController.protectCourseByHead, 
+        courseController.protectCourseByRole("head"), 
         userController.addCourseUser
     )
     .delete("/users", 
         authController.protect,
-        courseController.protectCourseByHead, 
+        courseController.protectCourseByRole("head"), 
         userController.deleteCourseUser
     )
 

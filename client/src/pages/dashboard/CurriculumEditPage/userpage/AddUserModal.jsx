@@ -21,13 +21,13 @@ export default function AddUserModal({ onClose }) {
             const res = await axiosInstance.get("", {
                 params: {
                     search,
-                    fields: "name,email,role,profileImgUrl,courses"
+                    fields: "name, email, role, profileImgUrl, courses, _id"
                 }
             })
             if (res.status >= 400) throw new Error(res.data.message)
             return res;
         } catch (err) {
-            window.alert(err.message)
+            window.alert(err.response?.data?.message || err.message)
             return null
         }
     }
@@ -37,8 +37,8 @@ export default function AddUserModal({ onClose }) {
         fetchData("")
             .then((res) => {
                 res ? setData(res.data.data) : setData([])
-                setLoading(false)
             })
+            .finally(()=>setLoading(false));
         // eslint-disable-next-line
     }, [])
 
@@ -59,8 +59,11 @@ export default function AddUserModal({ onClose }) {
     , []);
 
     const handleAdd = async (user, access) => {
-        if (!["head", "edit", "view"].includes(access)) return;
-        setLoading(true)
+        if (!["head", "edit", "view"].includes(access)) {
+            window.alert("Please provide correct access.");
+            return;
+        }
+        setLoading(true);
         try {
             await axios.patch(base_url + "/api/v1/courses/" + common_id + "/users", {
                 _id: user._id,
@@ -71,7 +74,7 @@ export default function AddUserModal({ onClose }) {
             const res = await fetchData("")
             res ? setData(res.data.data) : setData([])
         } catch (err) {
-            window.alert(err.message)
+            window.alert(err.response?.data?.message || err.message)
         }
         setLoading(false)
     }
@@ -101,7 +104,7 @@ export default function AddUserModal({ onClose }) {
         </div>
         {/* Modal body */}
         {loading ?
-            <Loading count={4} cardClassName="" />
+            <Loading count={8} cardClassName="h-16" containerClassName="my-4" />
             :
             <ul className="px-2 py-4 flex flex-col gap-2">
                 {

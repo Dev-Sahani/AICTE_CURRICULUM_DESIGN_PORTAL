@@ -5,52 +5,32 @@ const Subject = require('../models/subjectModel');
 const User = require("../models/userModel");
 const { createSubject } = require("./subjectController");
 
-exports.protectCourseByView = async(req, res, next) => {
-    const { commonId } = req.params;
-    const { accessedCourse } = res;
-    console.log(accessedCourse);
-    for(let course of accessedCourse) {
-        if(course.id?.toString() === commonId.toString()) {
-            if(course.access === "view" || course.access === "head" || course.access === "edit") 
-                return next();
-            else 
-                break;
+exports.protectCourseByRole = (role) => {
+    let error = false;
+    const allowedRoles = ["view", "edit", "head"];
+    const roleIndex = allowedRoles.indexOf(role);
+
+    if(!role || !allowedRoles.includes(role)) error = true;
+    const errorMessage = new FORBIDDEN_REQ("You don't have access to perform this action!")
+
+    return async (req, res, next) => {
+        if(error) return next(errorMessage);
+
+        const { commonId } = req.params;
+        const { accessedCourse } = res;
+        
+        for(let course of accessedCourse) {
+            if(course.id?.toString() === commonId?.toString()) {
+                const accessIndex = allowedRoles.indexOf(course.access);
+                if(accessIndex === -1 || accessIndex < roleIndex) 
+                    return next(errorMessage);
+                else 
+                    return next();
+            }
         }
-    }
 
-    return next(new FORBIDDEN_REQ("You don't have access to view this course."));
-}
-
-exports.protectCourseByEdit = async(req, res, next) => {
-    const { commonId } = req.params;
-    const { accessedCourse } = res;
-    for(let course of accessedCourse) {
-        console.log(course, commonId, commonId.toString(), course.id.toString() === commonId.toString());
-        if(course.id?.toString() === commonId.toString()) {
-            console.log("TEST");
-            if(course.access === "head" || course.access === "edit") 
-                return next();
-            else 
-                break;
-        }
-    }
-
-    return next(new FORBIDDEN_REQ("You don't have access to edit the course."));
-}
-
-exports.protectCourseByHead = async(req, res, next) => {
-    const { commonId } = req.params;
-    const { accessedCourse } = res;
-    for(let course of accessedCourse) {
-        if(course?.id?.toString() === commonId.toString()) {
-            if(course.access === "head") 
-                return next();
-            else 
-                break;
-        }
-    }
-
-    return next(new FORBIDDEN_REQ("You don't have access to accept changes in this course."));
+        next(errorMessage);
+    } 
 }
 
 const findCourse = async ({commonId, next, select})=>{
@@ -467,7 +447,7 @@ exports.acceptUpdates = async function(req, res, next){
 
         if(prop === "subjects") {
             try {
-                const new_sub = await createSubject(req.body);
+                const new_sub = await createSubject({...req.body, courseId: courseCommonId});
                 current.cur.common_id = new_sub.common_id;
             } 
             catch(err) {

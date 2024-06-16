@@ -127,14 +127,6 @@ userSchema.methods.getAccessedCourses = async function () {
     return res;
 }
 
-
-userSchema.set("toJSON", {
-    versionKey: false, 
-    transform: function (doc, dataInMongoDb) {
-      delete dataInMongoDb._id;
-    }, 
-});
-
 //Indexes
 
 
