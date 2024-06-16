@@ -40,12 +40,11 @@ export const UserProvider = ({children})=>{
             const res = await axiosInstance.get("/auth/verify-token",{
                 withCredentials:true
             })
-            console.log("TEST", res.data);
+
             dispatch({
                 type: SETUP_USER,
                 payload: res.data,
             })
-            console.log("TEST", res.data);
         }
         catch(err){
             logout()
@@ -147,7 +146,7 @@ export const UserProvider = ({children})=>{
                 payload: "refresh to update user",
             });
         } catch(err) {
-            // console.log(err)
+            console.log(err)
             dispatch({
                 type:ALERT,
                 payload:err.message

@@ -13,7 +13,7 @@ export default function AddUserModal({ onClose }) {
     const base_url = process.env.REACT_APP_URL
 
     const axiosInstance = axios.create({
-        baseURL: base_url+"/api/v1/users",
+        baseURL: base_url + "/api/v1/users",
         withCredentials: true
     })
     const fetchData = async (search) => {
@@ -77,15 +77,26 @@ export default function AddUserModal({ onClose }) {
     }
 
     return (
-    <Modal onClose={onClose}>
-        <div className="flex items-center justify-between p-2 border-b rounded-t">
-            <div className="flex gap-2 w-[80%] bg-secondary-400 p-2 rounded-xl">
-                <img className="object-cover" src="/search-white.png" alt="search" />
-                <input
-                    onChange={handleChange}
-                    value={state}
-                    className="border-2 border-gray-400 rounded flex-grow focus:outline-none"
-                />
+    <Modal onClose={onClose} className="px-4">
+        <div className="ml-2 flex justify-between w-[50%] my-4 rounded-xl">
+            <div className="px-1 py-1.5 rounded-l bg-white border-2 border-gray-400 border-r-0">
+                <img src="/search-black.png" alt="search" />
+            </div>
+            <input
+                onChange={handleChange}
+                value={state}
+                className="p-1.5 border-l-0 border-2 border-gray-400 rounded rounded-l-none flex-grow focus:outline-none"
+            />
+        </div>
+
+        <div className="mx-auto w-[98%] py-2 px-4 bg-primary-700 text-white flex justify-between items-center">
+            <div className="flex gap-5 items-center">
+                <h3>Image</h3>
+                <h3>User Detials</h3>
+            </div>
+            <div className="mr-3 flex gap-8 items-center">
+                <h3>Access Type</h3>
+                <h3>Button</h3>
             </div>
         </div>
         {/* Modal body */}
@@ -110,21 +121,20 @@ function User({ user, handleAdd, loading }) {
 
     return <li key={user._id} className="w-full rounded-2xl flex justify-between p-4 border-2 border-gray-500">
         <div className="flex gap-2">
-            <img className="w-12 h-12 object-cover rounded-full" alt="profile" src={user.profileImgUrl} />
+            <img className={`w-12 h-12 object-cover rounded-full ${!user.profileImgUrl && "border-2 border-primary-950"}`} alt="profile" src={user?.profileImgUrl || "/profile.svg"} />
             <div>
-                <p>@{user.email}</p>
-                <h3>{user.name}</h3>
+                <h3 className="ml-[3px] font-medium">{user.name}</h3>
+                <p className="text-gray-400 text-sm">@{user.email}</p>
             </div>
         </div>
         <div className="flex gap-2 items-center">
             <div className="px-2">
-                <p>Access type:</p>
                 <select
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    className="border-2 border-gray-400 rounded px-2 py-1 focus:outline-none"
+                    className="min-w-28 border-2 border-gray-400 rounded px-2 py-1 focus:outline-none cursor-pointer"
                 >
-                    <option value="select.." className="text-sm">select..</option>
+                    <option value="">Select</option>
                     <option value="head" className="text-sm">head</option>
                     <option value="edit" className="text-sm">edit</option>
                     <option value="view" className="text-sm">view</option>
@@ -133,9 +143,9 @@ function User({ user, handleAdd, loading }) {
             <SecondaryButton
                 onClick={() => handleAdd(user, value)}
                 disabled={loading}
-                className={`!p-2 h-fit ${loading && "opacity-50"}`}
+                className={`!p-2 !py-1.5 h-fit ${loading && "opacity-50"}`}
             >
-                {loading ? "O" : "Add+"}
+                {loading ? "O" : "Add +"}
             </SecondaryButton>
         </div>
     </li>

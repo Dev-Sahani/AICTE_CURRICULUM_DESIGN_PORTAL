@@ -77,10 +77,10 @@ export default function UsersPage(){
             .finally(()=>setLoading(false))
     }
     
-    const list = data?.map(user=>(
-        <div key={user._id} className="w-[80%] rounded-2xl flex justify-between p-4 border-2 border-gray-500">
+    const list = data?.map((user, index)=>(
+        <div key={index} className="w-[80%] rounded-2xl flex justify-between p-4 border-2 border-gray-500">
             <div className="flex gap-2">
-                <img className="w-12 h-12 object-cover rounded-full" alt="profile" src={user.profileImgUrl} />
+                <img className={`w-12 h-12 object-cover rounded-full ${!user.profileImgUrl && "border-2 border-primary-950"}`} alt="profile" src={user?.profileImgUrl || "/profile.svg"} />
                 <div>
                     <p>@{user.email}</p>
                     <h3>{user.name}</h3>
@@ -93,7 +93,7 @@ export default function UsersPage(){
                         name={user._id}
                         value={user.courses.find(el=>el.id === common_id).access}
                         onChange={handleChange}
-                        className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none"
+                        className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none cursor-pointer"
                     >
                         <option value="head" className="text-sm">head</option>
                         <option value="edit" className="text-sm">edit</option>
@@ -109,7 +109,7 @@ export default function UsersPage(){
 
     return <div className="h-full">
         <div className="w-full px-2 flex justify-between">
-            <h1 className="text-2xl">Previous versions</h1>
+            <h1 className="text-2xl">All Curriculum Designers</h1>
             <div className="flex gap-2">
                 <SecondaryButton onClick={handleInvite}>Invite User</SecondaryButton>
                 <SecondaryButton onClick={handleAdd}>Add User</SecondaryButton>
