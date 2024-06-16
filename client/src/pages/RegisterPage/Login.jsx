@@ -39,13 +39,13 @@ export default function Login({setIsLogin}) {
   }
 
   return (
-    <div className='rounded-2xl bg-white items-center flex flex-col p-4'>
+    <div className='rounded-2xl bg-white items-center flex flex-col p-2'>
       <h1 className='text-lg'>Login</h1>
       <form className='flex flex-col m-4 text-sm'>
-        <div className='flex justify-between my-1'>
+        <div className='flex justify-between my-1 gap-2'>
           <label className='mr-2 self-center'>Email</label>
           <input
-            className='p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
+            className='min-w-[210px] p-4 py-2 border-2 border-gray-300 rounded-lg self-center'
             placeholder='Enter AICTE email'
             name="email"
             type="email"
@@ -53,9 +53,9 @@ export default function Login({setIsLogin}) {
             onChange={handleChange}
           />
         </div>
-        <div className='flex justify-between my-1'>
-          <label className='mr-2 self-center'>password</label>
-          <div className="w-[70%] flex justify-between border-2 border-gray-300 outline-none rounded-lg bg-white self-center">
+        <div className='flex justify-between my-1 gap-2'>
+          <label className='mr-2 self-center'>Password</label>
+          <div className="w-[210px] flex justify-between border-2 border-gray-300 outline-none rounded-lg bg-white self-center">
             <input
               className="p-4 py-2 rounded-lg w-full h-full outline-none"
               placeholder='Enter password'
@@ -64,12 +64,9 @@ export default function Login({setIsLogin}) {
               value={localState.password}
               onChange={handleChange}
             />
-            <button 
-              type="button"
-              onClick={()=>setShowPass(prev=>!prev)}
-            >
+            <p onClick={()=>setShowPass(prev=>!prev)} className="mr-2 w-6 flex items-center cursor-pointer">
               <img className="w-5 h-5" src={showPass? showPassword: hidePassword} alt="password"/>
-            </button>
+            </p>
           </div>
         </div>
         <button type="submit" disabled={loading} className={`bg-secondary-400 my-4 p-4 py-2 rounded-lg ${loading && "bg-opacity-50"}`} onClick={onSubmit}>
@@ -82,9 +79,9 @@ export default function Login({setIsLogin}) {
           }
         </button>
       </form>
-      <p>
+      <p className='mb-2'>
         Don't have a account? 
-        <span className="text-blue-400 hover:cursor-pointer" onClick={() => { setIsLogin(false) }}>click here</span>
+        <span className="text-blue-400 hover:cursor-pointer" onClick={() => { setIsLogin(false) }}>{" click here"}</span>
       </p>
     </div>
   )

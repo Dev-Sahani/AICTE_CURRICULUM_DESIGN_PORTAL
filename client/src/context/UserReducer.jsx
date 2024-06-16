@@ -22,7 +22,8 @@ export default function reducer(state, action){
     else if(action.type === SETUP_USER) {
         return {
             ...state,
-            user: action.payload,
+            user: action.payload.user,
+            accessedCourses: action.payload.accessedCourses,
         }
     }
     else if(action.type === REMOVE_USER){

@@ -21,7 +21,7 @@ function ResourceList({ handleAdd }) {
     format: ""
   })
   
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   
   const base_url = process.env.REACT_APP_URL;
 
@@ -75,6 +75,7 @@ function ResourceList({ handleAdd }) {
     setLoading(true);
     searchFunc({ search: "", format: "" })
       .finally(() => setLoading(false))
+
     //eslint-disable-next-line
   }, [])
 
@@ -82,7 +83,7 @@ function ResourceList({ handleAdd }) {
     // eslint-disable-next-line
     []);
 
-  if (loading) return <Loading count={5} cardClassName="!h-28" />
+  if (loading) return <Loading count={5} cardClassName="!h-20" containerClassName="mt-12 !mx-4" />
 
   return (
     <>
@@ -132,7 +133,7 @@ function Resources({ resource }) {
     ? (`${resource.description.substr(0, 25)}...`)
     : (resource.description);
   return (
-    <div className='mx-1 my-2 flex flex-col w-full min-w-fit '>
+    <div className='px-4 my-4 flex flex-col w-full min-w-fit cursor-pointer shadow-sm'>
       <div className='rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm'>
         <Link
           to={resource.url}

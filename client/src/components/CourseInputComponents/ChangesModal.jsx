@@ -14,13 +14,13 @@ export default function ChangesModal({ name, subName, onClose }) {
   else if(index!==undefined && index!=="" && Array.isArray(propertyValue.cur) && index*1 < propertyValue.cur.length && propertyValue.cur[index*1].cur && propertyValue.cur[index*1].cur[subName])  {
     propertyValue = {
       cur: propertyValue.cur[index*1].cur[subName],
-      new: propertyValue.cur[index*1].new?.reduce((currSub, newSub)=>newSub?.value[subName] ? [...currSub, {by: newSub.by, value: newSub.value[subName]}] : currSub, []), 
+      new: propertyValue.cur[index*1].new?.reduce((currSub, newSub, newSubIndx)=>newSub?.value[subName] ? [...currSub, {by: newSub.by, value: newSub.value[subName], index: newSubIndx}] : currSub, []), 
     };
   }
   
   if((propertyValue?.new && propertyValue.new[propertyValue.new.length - 1]?.value) !== "deleted" && !subName) {
-    actualPropertyValue?.del?.forEach((item)=>{
-      if(item?.index === index*1) propertyValue?.new?.push({by: item.by, value: "deleted"})
+    actualPropertyValue?.del?.forEach((item, index)=>{
+      if(item?.index === index*1) propertyValue?.new?.push({by: item.by, value: "deleted", index: index})
     });
   }
   
@@ -80,7 +80,7 @@ export default function ChangesModal({ name, subName, onClose }) {
                       <p className="text-gray-500 text-sm">by: {item?.by}</p>
                       {
                         role === "administrator" && 
-                        <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName, ind)}>
+                        <button className="px-2 py-1 bg-secondary-500 text-white" onClick={()=>acceptChanges(propertyName + (index ? "." + index : ""), item.index ? item.index : ind, undefined, item?.value==="deleted")}>
                           Accept
                         </button>
                       }

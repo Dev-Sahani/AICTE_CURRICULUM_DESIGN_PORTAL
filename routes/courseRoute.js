@@ -10,6 +10,10 @@ router.get("/",
     courseController.getAllCoursesUserWise
 ) // wiht search functionality 
 
+router.post("/", 
+    authController.protect,
+    courseController.createCourse  
+);
 
 const onIdRouter = express.Router({mergeParams:true})
 
@@ -59,13 +63,14 @@ onIdRouter
 
 onIdRouter.get("/pdf", 
     authController.protect,
-    async (req,res,next)=>{
+    async (req, res, next)=>{
         const commonId = req.params.commonId
         
         await generatePDF(commonId, res, next);
         // res.status(200)
     }
 )
+
 onIdRouter.get("/pdf-html", 
     authController.protect,
     async (req,res,next)=>{

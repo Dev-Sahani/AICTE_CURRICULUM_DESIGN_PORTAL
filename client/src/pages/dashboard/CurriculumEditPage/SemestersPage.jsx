@@ -38,8 +38,8 @@ export default function SemestersPage() {
   if(localLoading) {
     return (
       <>
-        <Loading count={4} containerClassName="m-10 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12"/>
-        <Loading count={4} containerClassName="m-10 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12"/>
+        <Loading count={4} containerClassName="m-10 pt-12 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12 rounded-3xl"/>
+        <Loading count={4} containerClassName="m-10 pt-12 p-8 bg-gray-100 rounded-3xl" cardClassName="!h-12 rounded-3xl"/>
       </>
     )
   }

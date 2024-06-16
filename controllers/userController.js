@@ -69,7 +69,7 @@ exports.getCourseUser = async (req, res, next)=>{
     const commonId = req.params.commonId
     // console.log("commonId",commonId, new mongoose.SchemaTypes.ObjectId(commonId))
     const users = await User.find({
-        "courses.id": { $in:[commonId] } 
+        "courses.id": { $in: [commonId] } 
     })
     
     res.status(200).send({

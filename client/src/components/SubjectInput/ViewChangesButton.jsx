@@ -7,7 +7,7 @@ export default function ViewChangesButton({ name, index, className, showImage, s
   if(!name || name==="" || index===undefined || index==="") return <div>Some Error</div>;
 
   className = classNames(
-    "bg-accent-500 rounded overflow-hidden text-white flex items-center gap-1",
+    "min-w-[30px] bg-accent-500 rounded overflow-hidden text-white flex items-center gap-1",
     className, 
     {"px-2 py-1": showText, "!bg-accent-400 text-black": showImage},
   )

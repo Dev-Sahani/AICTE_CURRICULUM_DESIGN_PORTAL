@@ -1,6 +1,9 @@
-const { NOT_FOUND, BAD_REQUEST } = require('../errors');
+const { NOT_FOUND, BAD_REQUEST, CustomAPIError } = require('../errors');
+const mongoose = require("mongoose");
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
+const User = require("../models/userModel");
+const { createSubject } = require("./subjectController");
 
 const findCourse = async ({commonId, next, select})=>{
     const query = Course.find({common_id:commonId})
@@ -14,6 +17,70 @@ const findCourse = async ({commonId, next, select})=>{
     
     return data
 }
+
+const createCourse = async (req, res, next) => {
+    const { title, level, program } = req.body;
+    if(!title || !level || !program) 
+        return next(new BAD_REQUEST("Please provide the necessary details."));
+
+    const newCourse = {
+        title: {new: [], cur: title}, 
+        level: {new:[], cur: level},
+        program: {new:[], cur: program},
+    };
+
+    const properties1 = ["description", "message", "preface", "acknowledgement", "rangeOfCredits"];
+    const properties2 = ["definitionOfCredits", "codesAndDef", "subjects", ""];
+
+    for(const prop of properties1) {
+        newCourse[prop] = {
+            new: [], 
+            cur: ""
+        }
+    }
+    for(const prop of properties2) {
+        newCourse[prop] = {
+            add: [],
+            del: [] ,
+            cur: [],
+        }
+    }
+
+    newCourse.committee = [];
+    newCourse.common_id = new mongoose.mongo.ObjectId("000000000000000000000000");
+
+    const res1 = await Course.create(newCourse);
+    if(!res1.common_id) {
+        return next(new CustomAPIError("Cannot create course. Something went wrong", 500));
+    }
+    try {
+        const res2 = await User.findOneAndUpdate(
+            {userId: req.user._doc.userId}, 
+            {
+                $push: {
+                    courses: {
+                        id: res1.common_id,
+                        // title: res1.title,
+                        // level: res1.level,
+                        // program: res1.program,
+                        access: "head"
+                    }
+                }
+            }, 
+            {new: true}
+        );
+        
+        if(res2?.courses?.length <= req?.user?.courses) 
+            throw new Error("Something went wrong.");
+    } 
+    catch(err) {
+        await Course.deleteOne({common_id: res1.common_id});
+        return next(new CustomAPIError("Cannot update user profile. Something went wrong", 500));
+    }
+
+    res.status(200).send({status: "success", data: {}});
+}
+
 const findCourseSubjects = async ({commonId, next})=>{
     const course = await findCourse({
         commonId:commonId,
@@ -41,8 +108,10 @@ const findCourseSubjects = async ({commonId, next})=>{
     .unwind("doc"))
     return data
 }
-exports.findCourse = findCourse
-exports.findCourseSubjects = findCourseSubjects
+
+exports.findCourse = findCourse;
+exports.createCourse = createCourse;
+exports.findCourseSubjects = findCourseSubjects;
 
 exports.getAllCoursesUserWise = async (req,res,next)=>{
     let {search, program, level, page} = req.query
@@ -235,11 +304,11 @@ exports.updateByUser = async (req, res, next) =>{
         if (!course[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         
-        await Course.findOneAndUpdate({_id:course._id},{
+        await Course.findOneAndUpdate({_id: course._id},{
             "$push":{
                 [`${prop}.add`]:{
-                    by:userId,
-                    value:data
+                    by: userId,
+                    value: data
                 }
             }
         })
@@ -274,7 +343,7 @@ exports.updateByUser = async (req, res, next) =>{
     })
 }
 
-exports.acceptUpdates = async function(req,res,next){
+exports.acceptUpdates = async function(req, res, next){
     //req.body = {
     //  prop:"prop.ind",
     //  index:
@@ -322,33 +391,60 @@ exports.acceptUpdates = async function(req,res,next){
                 course[prop].del[i].index --;
             }
         }
+        let common_id = undefined;
+        if(prop === "subjects") common_id = course[prop].cur[delInd].cur.common_id;
         course[prop].cur.splice(delInd, 1)
 
         await Course.findOneAndUpdate({_id:course._id},{
             "$set":{
-                [`${prop}.del`]:course[prop].del,
-                [`${prop}.cur`]:course[prop].cur
+                [`${prop}.del`]: course[prop].del,
+                [`${prop}.cur`]: course[prop].cur
             }
-        })
+        });
+
+        if(common_id !== undefined) {
+            await Subject.deleteMany({common_id: common_id});
+        }
+
     } else if(isnew) {
         if (!course[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         if(index >= course[prop].add.length)
             return next(new BAD_REQUEST("index range out of bond"))
-        
+
         const current = {
-            new:[],
-            cur:course[prop].add.splice(index, 1)[0].value
+            new: [],
+            cur: course[prop].add.splice(index, 1)[0].value
         }
 
-        await Course.findOneAndUpdate({_id:course._id},{
-            "$set":{
-                [`${prop}.add`]:course[prop].add,
-            },
-            "$push":{
-                [`${prop}.cur`]:current
+        if(prop === "subjects") {
+            try {
+                const new_sub = await createSubject(req.body);
+                current.cur.common_id = new_sub.common_id;
+            } 
+            catch(err) {
+                return res.status(500).send({message:"Cannot create the subject."}); 
+            }            
+        } 
+
+        try {
+            await Course.findOneAndUpdate({_id: course._id},{
+                "$set":{
+                    [`${prop}.add`]: course[prop].add,
+                },
+                "$push":{
+                    [`${prop}.cur`]: current
+                }
+            });
+        } catch (err) {
+            if(prop === "subjects") {
+                await Subject.deleteMany({common_id: new_sub.common_id});
+                return res.status(500).send({message: "Cannot update the course."});
             }
-        })
+        }
+
+
+
     } else {
         if(ind !== -1){
             if (!course[prop].add)
@@ -356,18 +452,22 @@ exports.acceptUpdates = async function(req,res,next){
             if(ind >= course[prop].cur.length)
                 return next(new BAD_REQUEST("index range out of bond"))
             
-            const val = course[prop].cur[ind].new[index].value
+            const valueToRemove = course[prop].cur[ind].new[index];
+            const val = JSON.parse(JSON.stringify(valueToRemove.value));
             if(typeof(val) === 'object'){
                 for(let i in course[prop].cur[ind].cur){
-                    if(val[i]===undefined){
-                        val[i]=course[prop].cur[ind].cur[i]
+                    if(val[i] === undefined){
+                        val[i] = course[prop].cur[ind].cur[i]
                     }
                 }
             }
-            
+
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
-                    [`${prop}.cur.${ind}.cur`]:val
+                    [`${prop}.cur.${ind}.cur`]: val
+                },
+                "$pull": {
+                    [`${prop}.cur.${ind}.new`]: valueToRemove
                 }
             })
         }
@@ -377,6 +477,9 @@ exports.acceptUpdates = async function(req,res,next){
             await Course.findOneAndUpdate({_id:course._id},{
                 "$set":{
                     [`${prop}.cur`]:course[prop].new[index].value
+                },
+                "$pull": {
+                    [`${prop}.new`]:course[prop].new[index]
                 }
             })
         }

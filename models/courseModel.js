@@ -113,6 +113,18 @@ courseSchema.virtual("semesters").get(function(){
 
 courseSchema.pre(/^find^/,function (next){
     this.select({__v:0})
+});
+
+courseSchema.pre("save", async function(next) {
+    if(this.common_id?.toString() === "000000000000000000000000") {
+        try {
+            this.common_id = this._id;
+            this.version = 1;
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
 })
 
 const Course = new mongoose.model("course",courseSchema)

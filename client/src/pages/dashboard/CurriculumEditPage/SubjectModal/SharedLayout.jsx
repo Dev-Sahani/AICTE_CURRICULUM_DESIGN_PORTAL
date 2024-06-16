@@ -7,12 +7,12 @@ export default function SharedLayout({ className, children, currentPath }) {
   const {common_id, subject_common_id} = useParams()
   
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(true);
 
   const {subjects, getCourse} = useCourseContext();
 
   useEffect(()=>{
-    setLoading(true);
+    setLocalLoading(true);
     if(subjects) {
       const sub = subjects?.cur?.find(
         sub=>sub?.cur?.common_id === subject_common_id
@@ -20,13 +20,13 @@ export default function SharedLayout({ className, children, currentPath }) {
       // handle not found error ?
       // if(!sub) 
       setData(sub?.cur);
-      setLoading(false);
+      setLocalLoading(false);
     }
     else getCourse(common_id);
   //eslint-disable-next-line
   },[subjects])
 
-  if(loading) {
+  if(localLoading) {
     return (
       <div>
         <div><Loading count={1} cardClassName="!h-12" /></div>

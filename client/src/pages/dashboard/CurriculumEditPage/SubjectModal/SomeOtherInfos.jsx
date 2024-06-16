@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import { useSubjectContext } from "../../../../context";
 import { useParams } from "react-router-dom";
 import { Loading, SubjectMultiInput } from '../../../../components';
+import { AddPropertyValueModal, NewValuesModal } from '../../../../components/SubjectInput';
 
 export default function SomeOtherInfos() {
   const { getSubject, subject } = useSubjectContext();
   const { subject_common_id } = useParams();
 
   const [data, setData] = useState();
+  const [showAddProperty, setShowAddProperty] = useState("");
+  const [showNew, setShowNew] = useState("");
   const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(()=>{
@@ -36,11 +39,37 @@ export default function SomeOtherInfos() {
       {
         data &&
         Object.keys(data).map((propertyName, index)=>{
-          if(["common_id", "id", "_id", "version", "title", "modules", "experiments", "referenceMaterial"].includes(propertyName)) return null;
+          if(["common_id", "id", "_id", "version", "title", "modules", "experiments", "referenceMaterial"].includes(propertyName)) 
+            return null;  
+          if(!subject || !subject[propertyName]) return null;
+          
           return (
             <div className="w-full" key={propertyName}>
-              <h1 className={`px-2 ${index===1 ? "mt-4" : "mt-2"} capitalize`}>{propertyName}</h1>
-              <SubjectMultiInput name={propertyName} />
+              <div className='w-full pr-2 flex justify-between'>
+                <h1 className={`px-2 ${index===1 ? "mt-4" : "mt-2"} capitalize`}>
+                  {propertyName}
+                </h1>
+                <div className='flex gap-2 items-center'>
+                  <button className='max-h-8 bg-secondary-500 px-2 py-px rounded text-white' onClick={()=>setShowAddProperty(propertyName)}>
+                    Add +
+                  </button>
+                  {
+                    showAddProperty === propertyName &&
+                    <AddPropertyValueModal propertyName={propertyName} setShowModal={setShowAddProperty}/>
+                  }
+                  {
+                    subject[propertyName]?.add && subject[propertyName].add.length > 0 && 
+                    <button className='max-h-8 bg-accent-500 px-2 py-px rounded text-white' onClick={()=>setShowNew(propertyName)}>
+                      New
+                    </button>
+                  }
+                  {
+                    showNew === propertyName && 
+                    <NewValuesModal propertyName={propertyName} setShowNew={setShowNew} />
+                  }
+                </div>
+              </div>
+              <SubjectMultiInput name={propertyName} /> 
             </div>
           )
         })

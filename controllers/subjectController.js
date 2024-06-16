@@ -23,7 +23,7 @@ async function findReferenceMaterials({commonId, }){
 exports.findReferenceMaterials = findReferenceMaterials
 
 exports.getSubjectById = async (req, res)=>{
-    const data = (await Subject.find({common_id:req.params.commonId})
+    const data = (await Subject.find({common_id: req.params.commonId})
         .sort({version:-1})
         .limit(1) )[0]
     res.status(200).send({
@@ -32,20 +32,25 @@ exports.getSubjectById = async (req, res)=>{
     })
 }
 
-exports.postSubject = async (req, res)=>{
+const createSubject = async(data) => {
     ["common_id","version","title","objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]
-    const sub = req.body;
+    
+    if(!data || !data.title) throw new Error("Please Provide the title.");
+
+    const sub = {};
     sub.title = {
-        new:[],
-        cur:req.body.title
+        new: [],
+        cur: data.title,
     }
+
     for(let field of ["objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]){
-        if(!req.body[field])continue
-        
-        const cur = req.body[field].map(el=>({
-            new:[],
-            cur:el
-        }))
+        let cur = [];
+        if(data[field]) {
+            cur = data[field].map(el => ({
+                new: [],
+                cur: el
+            }));
+        }
 
         sub[field] = {
             add:[],
@@ -53,20 +58,29 @@ exports.postSubject = async (req, res)=>{
             cur
         }
     }
-    const data = await Subject.create(sub);
-    const sub2 = data._doc;
-    sub2.common_id = sub2._id
+    // Error: if res1 is success and res got error => subject will be created with null as common_id
+    const res1 = await Subject.create(sub);
+    const sub2 = res1._doc;
+    sub2.common_id = sub2._id.toString();
     sub2.version = 1
-    const data2 = await Subject.findByIdAndUpdate(sub2._id, sub2, {new:true})
+    const res = await Subject.findByIdAndUpdate(sub2._id, sub2, {new: true})
+    return res;
+}
+exports.createSubject = createSubject;
+
+exports.postSubject = async (req, res)=>{
+    ["common_id","version","title","objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]
+    
+    const data2 = await createSubject(req.body);
 
     res.status(200).send({
         status:"success",
-        data:data2
+        data: data2
     })
 }
 
 exports.getSubjectForUser = async (req, res, next)=>{
-    let user = req.user
+    let user = req.user;
     if(!user ){
         user = await User.findById(req.body.user._id)
     }if(!user || !user.areaOfSpecialization){
@@ -117,6 +131,7 @@ exports.getAllSubjects = async function (req,res, next){
             }
         })
         .unwind("doc")
+    
     if(page && Number.isInteger(page*1)){
         aggregateQuery.skip((page-1)*12).limit(12)
     }
@@ -143,14 +158,16 @@ exports.getReferenceMaterial = async function(req, res, next){
 }
 
 exports.updateByUser = async (req, res, next) =>{
-    let {data, isnew , del , prop} = req.body
-    if(prop==undefined || !((del==undefined) ^ (data==undefined)) )return next(new BAD_REQUEST("improper request body"))
+    let {data, isnew , del , prop} = req.body;
+    if(prop === undefined || (del === undefined && data === undefined)) 
+        return next(new BAD_REQUEST("improper request body"))
 
     let ind = -1
     if(prop.indexOf('.') != -1){
         [prop,ind] = prop.split('.')
         ind *= 1;
     }
+
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
         return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
@@ -181,24 +198,30 @@ exports.updateByUser = async (req, res, next) =>{
                 }
             }
         })
-    }else if(isnew){
+    } 
+    else if(isnew) {
         if (!sub[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
         
+        if(prop === "referenceMaterial" && sub[prop]?.add?.find(r => r.value === data) !== undefined) 
+            return res.status(200);
+
         await Subject.findOneAndUpdate({_id:sub._id},{
             "$push":{
                 [`${prop}.add`]:{
-                    by:userId,
-                    value:data
+                    by: userId,
+                    value: data
                 }
             }
         })
-    }else{
-        if(ind!=-1){
+    }
+    else {
+        if(ind!=-1) {
             if (!sub[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= sub[prop].cur.length)
                 return next(new BAD_REQUEST("index range out of bond"))
+
             await Subject.findOneAndUpdate({_id:sub._id},{
                 "$push":{
                     [`${prop}.cur.${ind}.new`]:{
@@ -208,7 +231,7 @@ exports.updateByUser = async (req, res, next) =>{
                 }
             })
         }
-        else{
+        else {
             await Subject.findOneAndUpdate({_id:sub._id},{
                 "$push":{
                     [`${prop}.new`]:{
@@ -233,17 +256,17 @@ exports.acceptUpdates = async function(req,res,next){
     // }
 
     let {index, isnew , del , prop} = req.body
-    if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
+    if(prop==undefined || index==undefined) return next(new BAD_REQUEST("improper request body"))
 
-    let ind = -1
-    if(prop.indexOf('.') != -1){
-        [prop,ind] = prop.split('.')
+    let ind = -1;
+    if(prop.indexOf('.') != -1) {
+        [prop,ind] = prop.split('.');
         ind *= 1;
     }
     if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
         return next(new BAD_REQUEST("No editing allowed on this prop"))
     }
-    if(prop=="modules"){
+    if(prop === "modules"){
         return next(new BAD_REQUEST("modules field cannot be update by this route use another route"))
     }
 
@@ -253,37 +276,42 @@ exports.acceptUpdates = async function(req,res,next){
         .sort({version:-1})
         .limit(1))[0]
     
-    if(!sub)return next(new BAD_REQUEST("Invalid sub Id"))
-    if(!sub[prop])return next(new BAD_REQUEST("Field does not exists"))
-    if(del){
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+    if(!sub[prop]) return next(new BAD_REQUEST("Field does not exists"))
+    
+    if(del) {
         if (!sub[prop].del)
             return next(new BAD_REQUEST("cannot delete from a non array field"));
         if(index >= sub[prop].del.length)
             return next(new BAD_REQUEST("index range out of bond"))
 
         const delInd = (sub[prop].del[index].index)*1
+        sub[prop].del = sub[prop].del.filter(({index, by}) => index!==delInd);
+
         for(let i in sub[prop].del){
             if(sub[prop].del[i].index > delInd){
                 sub[prop].del[i].index --;
             }
         }
-        sub[prop].del.splice(index,1)
-        sub[prop].cur.splice(delInd, 1)
+        
+        sub[prop].cur.splice(delInd, 1);
+
         await Subject.findOneAndUpdate({_id:sub._id},{
             "$set":{
                 [`${prop}.del`]:sub[prop].del,
                 [`${prop}.cur`]:sub[prop].cur
             }
         })
-    }else if(isnew){
+    } else if(isnew) {
         if (!sub[prop].add)
             return next(new BAD_REQUEST("cannot add to a non array field"));
-        if(index >= sub[prop].add.length)
+        if(index >= sub[prop].add.length) 
             return next(new BAD_REQUEST("index range out of bond"))
+        
         
         const current = {
             new:[],
-            cur:sub[prop].add.splice(index, 1)[0].value
+            cur: sub[prop].add.splice(index, 1)[0].value
         }
 
         await Subject.findOneAndUpdate({_id:sub._id},{
@@ -294,8 +322,8 @@ exports.acceptUpdates = async function(req,res,next){
                 [`${prop}.cur`]:current
             }
         })
-    }else{
-        if(ind!=-1){
+    } else {
+        if(ind !== -1) {
             if (!sub[prop].add)
                 return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
             if(ind >= sub[prop].cur.length)
@@ -332,5 +360,232 @@ exports.acceptUpdates = async function(req,res,next){
 }
 
 exports.modulesUpdateByUser = async function(req, res, next){
+    let { data, index, isnew , del } = req.body;
+    if((isnew === undefined && del === undefined) || (isnew && (!data || !data.topics || !data.title)) || (del && !index)) 
+        return next(new BAD_REQUEST("improper request body"));
+
+    const userId = req.user._id
+    const subCommonId = req.params.commonId
+    const sub = (await Subject.find({common_id: subCommonId})
+        .sort({version:-1})
+        .limit(1))[0]
     
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+
+    if(del){
+        if(index === undefined || index >= sub.modules.cur.length)
+            return next(new BAD_REQUEST("index range out of bond"))
+
+        await Subject.findOneAndUpdate({_id: sub._id},{
+            "$push":{
+                ["modules.del"]: {
+                    by: userId,
+                    index: index
+                }
+            }
+        })
+    } 
+    else {
+        const path = (index === undefined ? "modules.add" : `modules.cur.${index}.new`);
+        
+        data.topics = data.topics?.filter(t => (t!=="" && t!==" "));
+
+        await Subject.findOneAndUpdate({_id: sub._id}, {
+            "$push": {
+                [path]: {
+                    by: userId,
+                    value: data
+                }
+            }
+        })
+    }
+    
+    res.status(200).send({
+        status:"success"
+    })
+}
+
+exports.acceptUpdates = async function(req,res,next){
+    //req.body = {
+    //  prop:"prop.ind",
+    //  index:
+    //  del:
+    //  isnew
+    // }
+
+    let {index, isnew , del , prop} = req.body
+    if(prop==undefined || index==undefined)return next(new BAD_REQUEST("improper request body"))
+
+    let ind = -1;
+    if(prop.indexOf('.') != -1) {
+        [prop,ind] = prop.split('.');
+        ind *= 1;
+    }
+    if(["_id","id","version","common_id","__v","dateOfCommit"].includes(prop)){
+        return next(new BAD_REQUEST("No editing allowed on this prop"))
+    }
+    if(prop === "modules"){
+        return next(new BAD_REQUEST("modules field cannot be update by this route use another route"))
+    }
+
+    //find the subject By id and update the subject
+    const subCommonId = req.params.commonId
+    const sub = (await Subject.find({common_id:subCommonId})
+        .sort({version:-1})
+        .limit(1))[0]
+    
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+    if(!sub[prop]) return next(new BAD_REQUEST("Field does not exists"))
+    
+    if(del) {
+        if (!sub[prop].del)
+            return next(new BAD_REQUEST("cannot delete from a non array field"));
+        if(index >= sub[prop].del.length)
+            return next(new BAD_REQUEST("index range out of bond"))
+
+        const delInd = (sub[prop].del[index].index)*1
+        sub[prop].del = sub[prop].del.filter(({index, by}) => index!==delInd);
+
+        for(let i in sub[prop].del){
+            if(sub[prop].del[i].index > delInd){
+                sub[prop].del[i].index --;
+            }
+        }
+        
+        sub[prop].cur.splice(delInd, 1)
+
+        await Subject.findOneAndUpdate({_id:sub._id},{
+            "$set":{
+                [`${prop}.del`]:sub[prop].del,
+                [`${prop}.cur`]:sub[prop].cur
+            }
+        })
+    } else if(isnew) {
+        if (!sub[prop].add)
+            return next(new BAD_REQUEST("cannot add to a non array field"));
+        if(index >= sub[prop].add.length) 
+            return next(new BAD_REQUEST("index range out of bond"))
+        
+        
+        const current = {
+            new: [],
+            cur: sub[prop].add.splice(index, 1)[0].value
+        }
+
+        await Subject.findOneAndUpdate({_id:sub._id},{
+            "$set": {
+                [`${prop}.add`]: sub[prop].add,
+            },
+            "$push": {
+                [`${prop}.cur`]: current
+            }
+        })
+    } else {
+        if(ind !== -1) {
+            if (!sub[prop].add)
+                return next(new BAD_REQUEST(`cannot update element at index ${ind} for a non array field`));
+            if(ind >= sub[prop].cur.length)
+                return next(new BAD_REQUEST("index range out of bond"))
+            
+            const val = sub[prop].cur[ind].new[index].value
+            if(typeof(val) === 'object'){
+                for(let i in sub[prop].cur[ind].cur){
+                    if(val[i]==undefined){
+                        val[i]=sub[prop].cur[ind].cur[i]
+                    }
+                }
+            }
+            
+            await Subject.findOneAndUpdate({_id:sub._id},{
+                "$set":{
+                    [`${prop}.cur.${ind}.cur`]:val
+                }
+            })
+        }
+        else{
+            if(index >= sub[prop].new.length)
+                return next(new BAD_REQUEST("index range out of bond"))
+            await Subject.findOneAndUpdate({_id:sub._id},{
+                "$set":{
+                    [`${prop}.cur`]:sub[prop].new[index].value
+                }
+            })
+        }
+    }
+    res.status(200).send({
+        status:"success"
+    })
+}
+
+exports.acceptModulesUpdates = async function(req, res, next) {
+    
+    let { moduleIndex, changeIndex, isnew, del } = req.body;
+    if(isnew === undefined && del === undefined && changeIndex === undefined && moduleIndex === undefined) 
+        return next(new BAD_REQUEST("improper request body"))
+
+    //find the subject By id and update the subject
+    const subCommonId = req.params.commonId
+    const sub = (await Subject.find({common_id:subCommonId})
+        .sort({version:-1})
+        .limit(1))[0]
+    
+    if(!sub) return next(new BAD_REQUEST("Invalid sub Id"))
+    
+    if(del) {
+        if(changeIndex === undefined || changeIndex >= sub.modules.del.length)
+            return next(new BAD_REQUEST("index range out of bond"))
+
+        const delInd = (sub.modules.del[changeIndex].index)*1
+        sub.modules.del = sub.modules.del.filter(({index, by}) => index!==delInd);
+        
+        for(let i in sub.modules.del) {
+            if(sub.modules.del[i].index > delInd){
+                sub.modules.del[i].index --;
+            }
+        }
+        
+        sub.modules.cur.splice(delInd, 1)
+        
+        await Subject.findOneAndUpdate({_id:sub._id},{
+            "$set":{
+                ["modules.del"]: sub.modules.del,
+                ["modules.cur"]: sub.modules.cur
+            }
+        });
+
+    } 
+    else if(isnew) {
+
+        if(changeIndex >= sub.modules.add.length) 
+            return next(new BAD_REQUEST("index range out of bond"));
+
+        const current = {
+            new: [],
+            cur: sub.modules.add.splice(changeIndex, 1)[0].value
+        };
+
+        await Subject.findOneAndUpdate({_id: sub._id},{
+            "$set":{
+                ["modules.add"]: sub.modules.add,
+            }, 
+            "$push":{
+                ["modules.cur"]: current
+            }
+        })
+    } 
+    else {
+        if(moduleIndex >= sub.modules.cur.length && changeIndex >= sub.modules.cur[moduleIndex].new.length)   
+            return next(new BAD_REQUEST("index range out of bond"));
+
+        await Subject.findOneAndUpdate({_id: sub._id},{
+            "$set":{
+                [`modules.cur.${moduleIndex}.cur`]: sub.modules.cur[moduleIndex].new.splice(changeIndex, 1)[0].value,
+                [`modules.cur.${moduleIndex}.new`]: sub.modules.cur[moduleIndex].new
+            }, 
+        });
+    }
+    
+    res.status(200).send({
+        status:"success"
+    })
 }

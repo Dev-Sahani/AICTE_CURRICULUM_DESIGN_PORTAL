@@ -49,17 +49,17 @@ export default function AddUserModal({onClose}){
     <Modal onClose={onClose}>
         <form className="mt-4 w-full p-4 pt-8 flex flex-col gap-2">
             <div className="flex justify-between items-center px-2">
-                <label className="" for="name@invite">Name</label>
+                <label className="" htmlFor="name@invite">Name</label>
                 <input value={state.name} className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" name="name" id="name@invite" onChange={handleChange}/>
             </div>
 
             <div className="flex justify-between items-center px-2">
-                <label className="" for="email@invite">Email</label>
+                <label className="" htmlFor="email@invite">Email</label>
                 <input value={state.mail} className="w-[80%] p-1 border-2 border-gray-400 rounded focus:outline-none resize-none" name="mail" id="email@invite" onChange={handleChange}/>
             </div>
 
             <div className="flex justify-start gap-20 items-center px-2">
-                <label className="" for="role@invite">role</label>
+                <label className="" htmlFor="role@invite">role</label>
                 <select className="border-2 border-gray-400 rounded px-2 py-1 focus:outline-none" name="role" id="role@invite" onChange={handleChange} value={state.role}>
                     <option value="select.." className="text-sm">select..</option>
                     <option value="expert" className="text-sm">expert</option>
@@ -68,7 +68,7 @@ export default function AddUserModal({onClose}){
             </div>
 
             <div className="items-center px-2">
-                <label className="block" for="text@invite">Message</label>
+                <label className="block" htmlFor="text@invite">Message</label>
                 <textarea 
                     type="text"
                     name="text"

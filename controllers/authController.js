@@ -18,18 +18,21 @@ function generateRandomKey(length) {
     return password;
 }
 
-const sendRes = (res,statusCode,token, user,msg)=>{
+const sendRes = async (res, statusCode, token, user, msg)=>{
     if(token)
         res.cookie('token',token,{
             expires:new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
             secure:process.env.NODE_ENV==='production',
             httpOnly:true
         })
+    
+    const accessedCourses = await user.getAccessedCourses();
 
     res.status(statusCode).send({
         status:'success',
-        message:msg,
-        user:user
+        message: msg,
+        user: user, 
+        accessedCourses,
     })
 }
 
@@ -50,14 +53,14 @@ module.exports.registerAdmin = async (req,res, next)=>{
     return next(new BAD_REQUEST("Invalid OTP"))
 
     const newUser = await User.create({
-        name:req.body.name,
-        email:req.body.email,
-        password:req.body.password,
-        role:"administrator"
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: "administrator"
     });
     const token = createJWT(newUser)
     newUser._doc._id = undefined
-    sendRes(res,201,token,newUser)
+    await sendRes(res, 201, token, newUser);
 }
 module.exports.preRegisterDev = async (req,res, next)=>{
     const {name,email, role, mailText} = req.body;
@@ -134,7 +137,7 @@ module.exports.registerDev = async (req,res, next)=>{
     const token = createJWT(user)
     user._doc.password = undefined
     user._doc._id = undefined
-    sendRes(res,200,token,user)
+    await sendRes(res, 200, token, user);
 }
 
 module.exports.verifyByToken = async (req, res, next)=>{
@@ -149,9 +152,12 @@ module.exports.verifyByToken = async (req, res, next)=>{
     if(!user || payload.role!==user.role)
     throw new UNAUTHORIZED_USER("")
 
+    const accessedCourses = await user.getAccessedCourses();
+    
     res.status(200).send({
-        status:"success",
-        user
+        status: "success", 
+        user, 
+        accessedCourses, 
     })
 }
 
@@ -160,7 +166,7 @@ module.exports.login = async (req,res,next)=>{
     if(!email || !password)return next(new BAD_REQUEST('User mail-id or password not provide'));
     const newUser = await User.findOne({email}).select('+password')
 
-    if(!newUser)return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
+    if(!newUser) return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
     
     const isMatch = await newUser.checkPassword(password,newUser.password);
     if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
@@ -168,7 +174,7 @@ module.exports.login = async (req,res,next)=>{
     const token = createJWT(newUser)
     newUser.password = undefined
     newUser._doc._id = undefined
-    sendRes(res,200,token,newUser);
+    await sendRes(res, 200, token, newUser);
 };
 
 module.exports.logout = async (req, res)=>{
@@ -229,11 +235,9 @@ module.exports.updatePassword = async function (req,res, next){
     //loging in user with new password and send response
     const token = createJWT(user)
     
-    const resUser = {
-        ...user,
-        password:undefined
-    }
-    sendRes(res,200,token,resUser)
+    // ----------------------------- TESTING REMAINING ---------------------------
+    user.password = undefined;
+    await sendRes(res, 200, token, user);
 }
 
 module.exports.sendOTP = async (req, res)=>{

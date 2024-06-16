@@ -40,10 +40,12 @@ export const UserProvider = ({children})=>{
             const res = await axiosInstance.get("/auth/verify-token",{
                 withCredentials:true
             })
+            console.log("TEST", res.data);
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             })
+            console.log("TEST", res.data);
         }
         catch(err){
             logout()
@@ -61,9 +63,10 @@ export const UserProvider = ({children})=>{
         setLoading(true);
         try {
             const response = await axiosInstance.post(`auth/login/`, {email, password},{withCredentials:true})
+
             dispatch({
                 type: SETUP_USER,
-                payload: response.data.user
+                payload: response.data
             })
         } catch(err) {
             dispatch({
@@ -100,7 +103,7 @@ export const UserProvider = ({children})=>{
 
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             });
         } catch(err) {
             dispatch({
@@ -121,7 +124,7 @@ export const UserProvider = ({children})=>{
 
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             });
         } catch(err) {
             dispatch({
