@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddImage from "../../../assets/Add.png"
 import { Link } from 'react-router-dom';
 import { useUserContext } from "../../../context";
 
-export default function AllTemplates() {
+export default function AllTemplates({ templates, setTemplates }) {
     const { accessedCourses } = useUserContext();
 
-    const [templates, setTemplates] = useState([]);
     useEffect(()=>{
         setTemplates((accessedCourses && Array.isArray(accessedCourses)) ? accessedCourses : []);
     // eslint-disable-next-line
     }, [accessedCourses]);
-    
-    
+
     const CardsClasses = " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.02] "
 
     return (
@@ -47,6 +45,6 @@ export default function AllTemplates() {
                 )
             })
         }
-    </div>
+        </div>
   )
 }

@@ -33,31 +33,40 @@ import Modal from "./Modal";
 
 export {
     AddSubject, 
-    NavBar,
-    SidebarList,
-    Sidebar,
-    FilterDropdown,
-    FilterSearch,
-    FullPageLoading, 
-    PrimaryButton,
-    SecondaryButton, 
-    SubjectMultiInput, 
-    NavButton,
-    NavList, 
-    NewAndDeletedSubjectsList, 
-    NewAndDeleteProperty, 
+    AddCourseInput,
+
+    CardWrapper,
     CourseMultiInput, 
     CourseTextArea, 
     CourseDropdown, 
     CourseInput, 
-    Label,
-    AddCourseInput,
+
+    FilterDropdown,
+    FilterSearch,
+    FullPageLoading, 
+    
     Instructions,
-    CardWrapper,
-    Table,
+
+    Label,
     Loading,
+
     Modal, 
     Module,
     ModuleInput,
     ModuleNewValues,
+    
+    NavBar,
+    NavButton,
+    NavList, 
+    NewAndDeletedSubjectsList, 
+    NewAndDeleteProperty, 
+
+    PrimaryButton,
+
+    SidebarList,
+    Sidebar,
+    SecondaryButton, 
+    SubjectMultiInput, 
+
+    Table,
 }
