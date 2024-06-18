@@ -5,110 +5,149 @@ const { userRoleEnum, userGenderEnum, accessEnum } = require("./types")
 const Course = require("./courseModel")
 
 const userSchema = new mongoose.Schema({
-    password:{
-        type:String,
-        require:[true,'User password is missing'],
-        min:[8,'Password must have length of at least 8'],
+    password: {
+        type: String, 
+        require: [true, 'User password is missing'], 
+        min: [8, 'Password must have length of at least 8'], 
         select : false
-    },
-    role:{
-        type:String,
-        require:[true,"type of User is missing"],
-        enum:userRoleEnum,
-    },
-    name:{
-        type:String,
-        require:[true,"User's name is Missing"]
-    },
-    email:{
-        type:String,
-        require:[true,"User's email is Missing"],
-        unique:[true,"User with same email already exists"]
-    },
-    gender:{
-        type:String,
-        enum:userGenderEnum,
-        // require:[true,"User's gender is Missing"]
-    },
-    dob:Date,
-    profileImgUrl:String,
+    }, 
+    role: {
+        type: String, 
+        require: [true, "type of User is missing"], 
+        enum: userRoleEnum, 
+    }, 
+    name: {
+        type: String, 
+        require: [true, "User's name is Missing"]
+    }, 
+    email: {
+        type: String, 
+        require: [true, "User's email is Missing"], 
+        unique: [true, "User with same email already exists"]
+    }, 
+    gender: {
+        type: String, 
+        enum: userGenderEnum, 
+        // require: [true, "User's gender is Missing"]
+    }, 
+    dob: Date, 
+    profileImgUrl: String, 
 
-    areaOfSpecialization:[String],
-    courses:[{
-        type:{
-            id:{
-                type:mongoose.SchemaTypes.ObjectId,
-                ref:"course"
-            },
-            access:{
-                type:String,
-                enum:accessEnum,
+    areaOfSpecialization: [String], 
+    courses: [{
+        type: {
+            id: {
+                type: mongoose.SchemaTypes.ObjectId, 
+                ref: "course"
+            }, 
+            access: {
+                type: String, 
+                enum: accessEnum, 
             }
-        },
-        unique:[true, "user already enrolled"],
-        _id:false
-    }],
-    passwordChangedAt:{
-        type:Date,
-        select:true
-    },
-    passwordResetToken:String,
-    passwordResetTokenExpire:Date,
-    otp:{
-        type:String,
-        select:false
-    },
-    active:{
-        type:Boolean,
-        default:true,
-        select:false
-    },
-    preRegistered:{
-        type:Boolean,
-        default:false,
-        select:false
+        }, 
+        unique: [true, "user already enrolled"], 
+        _id: false
+    }], 
+    passwordChangedAt: {
+        type: Date, 
+        select: true
+    }, 
+    passwordResetToken: String, 
+    passwordResetTokenExpire: Date, 
+    otp: {
+        type: String, 
+        select: false
+    }, 
+    active: {
+        type: Boolean, 
+        default: true, 
+        select: false
+    }, 
+    preRegistered: {
+        type: Boolean, 
+        default: false, 
+        select: false
     }
 })
 
+userSchema.methods.getAccessedCourses = async function () {
+    const ids = this.courses.map(el => el.id);
+    const courses = await Course.aggregate([
+        // Match documents with specified common_id values
+        { $match: { common_id: { $in: ids } } }, 
+        
+        // Sort by common_id and version in descending order
+        { $sort: { version: -1 } }, 
+    
+        // Group by common_id and get the first document in each group
+        {
+            $group: {
+                _id: "$common_id", 
+                title: { $first: "$title" }, 
+                level: { $first: "$level" }, 
+                program: { $first: "$program" }, 
+                common_id: { $first: "$common_id" }, 
+                version: { $first: "$version" }
+            }
+        }, 
+    
+        // Project the fields we are interested in
+        {
+            $project: {
+                _id: 0,  // Exclude the default _id field
+                title: 1, 
+                level: 1, 
+                program: 1, 
+                common_id: 1, 
+                version: 1
+            }
+        }
+    ]);
+
+    const res = [];
+    for(let course of courses){
+        // doc.courses[indx].id = courses[indx]
+        let indxInIds = -1;
+        for(let i=0; i<ids.length && indxInIds===-1; i++) {
+            if(ids[i].toString() === course?.common_id?.toString()) {
+                indxInIds = i;
+            }
+        }
+        res.push({
+            id: course.common_id, 
+            access: this.courses[indxInIds]?.access, 
+            title: course.title, 
+            version: course.version, 
+            level: course.level, 
+            program: course.program, 
+        })
+    }
+
+    this.populatedCourses = res;
+    return res;
+}
 
 //Indexes
 
 
 //middlewares
-userSchema.pre(/^find/,async function (next){
+userSchema.pre(/^find/, async function (next){
     //this refers to the query here 
-    this.find({ active: {$ne:false} })
+    this.find({ active: {$ne: false} })
     if(!this.skipPreMiddleware){
-        this.find({preRegistered:{$ne:true}})
+        this.find({preRegistered: {$ne: true}})
     }
     next()
 })
 
-userSchema.post(/^find/, async function(doc, next){
-    if(this.options && this.options.skipPostHook) {
-        return next();
-    }
-
-    // ----------------- TESTING REMAINING -----------------
-    if(doc && doc.courses) {
-        const ids = doc.courses.map(el => el.id);
-        const courses = await Course.find({common_id : {$in : ids}}).select("title level program common_id")
-    
-        for(let indx=0; indx<ids.length; indx++){
-            doc.courses[indx].id = courses[indx]
-        }
-    }
-
-    next()
-})
-
-userSchema.pre("save",async function(next){
+userSchema.pre("save", async function(next){
     if(!this.isModified("password"))return next();
 
-    this.password = await bcrypt.hash(this.password,12)
+    this.password = await bcrypt.hash(this.password, 12)
     next();
 })
-userSchema.pre("save",async function(next){
+
+userSchema.pre("save", async function(next){
     if(!this.isModified("password") || this.isNew || this.preRegistered)return next()
     this.passwordChangedAt = Date.now() - 2000
     next()
@@ -116,13 +155,13 @@ userSchema.pre("save",async function(next){
 
 //methods
 userSchema.methods.checkPassword = async function (pass1 , encrypPass){
-    return (await bcrypt.compare(pass1,encrypPass))
+    return (await bcrypt.compare(pass1, encrypPass))
 }
 
 userSchema.methods.isPasswordChangedAfter = function (TimeStamp){
     //Return true if changed else false
     if(this.passwordChangedAt){
-        const timeOfChange = parseInt(this.passwordChangedAt.getTime()/1000,10);
+        const timeOfChange = parseInt(this.passwordChangedAt.getTime()/1000, 10);
         return TimeStamp < timeOfChange;
     }
     return false;

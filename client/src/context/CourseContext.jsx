@@ -61,12 +61,12 @@ export const CourseProvider = ({children})=>{
             const url = `courses/${courseId}/categories`;
             res = await axiosInstance.get(url);
             if(res.status !== 200) {
-                alert("Cannot make Request");
+                alert(res.data?.message);
                 return null;
             }
             return res.data
         } catch(err) {
-            alert("Something went wrong!");
+            alert(err.response?.data?.message || err.message);
             return null;
         }
     }
@@ -86,7 +86,7 @@ export const CourseProvider = ({children})=>{
                 payload:res.data.data
             })
         } catch(err) {
-            alert("Cannot Get Server");
+            alert(err.response?.data?.message || err.message);
         }
         return res;
     }
@@ -97,11 +97,11 @@ export const CourseProvider = ({children})=>{
             const url = `courses/${courseId}/semesters`;
             res = await axiosInstance.get(url);
             if(res.status !== 200) {
-                alert("Cannot make request!");
+                alert(res.data?.message);
                 res = null;
             }
         } catch(err) {
-            alert("Something went wrong!");
+            alert(err.response?.data?.message || err.message);
         }
         return (!res || !res?.data)? res : res.data;
     }
@@ -116,7 +116,7 @@ export const CourseProvider = ({children})=>{
             })
         } catch(err) {
             res = null;
-            alert("cannot make request to server!");
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         return res;
@@ -143,7 +143,7 @@ export const CourseProvider = ({children})=>{
         } catch(err) {
             res = null;
             console.log(err); 
-            alert(err.message); 
+            alert(err.response?.data?.message || err.message); 
         }
         return res;
     }
@@ -162,7 +162,7 @@ export const CourseProvider = ({children})=>{
             await getCourse(state?.common_id);
         } catch(err) {
             res = null;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         return res;
@@ -176,7 +176,7 @@ export const CourseProvider = ({children})=>{
                 throw new Error("Cannot make request!");
             
             setLoading(true);
-            console.log(propertyName, isNew, del, index)
+
             res = await axiosInstance.patch(url, {
                 prop: propertyName,
                 index,
@@ -185,13 +185,12 @@ export const CourseProvider = ({children})=>{
                 title,
             });
 
-            console.log(res);
             if(!res || res.status !== 200) throw new Error("Something went wrong!");
 
             await getCourse(state?.common_id);
         } catch(err) {
             res = null;
-            alert(err.message);
+            alert(err.response?.data?.message || err.message);
             console.log(err);
         }
         setLoading(false);

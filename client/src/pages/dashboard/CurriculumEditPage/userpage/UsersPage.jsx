@@ -27,7 +27,7 @@ export default function UsersPage(){
         setLoading(true)
         fetchData()
             .then((res)=>setData(res.data.data))
-            .catch((err)=>window.alert(err.message))
+            .catch((err)=>window.alert(err.response?.data?.message || err.message))
             .finally(()=>setLoading(false))
     //eslint-disable-next-line
     },[])
@@ -42,7 +42,7 @@ export default function UsersPage(){
             const res = (await fetchData()).data.data
             setData(res)
         }catch(err){
-            window.alert(err.message)
+            window.alert(err.response?.data?.message || err.message)
         }
         setLoading(false)
     }
@@ -56,7 +56,7 @@ export default function UsersPage(){
             const res = (await fetchData()).data.data
             setData(res)
         }catch(err){
-            window.alert(err.message)
+            window.alert(err.response?.data?.message || err.message)
         }
         setLoading(false)
     }
@@ -73,52 +73,52 @@ export default function UsersPage(){
         setLoading(true)
         fetchData()
             .then((res)=>setData(res.data.data))
-            .catch((err)=>window.alert(err.message))
+            .catch((err)=>window.alert(err.response?.data?.message || err.message))
             .finally(()=>setLoading(false))
     }
     
-    const list = data?.map(user=>(
-        <div key={user._id} className="w-[80%] rounded-2xl flex justify-between p-4 border-2 border-gray-500">
-            <div className="flex gap-2">
-                <img className="w-12 h-12 object-cover rounded-full" alt="profile" src={user.profileImgUrl} />
+    const list = data?.map((user, index)=>(
+        <div key={index} className="w-full rounded flex justify-between py-4 px-6 border-2 border-gray-500">
+            <div className="flex gap-4">
+                <img className={`w-12 h-12 object-cover rounded-full ${!user.profileImgUrl && "border-2 border-primary-950"}`} alt="profile" src={user?.profileImgUrl || "/profile.svg"} />
                 <div>
-                    <p>@{user.email}</p>
-                    <h3>{user.name}</h3>
+                    <h3 className="ml-[2px]">{user.name}</h3>
+                    <p className="text-gray-500 text-sm">@{user.email}</p>
                 </div>
             </div>
-            <div className="flex gap-2">
-                <div className="px-2">
-                    <p>Access type:</p>
+            <div className="flex gap-8 items-center">
+                <div className="px-2 flex gap-1 items-center">
+                    <p className="text-gray-600 text-sm">access: </p>
                     <select
                         name={user._id}
                         value={user.courses.find(el=>el.id === common_id).access}
                         onChange={handleChange}
-                        className="border-2 border-gray-400 rounded px-4 py-1 focus:outline-none"
+                        className="min-w-36 border-2 border-gray-400 rounded px-4 py-1 focus:outline-none cursor-pointer"
                     >
-                        <option value="head" className="text-sm">head</option>
-                        <option value="edit" className="text-sm">edit</option>
-                        <option value="view" className="text-sm">view</option>
+                        <option value="head">head</option>
+                        <option value="edit">edit</option>
+                        <option value="view">view</option>
                     </select>
                 </div>
                 <button onClick={(e)=>handleDelete(e, user._id)} >
-                    <img className="w-8 hover:mix-blend-luminosity" src="/deleteButton.png" alt="delete button" />
+                    <img className="w-5 hover:mix-blend-luminosity" src="/deleteButton2.svg" alt="delete button" />
                 </button>
             </div>
         </div> 
     ))
 
-    return <div className="h-full">
-        <div className="w-full px-2 flex justify-between">
-            <h1 className="text-2xl">Previous versions</h1>
+    return <div className="h-full px-6">
+        <div className="w-full pl-1 flex justify-between">
+            <h1 className="text-2xl text-primary-500 font-bold">All Curriculum Designers</h1>
             <div className="flex gap-2">
                 <SecondaryButton onClick={handleInvite}>Invite User</SecondaryButton>
                 <SecondaryButton onClick={handleAdd}>Add User</SecondaryButton>
             </div>
         </div>
-        <div className="flex flex-col m-4 gap-2">
+        <div className="flex flex-col my-6 gap-4">
             {
                 loading?
-                <Loading count={5} cardClassName="!w-[80%]"/>
+                <Loading count={5} cardClassName="!w-full h-24 rounded"/>
                 :
                 list
             }

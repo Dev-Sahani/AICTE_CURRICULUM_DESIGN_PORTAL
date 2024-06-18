@@ -40,9 +40,10 @@ export const UserProvider = ({children})=>{
             const res = await axiosInstance.get("/auth/verify-token",{
                 withCredentials:true
             })
+
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             })
         }
         catch(err){
@@ -61,9 +62,10 @@ export const UserProvider = ({children})=>{
         setLoading(true);
         try {
             const response = await axiosInstance.post(`auth/login/`, {email, password},{withCredentials:true})
+
             dispatch({
                 type: SETUP_USER,
-                payload: response.data.user
+                payload: response.data
             })
         } catch(err) {
             dispatch({
@@ -100,7 +102,7 @@ export const UserProvider = ({children})=>{
 
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             });
         } catch(err) {
             dispatch({
@@ -121,7 +123,7 @@ export const UserProvider = ({children})=>{
 
             dispatch({
                 type: SETUP_USER,
-                payload: res.data.user,
+                payload: res.data,
             });
         } catch(err) {
             dispatch({
@@ -144,7 +146,7 @@ export const UserProvider = ({children})=>{
                 payload: "refresh to update user",
             });
         } catch(err) {
-            // console.log(err)
+            console.log(err)
             dispatch({
                 type:ALERT,
                 payload:err.message

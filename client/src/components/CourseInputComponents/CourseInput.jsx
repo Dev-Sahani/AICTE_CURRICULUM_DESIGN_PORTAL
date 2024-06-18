@@ -111,10 +111,10 @@ const getActualValue = (name, property, subjectId)=>{
       s?.cur?.common_id === subjectId
     )
 
-    if(sub && sub.cur && sub.cur[name]) return sub.cur[name];
+    if(sub?.cur[name] !== undefined && sub?.cur[name] !== null) return sub.cur[name];
     else return undefined;
   }  
-  else if(property && property.cur) return property.cur;
+  else if(property?.cur !== undefined && property?.cur !== null) return property.cur;
   return undefined;
 }
 

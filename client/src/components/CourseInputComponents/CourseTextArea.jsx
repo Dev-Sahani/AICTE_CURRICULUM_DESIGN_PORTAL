@@ -13,7 +13,7 @@ export default function CourseTextArea({
 }){
   const { common_id } = useParams();
   const {[name] : propertyName, updateProperty, getCourse} = useCourseContext();
-  const [value, setValue] = useState(propertyName?.cur || "No Such field exists!");
+  const [value, setValue] = useState([undefined, null].includes(propertyName?.cur)  ? "" :  propertyName?.cur);
   const [localLoading, setLocalLoading] = useState(false);
 
   const handleSave = async ()=> {
@@ -23,7 +23,7 @@ export default function CourseTextArea({
         if(res) await getCourse(common_id);
       })
       .finally(()=>{
-        setValue(propertyName?.cur || "No Such field exists!");
+        setValue(propertyName?.cur !== undefined ? propertyName.cur : "No Such field exists!");
         setLocalLoading(false);
       })
   }
@@ -46,7 +46,7 @@ export default function CourseTextArea({
         name={propertyName}
         value={value}
         onChange={(e)=>setValue(e.target.value)}
-        placeholder={placeholder?placeholder:`Enter ${propertyName}`}
+        placeholder={placeholder ? placeholder:`Enter ${name || "value"}`}
         className={className}
       />
       

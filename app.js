@@ -19,11 +19,11 @@ const {BAD_REQUEST} = require('./errors/index')
 if(process.env.NODE_ENV === 'development')
 app.use(morgan('dev'))
 app.use(express.json({limit:'1mb'}));
-app.use(cors({origin: process.env.CLIENT_URL,credentials:true}))
+app.use(cors({origin: process.env.CLIENT_URL, credentials:true}))
 app.use(cookieParser())
 //Secure Header
 // app.use(helmet.contentSecurityPolicy({
-//     useDefaults: true,
+//     useDefaults: true, 
 //     directives: {
 //       "img-src": ["'self'", "https: data:"]
 //     }
@@ -36,11 +36,11 @@ app.use(xssClean())
 //http parameter pollution security
 app.use(hpp({
     whitelist:[     //list of parameter not to be included in pollution
-        'duration',
-        "price",
-        "ratingsAverage",
-        "ratingsQuantity",
-        "difficulty",
+        'duration', 
+        "price", 
+        "ratingsAverage", 
+        "ratingsQuantity", 
+        "difficulty", 
         "maxGroupSize"
     ]
 }))
@@ -52,7 +52,7 @@ const limiter = rateLimit({
     message:"Too much request from this IP please try again later"
 })
 //using rate limiter only on '/api' otherwise other routes will also be blocked
-app.use('/api',limiter)
+app.use('/api', limiter)
 
 
 
@@ -73,18 +73,21 @@ const apiRouter = new express.Router()
 app.use("/api/v1/", apiRouter);
 
 apiRouter.use("/feedback", feedbackRouter);
-apiRouter.use('/commit',
-    authController.protect,
-    commitRouter);
-apiRouter.use('/explore', otherCurriculumRouter)
-apiRouter.use('/courses',courseRouter)
-apiRouter.use('/resources',resourceRouter)
-apiRouter.use('/users', 
+apiRouter.use(
+    '/commit', 
     authController.protect, 
-    authController.restrictTo("administrator") ,
-    userRouter)
-apiRouter.use('/auth',authRouter)
-apiRouter.use('/subjects',subjectRouter)
+    commitRouter
+);
+apiRouter.use('/explore', otherCurriculumRouter)
+apiRouter.use('/courses', courseRouter)
+apiRouter.use('/resources', resourceRouter)
+apiRouter.use(
+    '/users', 
+    authController.protect, 
+    userRouter
+)
+apiRouter.use('/auth', authRouter)
+apiRouter.use('/subjects', subjectRouter)
 
 // Undefined Routes
 apiRouter.all("*", (req, res)=>{
@@ -98,7 +101,7 @@ app.use(errorHandlerMiddleware);
 // const __dirname = path.dirname(__filename);
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 
-app.all('*',(req,res)=>{
+app.all('*', (req, res)=>{
     res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 })
 

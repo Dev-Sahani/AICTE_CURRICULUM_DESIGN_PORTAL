@@ -1,7 +1,37 @@
-const { UNAUTHORIZED_USER, BAD_REQUEST } = require('../errors')
+const { UNAUTHORIZED_USER, BAD_REQUEST, FORBIDDEN_REQ } = require('../errors')
 const Subject = require('../models/subjectModel')
 const Resource = require('../models/resourceModel')
 const User = require('../models/userModel')
+const Course = require("../models/courseModel");
+
+exports.protectByRole = (role) => {
+    let error = false;
+    const allowedRoles = ["view", "edit", "head"];
+    if(!allowedRoles.includes(role)) error = error || true;
+    
+    const roleIndex = allowedRoles.indexOf(role);
+    const errorMessage = new FORBIDDEN_REQ("You don't have access for this action");
+
+    return async (req, res, next) => {
+        if(error) return next(errorMessage);
+        
+        const { commonId } = req.params;
+        
+        const { courseId } = await Subject.findOne({common_id: commonId}).select("courseId");
+
+        for(const course of res.accessedCourse) {
+            if(course.id?.toString() === courseId?.toString()) {
+                const accessIndex = allowedRoles.indexOf(course.access);
+                if(accessIndex === -1 || accessIndex < roleIndex) 
+                    return next(errorMessage);
+                else 
+                    return next();
+            }
+        }
+
+        next(errorMessage);
+    }
+}
 
 async function findReferenceMaterials({commonId, }){
     const data = (await 
@@ -37,11 +67,16 @@ const createSubject = async(data) => {
     
     if(!data || !data.title) throw new Error("Please Provide the title.");
 
+    if(!data.courseId) throw new Error("Please provide the course-id to which subject belong before adding the subject to this course.");
+    const course = await Course.findOne({common_id: data.courseId});
+    if(!course) throw new Error("Please provide the course-id to which subject belong before adding the subject to this course.");
+
     const sub = {};
     sub.title = {
         new: [],
         cur: data.title,
     }
+    sub.courseId = data.courseId;
 
     for(let field of ["objectives","prerequisites","modules","experiments","referenceMaterial","outcomes"]){
         let cur = [];
@@ -98,7 +133,7 @@ exports.getSubjectForUser = async (req, res, next)=>{
     })
 }
 
-exports.getAllSubjects = async function (req,res, next){
+exports.getAllSubjects = async function (req, res, next){
     let {search, page} = req.query
     const matchObj = {}
 
@@ -106,7 +141,7 @@ exports.getAllSubjects = async function (req,res, next){
         search = new RegExp(`${search}`)
         matchObj["$or"]=[
             {
-                "title":{$regex:search,$options:"i"}
+                "title":{$regex: search,$options:"i"}
             },
             // {
             //     "modules.title":{$regex:search,$options:"i"}
@@ -140,9 +175,9 @@ exports.getAllSubjects = async function (req,res, next){
     const data = (await aggregateQuery).map(val=>val.doc)
     
     res.status(200).send({
-        status:"success",
-        length:data.length,
-        data:data
+        status: "success",
+        length: data.length,
+        data: data
     })
 }
 

@@ -33,7 +33,7 @@ const NotificationPage = () => {
       if (res.status >= 400) throw new Error(res.data.message)
       setArray(res.data.data)
     } catch (err) {
-      window.alert(err.message)
+      window.alert(err.response?.data?.message || err.message)
     }
   }
 
@@ -57,7 +57,6 @@ const NotificationPage = () => {
       });
       clearTimeout(timeOutId);
       timeOutId = setTimeout(() => {
-        console.log(stateTemp)
         searchFunc(stateTemp);
       }, 900);
     }

@@ -18,22 +18,25 @@ function generateRandomKey(length) {
     return password;
 }
 
-const sendRes = (res,statusCode,token, user,msg)=>{
+const sendRes = async (res, statusCode, token, user, msg)=>{
     if(token)
         res.cookie('token',token,{
             expires:new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
             secure:process.env.NODE_ENV==='production',
             httpOnly:true
         })
+    
+    const accessedCourses = await user.getAccessedCourses();
 
     res.status(statusCode).send({
         status:'success',
-        message:msg,
-        user:user
+        message: msg,
+        user: user, 
+        accessedCourses,
     })
 }
 
-const createJWT = (user)=>jwt.sign(
+const createJWT = (user) => jwt.sign(
     {id:user._id, role:user.role},
     process.env.JWT_SECRET, 
     {expiresIn:(process.env.JWT_COOKIE_EXPIRE * 24*60*60)}
@@ -50,16 +53,16 @@ module.exports.registerAdmin = async (req,res, next)=>{
     return next(new BAD_REQUEST("Invalid OTP"))
 
     const newUser = await User.create({
-        name:req.body.name,
-        email:req.body.email,
-        password:req.body.password,
-        role:"administrator"
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        role: "administrator"
     });
     const token = createJWT(newUser)
     newUser._doc._id = undefined
-    sendRes(res,201,token,newUser)
+    await sendRes(res, 201, token, newUser);
 }
-module.exports.preRegisterDev = async (req,res, next)=>{
+module.exports.preRegisterDev = async (req,res, next) => {
     const {name,email, role, mailText} = req.body;
     if(!(["expert","faculty"].includes(req.body.role))){
         return next(new BAD_REQUEST("role can only include 'expert' or 'faculty'"))
@@ -76,10 +79,10 @@ module.exports.preRegisterDev = async (req,res, next)=>{
     newPass = generateRandomKey(process.env.USER_PASSWORD_LEN)
     if(!user){
         user = new User({
-            name:name, 
-            email:email,
-            role:role,
-            preRegistered:true,
+            name: name, 
+            email: email,
+            role: role,
+            preRegistered: true,
         })
         user.password = newPass
         await user.save()
@@ -89,7 +92,7 @@ module.exports.preRegisterDev = async (req,res, next)=>{
         const encryptPass = await bcrypt.hash(newPass,12)
         const query = User.findOneAndUpdate(
             {email}
-            ,{name,role,password:encryptPass},
+            ,{name, role, password:encryptPass},
             {new:true}
         )
         query.skipPreMiddleware = true
@@ -98,7 +101,7 @@ module.exports.preRegisterDev = async (req,res, next)=>{
     
     
     //email the new user credentials to user.email
-    const mailUser = {...user._doc,password:newPass}
+    const mailUser = {...user._doc, password:newPass}
     await sendEmailToUser(mailUser, mailText)
 
     res.status(200).json({
@@ -119,12 +122,12 @@ module.exports.registerDev = async (req,res, next)=>{
     query.skipPreMiddleware = true;
     let user = await query;
 
-    if(!user)return next(new UNAUTHORIZED_USER("user mail id does not match"));
+    if(!user) return next(new UNAUTHORIZED_USER("user mail id does not match"));
     
-    if(!user.preRegistered)return next(new UNAUTHORIZED_USER("user already registered"));
+    if(!user.preRegistered) return next(new UNAUTHORIZED_USER("user already registered"));
 
     const isMatch = await user.checkPassword(password,user.password);
-    if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
+    if(!isMatch) return next(new UNAUTHORIZED_USER("user password does not match"));
 
     query = User.findOneAndUpdate({email},{name, preRegistered:false}, {new:true})
     query.skipPreMiddleware = true;
@@ -134,7 +137,7 @@ module.exports.registerDev = async (req,res, next)=>{
     const token = createJWT(user)
     user._doc.password = undefined
     user._doc._id = undefined
-    sendRes(res,200,token,user)
+    await sendRes(res, 200, token, user);
 }
 
 module.exports.verifyByToken = async (req, res, next)=>{
@@ -149,9 +152,12 @@ module.exports.verifyByToken = async (req, res, next)=>{
     if(!user || payload.role!==user.role)
     throw new UNAUTHORIZED_USER("")
 
+    const accessedCourses = await user.getAccessedCourses();
+    
     res.status(200).send({
-        status:"success",
-        user
+        status: "success", 
+        user, 
+        accessedCourses, 
     })
 }
 
@@ -160,7 +166,7 @@ module.exports.login = async (req,res,next)=>{
     if(!email || !password)return next(new BAD_REQUEST('User mail-id or password not provide'));
     const newUser = await User.findOne({email}).select('+password')
 
-    if(!newUser)return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
+    if(!newUser) return next(new UNAUTHORIZED_USER("user mail id or password does not match"));
     
     const isMatch = await newUser.checkPassword(password,newUser.password);
     if(!isMatch)return next(new UNAUTHORIZED_USER("user password does not match"));
@@ -168,7 +174,7 @@ module.exports.login = async (req,res,next)=>{
     const token = createJWT(newUser)
     newUser.password = undefined
     newUser._doc._id = undefined
-    sendRes(res,200,token,newUser);
+    await sendRes(res, 200, token, newUser);
 };
 
 module.exports.logout = async (req, res)=>{
@@ -198,16 +204,23 @@ module.exports.protect = async (req, res, next)=>{
     }
 
     req.user = freshUser; // May be used in future
+    const accessedCourse = await freshUser.getAccessedCourses();
+    res.accessedCourse = accessedCourse;
+
     next();
 }
 
 module.exports.restrictTo = function(...roles){
-    if(!roles.every(el=>["administrator","faculty","expert"].includes(el))){
+
+    if(!roles.every(el => ["administrator", "faculty", "expert"].includes(el))){
         throw new Error("Operationl Erorr - Invalid roles");
     }
 
     return (req, res, next)=>{        
-        if(!req.user || !roles.includes(req.user.role)){
+        if(req.user?.email && req.body?.email && req.user.email === req.body.email){
+            return next();
+        }
+        if(!req.user || !roles.includes(req.user.role) ){
             return next(new CustomAPIError("You don't have acess to performe this action\nFORBIDDEN", 403))
         }
         next();
@@ -229,11 +242,9 @@ module.exports.updatePassword = async function (req,res, next){
     //loging in user with new password and send response
     const token = createJWT(user)
     
-    const resUser = {
-        ...user,
-        password:undefined
-    }
-    sendRes(res,200,token,resUser)
+    // ----------------------------- TESTING REMAINING ---------------------------
+    user.password = undefined;
+    await sendRes(res, 200, token, user);
 }
 
 module.exports.sendOTP = async (req, res)=>{

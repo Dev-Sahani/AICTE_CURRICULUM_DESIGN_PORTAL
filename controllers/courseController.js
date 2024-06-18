@@ -1,7 +1,37 @@
-const { NOT_FOUND, BAD_REQUEST } = require('../errors');
+const { NOT_FOUND, BAD_REQUEST, CustomAPIError, FORBIDDEN_REQ } = require('../errors');
+const mongoose = require("mongoose");
 const Course = require('../models/courseModel');
 const Subject = require('../models/subjectModel');
+const User = require("../models/userModel");
 const { createSubject } = require("./subjectController");
+
+exports.protectCourseByRole = (role) => {
+    let error = false;
+    const allowedRoles = ["view", "edit", "head"];
+    const roleIndex = allowedRoles.indexOf(role);
+
+    if(!role || !allowedRoles.includes(role)) error = true;
+    const errorMessage = new FORBIDDEN_REQ("You don't have access to perform this action!")
+
+    return async (req, res, next) => {
+        if(error) return next(errorMessage);
+
+        const { commonId } = req.params;
+        const { accessedCourse } = res;
+        
+        for(let course of accessedCourse) {
+            if(course.id?.toString() === commonId?.toString()) {
+                const accessIndex = allowedRoles.indexOf(course.access);
+                if(accessIndex === -1 || accessIndex < roleIndex) 
+                    return next(errorMessage);
+                else 
+                    return next();
+            }
+        }
+
+        next(errorMessage);
+    } 
+}
 
 const findCourse = async ({commonId, next, select})=>{
     const query = Course.find({common_id:commonId})
@@ -15,6 +45,70 @@ const findCourse = async ({commonId, next, select})=>{
     
     return data
 }
+
+const createCourse = async (req, res, next) => {
+    const { title, level, program } = req.body;
+    if(!title || !level || !program) 
+        return next(new BAD_REQUEST("Please provide the necessary details."));
+
+    const newCourse = {
+        title: {new: [], cur: title}, 
+        level: {new:[], cur: level},
+        program: {new:[], cur: program},
+    };
+
+    const properties1 = ["description", "message", "preface", "acknowledgement", "rangeOfCredits"];
+    const properties2 = ["definitionOfCredits", "codesAndDef", "subjects", ""];
+
+    for(const prop of properties1) {
+        newCourse[prop] = {
+            new: [], 
+            cur: ""
+        }
+    }
+    for(const prop of properties2) {
+        newCourse[prop] = {
+            add: [],
+            del: [] ,
+            cur: [],
+        }
+    }
+
+    newCourse.committee = [];
+    newCourse.common_id = new mongoose.mongo.ObjectId("000000000000000000000000");
+
+    const res1 = await Course.create(newCourse);
+    if(!res1.common_id) {
+        return next(new CustomAPIError("Cannot create course. Something went wrong", 500));
+    }
+    try {
+        const res2 = await User.findOneAndUpdate(
+            {userId: req.user._doc.userId}, 
+            {
+                $push: {
+                    courses: {
+                        id: res1.common_id,
+                        // title: res1.title,
+                        // level: res1.level,
+                        // program: res1.program,
+                        access: "head"
+                    }
+                }
+            }, 
+            {new: true}
+        );
+        
+        if(res2?.courses?.length <= req?.user?.courses) 
+            throw new Error("Something went wrong.");
+    } 
+    catch(err) {
+        await Course.deleteOne({common_id: res1.common_id});
+        return next(new CustomAPIError("Cannot update user profile. Something went wrong", 500));
+    }
+
+    res.status(200).send({status: "success", data: {}});
+}
+
 const findCourseSubjects = async ({commonId, next})=>{
     const course = await findCourse({
         commonId:commonId,
@@ -42,8 +136,10 @@ const findCourseSubjects = async ({commonId, next})=>{
     .unwind("doc"))
     return data
 }
-exports.findCourse = findCourse
-exports.findCourseSubjects = findCourseSubjects
+
+exports.findCourse = findCourse;
+exports.createCourse = createCourse;
+exports.findCourseSubjects = findCourseSubjects;
 
 exports.getAllCoursesUserWise = async (req,res,next)=>{
     let {search, program, level, page} = req.query
@@ -351,7 +447,7 @@ exports.acceptUpdates = async function(req, res, next){
 
         if(prop === "subjects") {
             try {
-                const new_sub = await createSubject(req.body);
+                const new_sub = await createSubject({...req.body, courseId: courseCommonId});
                 current.cur.common_id = new_sub.common_id;
             } 
             catch(err) {

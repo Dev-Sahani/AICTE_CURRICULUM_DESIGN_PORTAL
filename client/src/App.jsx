@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {     
     AnalyticsPage,
     ExplorePage,
+    NewTemplate,
     // NotificationPage,
     ProfilePage,
     ResourcesPage, 
@@ -37,6 +38,7 @@ const App = ()=>{
                     }
                 >   
                     <Route index element={<TemplatePage/>} />
+                    <Route path="curriculum/new-template" element={<NewTemplate />} />
                     <Route 
                         path="curriculum/:common_id" 
                         element={<SharedNav />}

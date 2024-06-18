@@ -39,7 +39,7 @@ export default function SomeOtherInfos() {
       {
         data &&
         Object.keys(data).map((propertyName, index)=>{
-          if(["common_id", "id", "_id", "version", "title", "modules", "experiments", "referenceMaterial"].includes(propertyName)) 
+          if(["common_id", "id", "_id", "version", "title", "modules", "experiments", "referenceMaterial", "courseId"].includes(propertyName)) 
             return null;  
           if(!subject || !subject[propertyName]) return null;
           

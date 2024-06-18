@@ -17,7 +17,7 @@ export default function CourseMultiInput({
   const {[name] : propertyVal, updateProperty, deleteProperty } = useCourseContext();
   
   const [value, setValue] = useState(
-      propertyVal && propertyVal.cur 
+      propertyVal !== undefined && propertyVal.cur !== undefined 
       ?
       (
         index!==undefined && Array.isArray(propertyVal.cur) && propertyVal.cur.length > index 

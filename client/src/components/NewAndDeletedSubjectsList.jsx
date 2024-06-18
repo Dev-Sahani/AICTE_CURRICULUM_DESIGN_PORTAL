@@ -40,7 +40,7 @@ export default function NewAndDeletedSubjectsList({deleted=false}) {
                 {
                   arrayOfSubject?.map((item, ind)=>{
                     if (key === "-") return (
-                      <button className="mb-1 text-white px-2 py-1 bg-secondary-500" onClick={()=>handleAccept(ind)} key={ind}>
+                      <button className="mb-1 text-white px-2 py-1 bg-secondary-500" onClick={()=>handleAccept(ind)} key={ind} >
                         Accept
                       </button>
                     );
