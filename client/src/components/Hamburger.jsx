@@ -92,14 +92,14 @@ const listVariant = {
   hidden: {
     x: 100,
     opacity: 0,
-    filter: "blur(20px)",
+    filter: "blur(10px)",
   },
   visible: {
     x: 0,
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      type: "spring",
+      type: "ease-out",
     },
   },
 };
