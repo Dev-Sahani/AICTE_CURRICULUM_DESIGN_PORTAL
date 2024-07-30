@@ -1,6 +1,6 @@
 import { useUserContext } from "../context";
 
-export default function LogoutBtnSidebar({ isOpen }) {
+export default function LogoutBtnSidebar({ isOpen, white }) {
   const { logout } = useUserContext();
 
   const handleLogout = async () => {
@@ -9,7 +9,9 @@ export default function LogoutBtnSidebar({ isOpen }) {
 
   return (
     <button
-      className="h-12 ml-[0.5vw] flex gap-4 items-center w-full"
+      className={`w-full h-12 ml-[0.5vw] flex gap-4 items-center ${
+        white ? "text-white justify-center" : "text-[#F53D4C]"
+      }`}
       onClick={handleLogout}
     >
       <svg
@@ -21,12 +23,10 @@ export default function LogoutBtnSidebar({ isOpen }) {
       >
         <path
           d="M14.6667 36C13.9333 36 13.3056 35.7389 12.7833 35.2167C12.2611 34.6944 12 34.0667 12 33.3333V14.6667C12 13.9333 12.2611 13.3056 12.7833 12.7833C13.3056 12.2611 13.9333 12 14.6667 12H24V14.6667H14.6667V33.3333H24V36H14.6667ZM29.3333 30.6667L27.5 28.7333L30.9 25.3333H20V22.6667H30.9L27.5 19.2667L29.3333 17.3333L36 24L29.3333 30.6667Z"
-          fill="#F53D4C"
+          fill={`${white ? "white" : "#F53D4C"}`}
         />
       </svg>
-      <h2 className={`text-[#F53D4C] text-nowrap ${!isOpen && "hidden"}`}>
-        Log-Out
-      </h2>
+      <h2 className={`text-nowrap ${!isOpen && "hidden"}`}>Log-Out</h2>
       <div className="hidden h-6 border-[3px] border-accent-700 rounded absolute right-0" />
     </button>
   );

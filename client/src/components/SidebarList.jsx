@@ -6,9 +6,10 @@ const SidebarList = ({ data, isOpen }) => {
     location.pathname === data.link ||
     (data.link === "/" && location.pathname.startsWith("/curriculum"));
   const color = active ? "#BB6002" : data.color;
+
   return (
     <Link
-      className={"h-12 ml-[0.5vw] flex gap-4 items-center"}
+      className={"h-12 ml-[0.5vw] flex gap-2 items-center"}
       to={data.link}
       {...data}
       svg="" //to avoid warning
@@ -19,7 +20,7 @@ const SidebarList = ({ data, isOpen }) => {
         style={{
           color: `${color}`,
         }}
-        className={!isOpen && "hidden"}
+        className={!isOpen ? "hidden" : ""}
       >
         {data.name}
       </h2>

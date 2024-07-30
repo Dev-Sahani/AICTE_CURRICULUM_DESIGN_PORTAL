@@ -32,13 +32,13 @@ export default function AllTemplates({ templates, setTemplates }) {
             className={CardsClasses}
             to={`/curriculum/${template?.id}`}
           >
-            <h1 className="text-xl m-2 mb-0">{template?.title?.cur}</h1>
+            <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
             <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
             <div className="flex text-xs">
-              <div className="bg-secondary-100 text-secondary-900 px-2 py-1 m-2 rounded-full">
+              <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
                 {template?.level?.cur}
               </div>
-              <div className="bg-purple-200 text-purple-800 px-2 py-1 m-2 rounded-full">
+              <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
                 {template?.program?.cur}
               </div>
             </div>

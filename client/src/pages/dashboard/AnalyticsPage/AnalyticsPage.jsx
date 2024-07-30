@@ -46,7 +46,7 @@ const AnalyticsPage = () => {
       <SearchBar setCourse={setCourse} />
       {data ? (
         !Array.isArray(data) || data.length === 0 ? (
-          <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl font-black text-gray-500 uppercase">
+          <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl-custom font-black text-gray-500 uppercase">
             <h1>No Data to Show</h1>
           </div>
         ) : (
@@ -56,10 +56,10 @@ const AnalyticsPage = () => {
               <h1 className="mt-4 mx-2 text-3xl text-primary-600 font-bold">
                 {course.title?.cur}
               </h1>
-              <h2 className="mx-2 inline text-xl text-secondary-500">
+              <h2 className="mx-2 inline text-xl-custom text-secondary-500">
                 {course.level?.cur}
               </h2>
-              <h2 className="mb-4 mx-2 inline text-xl text-secondary-500">
+              <h2 className="mb-4 mx-2 inline text-xl-custom text-secondary-500">
                 {course.program?.cur}
               </h2>
             </header>
@@ -108,7 +108,7 @@ const AnalyticsPage = () => {
           </div>
         )
       ) : (
-        <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl font-black text-gray-500 uppercase">
+        <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl-custom font-black text-gray-500 uppercase">
           <h1>Select a course to analyse</h1>
         </div>
       )}
