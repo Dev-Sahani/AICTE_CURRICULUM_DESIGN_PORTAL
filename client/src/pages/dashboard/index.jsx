@@ -1,6 +1,5 @@
 import AnalyticsPage from "./AnalyticsPage/AnalyticsPage";
 import ExplorePage from "./ExplorePage";
-import NotificationPage from "./NotificationPage";
 import ProfilePage from "./Profile Page/ProfilePage";
 import ResourcesPage from "./ResourcesPage";
 import SharedLayout from "./SharedLayout";
@@ -11,7 +10,6 @@ export {
     AnalyticsPage, 
     ExplorePage,
     NewTemplate, 
-    NotificationPage,
     ProfilePage,
     ResourcesPage, 
     SharedLayout, 
