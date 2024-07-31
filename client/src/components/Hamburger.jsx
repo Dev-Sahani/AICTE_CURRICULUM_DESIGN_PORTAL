@@ -51,12 +51,11 @@ export default function Hamburger({ siteMapList }) {
             exit={{ y: -200, opacity: 0.5, transition: { duration: 0.2 } }}
           >
             {siteMapList.map((item, index) => (
-              <motion.li variants={listVariant}>
+              <motion.li variants={listVariant} key={index}>
                 <Link
                   onClick={togleIsOpen}
                   className="!block w-full p-1 text-center text-lg sm:text-xl hover:text-secondary-500"
                   to={item.link}
-                  key={index}
                 >
                   {item.svg}
                   {item.name}
