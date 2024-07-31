@@ -25,7 +25,10 @@ export default function EditProfile({ onClose }) {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleCancel = async (e) => onClose();
+  const handleCancel = async (e) => {
+    setData({...user});
+    onClose();
+  }
   const handleSubmit = async (e) => {
     setLoading(true);
     await updateUserProfile({
@@ -101,23 +104,23 @@ export default function EditProfile({ onClose }) {
                 name="dob"
               />
             </div>
-            <div className={inputContainerClass + " !flex-col"}>
-              <label className={labelClass + " max-w-12"}>
+            <div className={inputContainerClass + " gap-4"}>
+              <label className={labelClass + " max-w-16 break-words"}>
                 Area of Specialization
               </label>
-              <div className="flex flex-wrap overflow-y-auto max-h-28 justify-between">
+              <div className="flex flex-wrap overflow-y-auto max-h-28 justify-between gap-1">
                 {data.areaOfSpecialization.map((el, ind) => (
                   <input
                     value={el}
                     onChange={(e) => {
-                      const area = data.areaOfSpecialization;
-                      area[ind] = e.target.value;
+                      const areas = data.areaOfSpecialization;
+                      areas[ind] = e.target.value;
                       setData((prev) => ({
                         ...prev,
-                        areaOfSpecialization: area,
+                        areaOfSpecialization: areas,
                       }));
                     }}
-                    className={inputClass + " !w-48"}
+                    className={inputClass + " !w-36"}
                     type="text"
                     name={`areaOfSpecialization.${ind}`}
                   />

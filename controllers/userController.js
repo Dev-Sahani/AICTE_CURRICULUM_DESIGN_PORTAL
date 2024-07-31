@@ -44,7 +44,8 @@ exports.patchUser = async (req, res, next)=>{
         // email: undefined, 
         gender: req.body.gender, 
         dob: req.body.dob, 
-        profileImgUrl: req.body.profileImgUrl
+        profileImgUrl: req.body.profileImgUrl,
+        areaOfSpecialization: req.body.areaOfSpecialization
     }
     //FIXME: 
     const resp = await User.findOneAndUpdate({email: req.body.email}, user, {new: true})

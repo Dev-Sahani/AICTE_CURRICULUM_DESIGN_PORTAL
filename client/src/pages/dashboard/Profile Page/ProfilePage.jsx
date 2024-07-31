@@ -12,7 +12,8 @@ import EditProfile from "./EditProfileModal";
 import ChangePasswordModal from "./ChangePasswordModal";
 
 const ProfilePage = () => {
-  const { user } = useUserContext();
+  const { user, accessedCourses } = useUserContext();
+  console.log(accessedCourses)
   const [edit, setEdit] = useState(false);
   const [pass, setPass] = useState(false);
 
@@ -101,28 +102,32 @@ const ProfilePage = () => {
       <h1 className={sectionHeadingClass}>Accessed Curriculums</h1>
       <hr className="border-gray-400 border rounded-xl" />
       <div className={cardContainerClass}>
-        {user.courses?.map((el, ind) => (
-          <div key={ind} className="shadow-lg p-2 rounded-xl">
-            <div className="flex justify-between mb-4 items-center">
-              <h2 className="text-2xl-custom">{el.id?.title?.cur}</h2>
-              <p>
-                <img
-                  className={iconClass + " !mr-0"}
-                  src={access}
-                  alt="access"
-                />
-                {" " + el.access}
-              </p>
+        {
+          user.role==="administrator"?
+          <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl-custom font-black text-gray-500 uppercase"><h1>You are an administrator, you can access any courses</h1></div>
+          :
+          accessedCourses?.map((el, ind) => (
+            <div key={ind} className="shadow-lg p-2 rounded-xl">
+              <div className="flex justify-between mb-4 items-center">
+                <h2 className="text-2xl-custom">{el.title?.cur}</h2>
+                <p>
+                  <img
+                    className={iconClass + " !mr-0"}
+                    src={access}
+                    alt="access"
+                  />
+                  {" " + el.access}
+                </p>
+              </div>
+              <div className="flex gap-4">
+                <p className={propsClass + " !bg-primary-200"}>
+                  {el.level?.cur}
+                </p>
+                <p className={propsClass + " !bg-primary-200"}>
+                  {el.program?.cur}
+                </p>
+              </div>
             </div>
-            <div className="flex gap-4">
-              <p className={propsClass + " !bg-primary-200"}>
-                {el.id?.level?.cur}
-              </p>
-              <p className={propsClass + " !bg-primary-200"}>
-                {el.id?.program?.cur}
-              </p>
-            </div>
-          </div>
         ))}
       </div>
       {edit && <EditProfile onClose={() => setEdit(false)} />}
