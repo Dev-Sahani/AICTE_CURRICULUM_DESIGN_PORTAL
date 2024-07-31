@@ -3,10 +3,16 @@ import { Outlet } from "react-router-dom";
 import { NavBar, Sidebar, ConfirmationCard } from "../../components";
 import useWindowSize from "../../hooks/useWindowSize";
 import { breakPoints } from "../../utils/constants";
+import io from "socket.io-client";
+import { useUserContext } from "../../context";
+
+const socket = io(process.env.REACT_APP_URL);
 
 const SharedLayout = () => {
   const windowSize = useWindowSize();
   const [showSmallScreenWarning, setShowSmallScreenWarning] = useState(false);
+  const { user, getAllNotifications, setUnseenNotification } = useUserContext();
+
   useEffect(() => {
     if (windowSize.width < breakPoints[1]) {
       setShowSmallScreenWarning(true);
@@ -14,6 +20,17 @@ const SharedLayout = () => {
       setShowSmallScreenWarning(false);
     }
   }, [windowSize]);
+
+  useEffect(() => {
+    socket.emit("init", user.courses);
+    socket.on("new-notification", () => setUnseenNotification(true));
+    getAllNotifications();
+
+    return () => {
+      socket.disconnect();
+    };
+    // eslint-disable-next-line
+  }, [user]);
 
   return (
     <>

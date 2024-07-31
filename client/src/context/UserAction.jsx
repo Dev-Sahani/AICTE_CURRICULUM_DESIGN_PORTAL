@@ -5,3 +5,6 @@ export const SETUP_USER = "SETUP_USER";
 export const REMOVE_USER = "REMOVE_USER";
 
 export const ALERT = "ALERT";
+
+export const SET_NOTIFICATION = "SET_NOTIFICATION";
+export const SET_IS_NEW_NOTIFICATION = "SET_IS_NEW_NOTIFICATION";
