@@ -2,13 +2,18 @@ import axios from "axios"
 
 const downloadPdf = async (commonId, filename) => {
     const url = `${process.env.REACT_APP_URL}/api/v1/courses/${commonId}/pdf`
-    
-    const response = await axios.get(url, {
-        withCredentials:true,
-        responseType: 'blob', // Specify blob response type for downloading files
-    });
+    let response;
+    try{
+        response = await axios.get(url, {
+            withCredentials:true,
+            responseType: 'blob', // Specify blob response type for downloading files
+        });
+    }catch(err){
+        window.alert("Something went wrong while donwloading")
+        return;
+    }
 
-    const blob = new Blob([response.data], { type: response.headers['content-type'] });
+    const blob = new Blob([response?.data], { type: response?.headers['content-type'] });
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob); // Create a temporary URL for the blob

@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddImage from "../../../assets/Add.png";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../../context";
+import classNames from "classnames";
+import downloadPdf from "../CurriculumEditPage/download";
 
 export default function AllTemplates({ templates, setTemplates }) {
   const { accessedCourses } = useUserContext();
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     setTemplates(
@@ -13,41 +16,78 @@ export default function AllTemplates({ templates, setTemplates }) {
     // eslint-disable-next-line
   }, [accessedCourses]);
 
-  const CardsClasses =
-    " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.02] ";
+  const CardsClasses = classNames(
+    " bg-white border border-purple-100 rounded-lg transform transition-transform duration-300 hover:scale-[1.02] ",
+    downloading && "animate-pulse"
+  )
 
   return (
     <div className="w-full grid grid-cols-2 my-4 gap-6 min-w-fit">
-      <Link
-        className={CardsClasses + " flex flex-col items-center justify-center"}
-        to="/curriculum/new-template"
-      >
-        <img src={AddImage} alt="add_image" className="h-16 w-16" />
-        <h1>Start with new Template</h1>
-      </Link>
-      {templates.map((template, index) => {
-        return (
-          <Link
-            key={index}
-            className={CardsClasses}
-            to={`/curriculum/${template?.id}`}
-          >
-            <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
-            <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
-            <div className="flex text-xs">
-              <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
-                {template?.level?.cur}
+      <div aria-describedby="large-screen-view" className="hidden md:block">
+        <Link
+          className={CardsClasses + " flex flex-col items-center justify-center"}
+          to="/curriculum/new-template"
+        >
+          <img src={AddImage} alt="add_image" className="h-16 w-16" />
+          <h1>Start with new Template</h1>
+        </Link>
+        {templates.map((template, index) => {
+          return (
+            <Link
+              key={index}
+              className={CardsClasses}
+              to={`/curriculum/${template?.id}`}
+            >
+              <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
+              <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
+              <div className="flex text-xs">
+                <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                  {template?.level?.cur}
+                </div>
+                <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                  {template?.program?.cur}
+                </div>
               </div>
-              <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
-                {template?.program?.cur}
+              <div className="mr-2 absolute top-1 right-1 text-gray-300">
+                {template?.version}
               </div>
-            </div>
-            <div className="mr-2 absolute top-1 right-1 text-gray-300">
-              {template?.version}
-            </div>
-          </Link>
-        );
-      })}
+            </Link>
+          );
+        })}
+      </div>
+      <div aria-describedby="small-screen-view" className="block md:hidden">
+        {templates.map((template, index) => {
+          return (
+            <button
+              key={index}
+              className={CardsClasses}
+              onClick={() => {
+                setDownloading(true)
+                downloadPdf(template?.id, `${template?.title?.cur}.pdf`).then(() => setDownloading(false))
+              }
+              }
+              disabled={downloading}
+            >
+              <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
+              <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
+              <div className="flex text-xs">
+                <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                  {template?.level?.cur}
+                </div>
+                <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                  {template?.program?.cur}
+                </div>
+              </div>
+              <div className="mr-2 absolute top-1 right-1 text-gray-300">
+                {template?.version}
+              </div>
+              <div className="mr-2 absolute top-1 right-1 text-gray-300">
+                {template?.version}
+              </div>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

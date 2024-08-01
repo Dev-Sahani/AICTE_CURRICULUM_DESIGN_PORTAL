@@ -71,9 +71,9 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.methods.getAccessedCourses = async function () {
-    if(this.role === userRoleEnum[0]){
-        return;
-    }
+    // if(this.role === userRoleEnum[0]){
+    //     return;
+    // }
 
     const ids = this.courses.map(el => el.id);
     const courses = await Course.aggregate([
