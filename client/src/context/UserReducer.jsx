@@ -4,7 +4,8 @@ import {
   REMOVE_USER,
   ALERT,
   SET_NOTIFICATION,
-  SET_IS_NEW_NOTIFICATION,
+  SET_LAST_SEEN_NOTIFICATION_ID,
+  ALTER_NOTIFICATIONS,
 } from "./UserAction";
 
 export default function reducer(state, action) {
@@ -35,10 +36,15 @@ export default function reducer(state, action) {
       ...state,
       notifications: action.payload,
     };
-  } else if (action.type === SET_IS_NEW_NOTIFICATION) {
+  } else if (action.type === SET_LAST_SEEN_NOTIFICATION_ID) {
     return {
       ...state,
-      isUnseenNotification: action.payload,
+      lastSeenNotification: action.payload,
+    };
+  } else if (action.type === ALTER_NOTIFICATIONS) {
+    return {
+      ...state,
+      notifications: action.payload,
     };
   }
   throw new Error("No such action in User Reducer");

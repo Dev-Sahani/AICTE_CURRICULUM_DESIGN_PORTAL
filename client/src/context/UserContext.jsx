@@ -8,14 +8,15 @@ import {
   ALERT,
   REMOVE_USER,
   SET_NOTIFICATION,
-  SET_IS_NEW_NOTIFICATION,
+  SET_LAST_SEEN_NOTIFICATION_ID,
+  ALTER_NOTIFICATIONS,
 } from "./UserAction";
 
 const initialState = {
   loading: true,
   user: null,
   notifications: [],
-  isUnseenNotification: false,
+  lastSeenNotification: new Date("1979"),
 };
 
 const UserContext = createContext();
@@ -270,13 +271,31 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const setUnseenNotification = async (value = true) => {
-    console.log(value);
+  const removeNotificationLocally = (id) => {
     dispatch({
-      type: SET_IS_NEW_NOTIFICATION,
-      payload: value,
+      type: ALTER_NOTIFICATIONS,
+      payload: state.notifications.filter((n) => n._id !== id),
     });
   };
+  const addNotificationLocally = (newNotification) => {
+    dispatch({
+      type: ALTER_NOTIFICATIONS,
+      payload: state.notifications.concat(newNotification),
+    });
+  };
+  const setLastSeenNotification = (date) => {
+    localStorage.setItem("lastNotification", date);
+    dispatch({
+      type: SET_LAST_SEEN_NOTIFICATION_ID,
+      payload: date,
+    });
+  };
+
+  useEffect(() => {
+    setLastSeenNotification(
+      localStorage.getItem("lastNotification") || new Date("1979")
+    );
+  }, []);
 
   return (
     <UserContext.Provider
@@ -293,7 +312,9 @@ export const UserProvider = ({ children }) => {
         updateUserProfile,
         getCurrUser,
         getAllNotifications,
-        setUnseenNotification,
+        removeNotificationLocally,
+        addNotificationLocally,
+        setLastSeenNotification,
       }}
     >
       {children}

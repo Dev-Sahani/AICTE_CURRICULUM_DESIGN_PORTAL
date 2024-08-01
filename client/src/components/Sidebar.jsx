@@ -4,6 +4,7 @@ import SidebarList from "./SidebarList";
 import DoubleArrow from "./../assets/DoubleArrow.png";
 import LogoutBtnSidebar from "./LogoutBtnSidebar";
 import { breakPoints, SidebarContent } from "../utils/constants";
+import { useUserContext } from "../context";
 
 const Sidebar = ({ className }) => {
   const [showSidebar, setShowSidebar] = useState(
@@ -12,6 +13,7 @@ const Sidebar = ({ className }) => {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
   const arr = loadData(showSidebar);
 
   return (

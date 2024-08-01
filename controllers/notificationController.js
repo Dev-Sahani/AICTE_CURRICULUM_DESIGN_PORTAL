@@ -4,10 +4,9 @@ const { BAD_REQUEST } = require("../errors");
 const { getIo } = require("../socket/index");
 
 async function getNotificationByUserId(req, res, next) {
-  // const courseIds = req.user?._doc?.courses.map(course => course.id);
   const result = await Notification.find({
-    userIds: req.user?._doc?.userId,
-  });
+    userIds: req.user._doc.userId,
+  }).sort({ timestamp: -1 });
 
   result.forEach((res) => (res.userIds = undefined));
 
@@ -42,7 +41,7 @@ async function pushNotification(req, res, next) {
 
   const io = getIo();
   io.to(target).emit("new-notification", {
-    ...newNotification,
+    ...newNotification._doc,
     userIds: undefined,
   });
 
@@ -53,6 +52,8 @@ async function pushNotification(req, res, next) {
 
 async function deleteNotification(req, res, next) {
   const { notificationId } = req.body;
+  if (!notificationId) throw new Error("Please pass notificationId");
+
   const result = await Notification.findOneAndUpdate(
     { _id: notificationId },
     { $pull: { userIds: req.user?._doc?.userId } },

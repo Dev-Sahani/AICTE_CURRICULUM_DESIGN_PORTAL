@@ -3,7 +3,7 @@ import {
   AnalyticsPage,
   ExplorePage,
   NewTemplate,
-  // NotificationPage,
+  NotificationPage,
   ProfilePage,
   ResourcesPage,
   SharedLayout,
@@ -52,13 +52,7 @@ const App = () => {
 
           <Route path="explore" element={<ExplorePage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
-          <Route
-            path="notification"
-            element={
-              <ErrorPage />
-              // <NotificationPage />
-            }
-          />
+          <Route path="notification" element={<NotificationPage />} />
           <Route path="resources" element={<ResourcesPage />} />
           <Route path="profile" element={<ProfilePage />} />
         </Route>
