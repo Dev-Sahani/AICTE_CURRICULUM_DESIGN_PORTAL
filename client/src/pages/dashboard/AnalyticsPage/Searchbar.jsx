@@ -63,9 +63,9 @@ const SearchBar = ({ setCourse }) => {
   return (
     <div>
       {/* Search Bar Section */}
-      <div className="w-full flex justify-between items-center my-2 rounded-xl relative">
-        <div className="border-2 border-gray-400 bg-white h-fit flex rounded my-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
+      <div className="w-full flex flex-col sm:flex-row justify-between items-center my-2 rounded-xl relative text-base-custom">
+        <div className="border-2 border-gray-400 bg-white h-fit w-full sm:w-[40vw] flex rounded my-2 items-center">
+          <img src={SearchImg} alt="search" className="icon-size" />
           <input
             type="text"
             name="search"
@@ -74,11 +74,11 @@ const SearchBar = ({ setCourse }) => {
             onFocus={() => setFocus(true)}
             onBlur={() => setTimeout(() => setFocus(false))}
             placeholder=" Enter course name or id..."
-            className="rounded focus:outline-none w-[40vw] h-8"
+            className="rounded focus:outline-none w-full h-8"
           />
         </div>
         {focus && Array.length > 0 && (
-          <div className="mx-2 absolute w-[42vw] min-h-12 max-h-80 overflow-y-auto top-[100%] p-1 border-2 border-gray-400 bg-white divide-y rounded">
+          <div className="mx-2 absolute w-full sm:w-[42vw] min-h-12 max-h-80 overflow-y-auto top-[100%] p-1 border-2 border-gray-400 bg-white divide-y rounded">
             {Array.map((el, indx) => {
               return (
                 <div
@@ -96,26 +96,26 @@ const SearchBar = ({ setCourse }) => {
           </div>
         )}
 
-        <div className="border-2 border-gray-400 bg-white h-fit flex rounded my-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
+        <div className="border-2 border-gray-400 bg-white h-fit w-full sm:w-auto sm:min-w-24 md:min-w-48 flex rounded my-2 items-center">
+          <img src={SearchImg} alt="search" className="icon-size hidden sm:block" />
           <select
             name="level"
             value={state.level}
             onChange={handleSearch}
             onFocus={() => setFocus(true)}
             onBlur={() => setTimeout(() => setFocus(false), 500)}
-            className="min-w-12 sm:min-w-24 md:min-w-48 rounded px-4 h-8 focus:outline-none"
+            className="w-full rounded px-4 h-8 focus:outline-none"
           >
-            <option value="Select level" className="text-base">
+            <option value="Select level">
               Select level
             </option>
-            <option value="undergraduate" className="text-base">
+            <option value="undergraduate">
               undergraduate
             </option>
-            <option value="postgraduate" className="text-base">
+            <option value="postgraduate">
               postgraduate
             </option>
-            <option value="diploma" className="text-base">
+            <option value="diploma">
               diploma
             </option>
           </select>

@@ -31,7 +31,7 @@ export default function FilterSearch({
 
   return (
     <div className={classes}>
-      <img src={Search} alt="search" className="w-[32px] h-[32px]"/>
+      <img src={Search} alt="search" className="icon-size"/>
       <input 
           type="text"
           name={name}

@@ -34,9 +34,9 @@ export default function TemplatePageFilter({ templates, setTemplates }) {
   };
 
   return (
-    <nav className="w-full flex justify-between items-center my-2">
-      <div className="bg-white h-fit flex border-[1.4px] border-gray-500 rounded my-2 items-center">
-        <img src="/Search.png" alt="search" className="w-8 h-8" />
+    <nav className="w-full grid grid-rows-2 grid-cols-2 md:grid-rows-1 md:grid-cols-4 gap-2 md:gap-4 items-center my-2 text-base-custom">
+      <div className="col-span-2 bg-white h-fit flex border-[1.4px] border-gray-500 rounded my-2 items-center">
+        <img src="/Search.png" alt="search" className="icon-size" />
         <input
           type="text"
           name="title"
@@ -48,7 +48,7 @@ export default function TemplatePageFilter({ templates, setTemplates }) {
       </div>
 
       <select
-        className="w-[18vw] bg-white h-fit py-1 px-1.5 min-w-44 border-[1.4px] border-gray-500 rounded cursor-pointer"
+        className="w-full bg-white h-fit py-1 px-1.5 min-w-36 border-[1.4px] border-gray-500 rounded cursor-pointer"
         onChange={handleSubmit}
         value={value.level}
         name="level"
@@ -68,7 +68,7 @@ export default function TemplatePageFilter({ templates, setTemplates }) {
       </select>
 
       <select
-        className="w-[18vw] bg-white h-fit py-1 px-1.5 min-w-44 border-[1.4px] border-gray-500 rounded cursor-pointer"
+        className="w-full bg-white h-fit py-1 px-1.5 min-w-36 border-[1.4px] border-gray-500 rounded cursor-pointer"
         onChange={handleSubmit}
         value={value.program}
         name="program"

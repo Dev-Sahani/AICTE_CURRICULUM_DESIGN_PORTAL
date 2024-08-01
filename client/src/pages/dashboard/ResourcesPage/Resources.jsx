@@ -14,8 +14,8 @@ export default function Resources({ resource }) {
       : resource.description;
 
   return (
-    <li className="mx-1 my-2 flex flex-col w-full min-w-fit shadow-lg">
-      <div className="rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
+    <li className="rounded-2xl overflow-hidden mx-1 my-2 flex flex-col w-full min-w-fit shadow">
+      <div className="flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
         <Link to={resource.url}>
           <img
             src={resource.coverImageUrl}

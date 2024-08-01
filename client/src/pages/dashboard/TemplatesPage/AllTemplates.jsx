@@ -22,8 +22,8 @@ export default function AllTemplates({ templates, setTemplates }) {
   )
 
   return (
-    <div className="w-full grid grid-cols-2 my-4 gap-6 min-w-fit">
-      <div aria-describedby="large-screen-view" className="hidden md:block">
+    <div className="">
+      <div aria-describedby="large-screen-view" className="hidden md:grid w-full grid-cols-2 my-4 gap-6 min-w-fit">
         <Link
           className={CardsClasses + " flex flex-col items-center justify-center"}
           to="/curriculum/new-template"
@@ -55,7 +55,7 @@ export default function AllTemplates({ templates, setTemplates }) {
           );
         })}
       </div>
-      <div aria-describedby="small-screen-view" className="block md:hidden">
+      <div aria-describedby="small-screen-view" className="grid md:hidden w-full grid-cols-2 my-4 gap-6 min-w-fit">
         {templates.map((template, index) => {
           return (
             <button

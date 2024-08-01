@@ -13,12 +13,16 @@ const AnalyticsPage = () => {
   const [loading, setLoading] = useState(null);
 
   const search = useCallback(async () => {
-    return await axios.get(
-      `${BASE_URL}/api/v1/feedback/analysis/${course?.common_id}`,
-      {
-        withCredentials: true,
-      }
-    );
+    try{
+      return await axios.get(
+        `${BASE_URL}/api/v1/feedback/analysis/${course?.common_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+    }catch(err){
+      window.alert("Something went wrong!!!\n"+"server responded with " + err?.response?.status)
+    }
   }, [course]);
 
   useEffect(() => {

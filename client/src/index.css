@@ -117,6 +117,41 @@
 .text-6xl-custom {
   @apply text-6xl;
 }
+
+.icon-size{
+  width: 2rem;
+  height: 2rem
+}
+
+@media screen and (max-width: 1024px) {
+  .text-sm-custom {
+    @apply text-xs;
+  }
+  .text-base-custom {
+    @apply text-sm;
+  }
+  .text-lg-custom {
+    @apply text-base;
+  }
+  .text-xl-custom {
+    @apply text-lg;
+  }
+  .text-2xl-custom {
+    @apply text-xl;
+  }
+  .text-3xl-custom {
+    @apply text-2xl;
+  }
+  .text-4xl-custom {
+    @apply text-3xl;
+  }
+  .text-5xl-custom {
+    @apply text-4xl;
+  }
+  .text-6xl-custom {
+    @apply text-5xl;
+  }
+}
 @media screen and (max-width: 640px) {
   .text-sm-custom {
     @apply text-xss;
@@ -144,5 +179,10 @@
   }
   .text-6xl-custom {
     @apply text-4xl;
+  }
+
+  .icon-size{
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }
