@@ -13,7 +13,7 @@ const el = document.getElementById("root");
 const root = ReactDOM.createRoot(el);
 
 root.render(
-  <div className="min-h-[100vh] bg-default flex flex-col">
+  <div className="h-screen bg-default flex flex-col">
     <UserProvider>
       <CourseProvider>
         <SubjectProvider>

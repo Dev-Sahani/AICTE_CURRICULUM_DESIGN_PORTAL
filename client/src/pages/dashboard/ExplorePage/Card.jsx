@@ -11,7 +11,7 @@ function Explore1() {
 
   return (
     <>
-      <div className=" w-full grid grid-cols-2 my-4 gap-6 min-w-fit ">
+      <div className=" w-full grid grid-cols-1 sm:grid-cols-2 my-4 gap-6 min-w-fit ">
         {data.map((x, index) => {
           return (
             <Link to={x.url} key={index}>
@@ -30,10 +30,10 @@ function Explore1() {
               </div>
 
               <div className="flex flex-row gap-4">
-                <div className="px-3 py-1 rounded-2xl bg-[#FFF9C5] text-[#7C3D0B] text-sm-custom  font-medium justify-center items-center w-fit">
+                <div className="padding-custom rounded-2xl bg-[#FFF9C5] text-[#7C3D0B] text-sm-custom  font-medium justify-center items-center w-fit">
                   {x.level}
                 </div>
-                <div className="px-3 py-1 rounded-2xl bg-[#F2E3FF] text-[#521486] text-sm-custom  font-medium justify-center items-center w-fit">
+                <div className="padding-custom rounded-2xl bg-[#F2E3FF] text-[#521486] text-sm-custom  font-medium justify-center items-center w-fit">
                   {x.program}
                 </div>
               </div>

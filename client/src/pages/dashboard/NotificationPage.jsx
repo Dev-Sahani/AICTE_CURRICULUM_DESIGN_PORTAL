@@ -7,7 +7,7 @@ export default function NotificationPage() {
   useEffect(() => {
     console.log("inside notification");
     setLastSeenNotification(notifications[0]?.timestamp || new Date("1979"));
-  }, [notifications]);
+  }, [notifications, setLastSeenNotification]);
 
   return (
     <div className="p-4">

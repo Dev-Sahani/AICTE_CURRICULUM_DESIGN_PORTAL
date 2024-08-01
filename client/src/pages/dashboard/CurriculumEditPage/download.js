@@ -9,7 +9,7 @@ const downloadPdf = async (commonId, filename) => {
             responseType: 'blob', // Specify blob response type for downloading files
         });
     }catch(err){
-        window.alert("Something went wrong while donwloading\n" + "server responded with " + err?.response?.status)
+        window.alert("Something went wrong while donwloading\n server responded with " + err?.response?.status)
         return;
     }
 

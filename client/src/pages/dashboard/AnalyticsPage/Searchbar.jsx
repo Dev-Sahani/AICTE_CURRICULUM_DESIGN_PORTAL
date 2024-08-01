@@ -49,7 +49,7 @@ const SearchBar = ({ setCourse }) => {
       }
       setArray(response.data?.data);
     } catch (err) {
-      // error handling
+      window.alert("Something went wrong\n server responded with " + err?.response?.status)
     }
     return response;
   };
@@ -72,7 +72,7 @@ const SearchBar = ({ setCourse }) => {
             value={state.search}
             onChange={handleSearch}
             onFocus={() => setFocus(true)}
-            onBlur={() => setTimeout(() => setFocus(false))}
+            onBlur={() => setTimeout(() => setFocus(false), 800)}
             placeholder=" Enter course name or id..."
             className="rounded focus:outline-none w-full h-8"
           />
