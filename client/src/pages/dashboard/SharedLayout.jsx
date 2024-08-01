@@ -11,7 +11,8 @@ const socket = io(process.env.REACT_APP_URL);
 const SharedLayout = () => {
   const windowSize = useWindowSize();
   const [showSmallScreenWarning, setShowSmallScreenWarning] = useState(false);
-  const { user, getAllNotifications, setUnseenNotification } = useUserContext();
+  const { user, getAllNotifications, addNotificationLocally } =
+    useUserContext();
 
   useEffect(() => {
     if (windowSize.width < breakPoints[1]) {
@@ -23,7 +24,9 @@ const SharedLayout = () => {
 
   useEffect(() => {
     socket.emit("init", user.courses);
-    socket.on("new-notification", () => setUnseenNotification(true));
+    socket.on("new-notification", (newNotification) => {
+      addNotificationLocally(newNotification);
+    });
     getAllNotifications();
 
     return () => {

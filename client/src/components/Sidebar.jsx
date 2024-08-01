@@ -13,6 +13,7 @@ const Sidebar = ({ className }) => {
   const toggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
   const arr = loadData(showSidebar);
 
   const sectionClass = classNames(
