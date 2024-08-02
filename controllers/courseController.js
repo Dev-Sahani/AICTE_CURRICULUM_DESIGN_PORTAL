@@ -9,6 +9,7 @@ const Course = require("../models/courseModel");
 const Subject = require("../models/subjectModel");
 const User = require("../models/userModel");
 const { createSubject } = require("./subjectController");
+const { pushNotification } = require("./notificationController");
 
 exports.protectCourseByRole = (role) => {
   let error = false;
@@ -97,7 +98,7 @@ const createCourse = async (req, res, next) => {
   }
   try {
     const res2 = await User.findOneAndUpdate(
-      { userId: req.user._doc.userId },
+      { userId: req.user._doc._id },
       {
         $push: {
           courses: {
@@ -441,6 +442,8 @@ exports.acceptUpdates = async function (req, res, next) {
 
   if (!course) return next(new BAD_REQUEST("Invalid Course Id"));
   if (!course[prop]) return next(new BAD_REQUEST("Field does not exists"));
+
+  let updatedIndex;
   if (del) {
     if (!course[prop].del)
       return next(new BAD_REQUEST("cannot delete from a non array field"));
@@ -448,7 +451,7 @@ exports.acceptUpdates = async function (req, res, next) {
     if (index >= course[prop].del.length)
       return next(new BAD_REQUEST("index range out of bond"));
 
-    const delInd = course[prop].del[index].index * 1;
+    const delInd = (updatedIndex = course[prop].del[index].index * 1);
 
     course[prop].del = course[prop].del.filter(
       (update) => update?.index * 1 !== delInd
@@ -511,6 +514,7 @@ exports.acceptUpdates = async function (req, res, next) {
           },
         }
       );
+      updatedIndex = course[prop].cur.length - 1;
     } catch (err) {
       if (prop === "subjects") {
         await Subject.deleteMany({ common_id: new_sub.common_id });
@@ -528,6 +532,7 @@ exports.acceptUpdates = async function (req, res, next) {
       if (ind >= course[prop].cur.length)
         return next(new BAD_REQUEST("index range out of bond"));
 
+      updatedIndex = ind;
       const valueToRemove = course[prop].cur[ind].new[index];
       const val = JSON.parse(JSON.stringify(valueToRemove.value));
       if (typeof val === "object") {
@@ -552,6 +557,7 @@ exports.acceptUpdates = async function (req, res, next) {
     } else {
       if (index >= course[prop].new.length)
         return next(new BAD_REQUEST("index range out of bond"));
+
       await Course.findOneAndUpdate(
         { _id: course._id },
         {
@@ -565,6 +571,31 @@ exports.acceptUpdates = async function (req, res, next) {
       );
     }
   }
+
+  let message = `${
+    del ? "One of the value of " : "The"
+  } '${prop}' propery of the course has ${
+    del ? "been deleted" : isnew ? "new value" : "been changed"
+  }.`;
+
+  if (prop === "subjects") {
+    message = `The ${course.subjects.cur[updatedIndex].cur.title} subject ${
+      isnew
+        ? "has been added to the course"
+        : del
+        ? "has been removed from the coures"
+        : "in the course has some changes."
+    }`;
+  }
+
+  pushNotification({
+    heading: `Course ${course.title.cur} has some changes.`,
+    message,
+    isCourse: true,
+    target: course.common_id.toString(),
+    link: `${process.env.CLIENT_URL}/curriculum/${course.common_id}`,
+  });
+
   res.status(200).send({
     status: "success",
   });

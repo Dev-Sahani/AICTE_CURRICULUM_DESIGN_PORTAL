@@ -6,8 +6,6 @@ import { breakPoints } from "../../utils/constants";
 import io from "socket.io-client";
 import { useUserContext } from "../../context";
 
-const socket = io(process.env.REACT_APP_URL);
-
 const SharedLayout = () => {
   const windowSize = useWindowSize();
   const [showSmallScreenWarning, setShowSmallScreenWarning] = useState(false);
@@ -23,7 +21,9 @@ const SharedLayout = () => {
   }, [windowSize]);
 
   useEffect(() => {
-    socket.emit("init", user.courses);
+    const socket = io(process.env.REACT_APP_URL);
+    console.log(user);
+    socket.emit("init", { userId: user._id, courses: user.courses });
     socket.on("new-notification", (newNotification) => {
       addNotificationLocally(newNotification);
     });

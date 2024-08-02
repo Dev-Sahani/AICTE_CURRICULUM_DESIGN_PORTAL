@@ -5,7 +5,8 @@ import {
   ALERT,
   SET_NOTIFICATION,
   SET_LAST_SEEN_NOTIFICATION_ID,
-  ALTER_NOTIFICATIONS,
+  ADD_NOTIFICATIONS,
+  DELETE_NOTIFICATIONS,
 } from "./UserAction";
 
 export default function reducer(state, action) {
@@ -41,10 +42,17 @@ export default function reducer(state, action) {
       ...state,
       lastSeenNotification: action.payload,
     };
-  } else if (action.type === ALTER_NOTIFICATIONS) {
+  } else if (action.type === ADD_NOTIFICATIONS) {
     return {
       ...state,
-      notifications: action.payload,
+      notifications: [action.payload, ...state.notifications],
+    };
+  } else if (action.type === DELETE_NOTIFICATIONS) {
+    return {
+      ...state,
+      notifications: state.notifications.filter(
+        (n) => n._id !== action.payload
+      ),
     };
   }
   throw new Error("No such action in User Reducer");

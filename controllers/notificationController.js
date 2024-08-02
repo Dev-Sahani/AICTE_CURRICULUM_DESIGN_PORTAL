@@ -5,7 +5,7 @@ const { getIo } = require("../socket/index");
 
 async function getNotificationByUserId(req, res, next) {
   const result = await Notification.find({
-    userIds: req.user._doc.userId,
+    userIds: req.user._doc._id,
   }).sort({ timestamp: -1 });
 
   result.forEach((res) => (res.userIds = undefined));
@@ -15,19 +15,19 @@ async function getNotificationByUserId(req, res, next) {
   });
 }
 
-async function pushNotification(req, res, next) {
-  const { heading, message, target, isCourse, link } = req.body;
-  if (!heading || !message || !target) {
-    throw new BAD_REQUEST(
-      "Please provide all necessary details like heading, message and target audience."
-    );
-  }
+async function pushNotification({
+  heading,
+  message,
+  target,
+  isCourse = true,
+  link = "",
+}) {
   let userIds = [];
   if (isCourse) {
     const users = await User.find({
       "courses.id": { $in: [target] },
     });
-    userIds = users.map((user) => user._id || user.userId);
+    userIds = users.map((user) => user._id);
   } else {
     userIds = [target];
   }
@@ -40,10 +40,23 @@ async function pushNotification(req, res, next) {
   });
 
   const io = getIo();
-  io.to(target).emit("new-notification", {
+  console.log(target);
+  await io.to(target).emit("new-notification", {
     ...newNotification._doc,
     userIds: undefined,
   });
+  console.log("notification send");
+}
+
+async function pushNotificationController(req, res, next) {
+  const { heading, message, target, isCourse, link } = req.body;
+  if (!heading || !message || !target) {
+    throw new BAD_REQUEST(
+      "Please provide all necessary details like heading, message and target audience."
+    );
+  }
+
+  await pushNotification({ heading, message, target, isCourse, link });
 
   res.status(200).json({
     message: "Notification successfully created.",
@@ -56,7 +69,7 @@ async function deleteNotification(req, res, next) {
 
   const result = await Notification.findOneAndUpdate(
     { _id: notificationId },
-    { $pull: { userIds: req.user?._doc?.userId } },
+    { $pull: { userIds: req.user?._doc?._id } },
     { new: true, runValidators: true }
   );
 
@@ -70,5 +83,6 @@ async function deleteNotification(req, res, next) {
 module.exports = {
   getNotificationByUserId,
   pushNotification,
+  pushNotificationController,
   deleteNotification,
 };

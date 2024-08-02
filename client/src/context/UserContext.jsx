@@ -9,7 +9,8 @@ import {
   REMOVE_USER,
   SET_NOTIFICATION,
   SET_LAST_SEEN_NOTIFICATION_ID,
-  ALTER_NOTIFICATIONS,
+  DELETE_NOTIFICATIONS,
+  ADD_NOTIFICATIONS,
 } from "./UserAction";
 
 const initialState = {
@@ -215,7 +216,7 @@ export const UserProvider = ({ children }) => {
         return;
       }
       return {
-        userId: response.data.data.userId,
+        userId: response.data.data._id,
         userName: response.data.data.password,
       };
     } catch (err) {
@@ -273,16 +274,17 @@ export const UserProvider = ({ children }) => {
 
   const removeNotificationLocally = (id) => {
     dispatch({
-      type: ALTER_NOTIFICATIONS,
-      payload: state.notifications.filter((n) => n._id !== id),
+      type: DELETE_NOTIFICATIONS,
+      payload: id,
     });
   };
   const addNotificationLocally = (newNotification) => {
     dispatch({
-      type: ALTER_NOTIFICATIONS,
-      payload: state.notifications.concat(newNotification),
+      type: ADD_NOTIFICATIONS,
+      payload: newNotification,
     });
   };
+
   const setLastSeenNotification = (date) => {
     localStorage.setItem("lastNotification", date);
     dispatch({
