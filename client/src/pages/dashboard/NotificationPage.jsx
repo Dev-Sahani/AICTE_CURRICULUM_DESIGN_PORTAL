@@ -39,19 +39,19 @@ function NotificationCard({ notification }) {
       >
         <img
           src={image || "/icons8-notification.png"}
-          className="h-12 w-12"
+          className="h-12 w-12 hidden sm:block"
           alt="notification"
         />
         <div className="w-full h-full flex flex-col gap-2">
           <h4 className="text-xl-custom font-semibold text-accent-500">
             {heading}
           </h4>
-          <p>{message}</p>
+          <p className="text-base-custom">{message}</p>
         </div>
       </Link>
       <img
         src="/deleteButton2.svg"
-        className="w-5 h-5 mt-1 hover:cursor-pointer"
+        className="w-5 h-5 absolute top-1 right-1 sm:static mt-1 hover:cursor-pointer"
         alt="del"
         onClick={() => {
           fetch(process.env.REACT_APP_URL + "/api/v1/notification", {
