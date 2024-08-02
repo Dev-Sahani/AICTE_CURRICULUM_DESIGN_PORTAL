@@ -40,12 +40,10 @@ async function pushNotification({
   });
 
   const io = getIo();
-  console.log(target);
   await io.to(target).emit("new-notification", {
     ...newNotification._doc,
     userIds: undefined,
   });
-  console.log("notification send");
 }
 
 async function pushNotificationController(req, res, next) {

@@ -22,7 +22,6 @@ const SharedLayout = () => {
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_URL);
-    console.log(user);
     socket.emit("init", { userId: user._id, courses: user.courses });
     socket.on("new-notification", (newNotification) => {
       addNotificationLocally(newNotification);

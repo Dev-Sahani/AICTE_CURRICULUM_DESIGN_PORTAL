@@ -10,15 +10,10 @@ function initSocket(server) {
   });
 
   io.on("connect", (socket) => {
-    console.log(socket.id, "person connected");
     socket.on("init", ({ userId, courses }) => {
       const coursesId = courses?.map((course) => course.id || course._id);
       coursesId.push(userId);
-      console.log(coursesId);
       socket.join(coursesId);
-    });
-    socket.on("disconnect", () => {
-      console.log(socket.id, "person disconnected");
     });
   });
 }
