@@ -22,8 +22,8 @@ export default function AllTemplates({ templates, setTemplates }) {
   )
 
   return (
-    <div className="w-full grid grid-cols-2 my-4 gap-6 min-w-fit">
-      <div aria-describedby="large-screen-view" className="hidden md:block">
+    <div className="">
+      <div aria-describedby="large-screen-view" className="hidden md:grid w-full grid-cols-2 my-4 gap-6 min-w-fit">
         <Link
           className={CardsClasses + " flex flex-col items-center justify-center"}
           to="/curriculum/new-template"
@@ -41,21 +41,21 @@ export default function AllTemplates({ templates, setTemplates }) {
               <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
               <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
               <div className="flex text-xs">
-                <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 padding-custom-sm m-1 md:m-2 rounded-full">
                   {template?.level?.cur}
                 </div>
-                <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 padding-custom-sm m-1 md:m-2 rounded-full">
                   {template?.program?.cur}
                 </div>
               </div>
-              <div className="mr-2 absolute top-1 right-1 text-gray-300">
+              <div className="text-xs mr-2 absolute top-1 right-1 text-gray-300">
                 {template?.version}
               </div>
             </Link>
           );
         })}
       </div>
-      <div aria-describedby="small-screen-view" className="block md:hidden">
+      <div aria-describedby="small-screen-view" className="grid md:hidden w-full grid-cols-2 my-4 gap-6 min-w-fit">
         {templates.map((template, index) => {
           return (
             <button
@@ -68,20 +68,17 @@ export default function AllTemplates({ templates, setTemplates }) {
               }
               disabled={downloading}
             >
-              <h1 className="text-xl-custom m-2 mb-0">{template?.title?.cur}</h1>
-              <p className="text-xs mx-2 mb-2 text-gray-300">{template?.id}</p>
+              <h1 className="text-xl-custom m-2 mb-0 text-start">{template?.title?.cur}</h1>
+              <p className="text-xs mx-2 mb-2 text-gray-300 text-start">{template?.id}</p>
               <div className="flex text-xs">
-                <div className="h-fit text-center bg-secondary-100 text-base-custom text-secondary-900 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                <div className="text-center bg-secondary-100 text-base-custom text-secondary-900 padding-custom-sm m-1 md:m-2 rounded-full">
                   {template?.level?.cur}
                 </div>
-                <div className="h-fit text-center bg-purple-200 text-base-custom text-purple-800 px-1.5 p-1 md:px-2 m-1 md:m-2 rounded-full">
+                <div className="text-center bg-purple-200 text-base-custom text-purple-800 padding-custom-sm m-1 md:m-2 rounded-full">
                   {template?.program?.cur}
                 </div>
               </div>
-              <div className="mr-2 absolute top-1 right-1 text-gray-300">
-                {template?.version}
-              </div>
-              <div className="mr-2 absolute top-1 right-1 text-gray-300">
+              <div className="text-xs mr-2 absolute top-1 right-1 text-gray-300">
                 {template?.version}
               </div>
             </button>

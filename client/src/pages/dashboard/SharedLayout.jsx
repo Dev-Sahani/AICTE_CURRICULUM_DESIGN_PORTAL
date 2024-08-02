@@ -45,9 +45,9 @@ const SharedLayout = () => {
         />
       )}
       <NavBar className="gap-x-4 p-2 md:px-6 md:py-4" />
-      <main className="flex h-full w-[100vw] grow">
+      <main className="flex w-[100vw] grow overflow-hidden">
         <Sidebar className="border-2" />
-        <div className="w-full px-8 overflow-x-hidden">
+        <div className="w-full px-8 overflow-x-hidden overflow-y-auto">
           <Outlet />
         </div>
       </main>

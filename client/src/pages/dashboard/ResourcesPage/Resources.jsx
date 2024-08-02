@@ -14,8 +14,8 @@ export default function Resources({ resource }) {
       : resource.description;
 
   return (
-    <li className="mx-1 my-2 flex flex-col w-full min-w-fit shadow-lg">
-      <div className="rounded-2xl flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
+    <li className="rounded-2xl overflow-hidden mx-1 my-2 flex flex-col w-full min-w-fit shadow text-base-custom">
+      <div className="flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
         <Link to={resource.url}>
           <img
             src={resource.coverImageUrl}
@@ -29,10 +29,10 @@ export default function Resources({ resource }) {
             <div className="flex flex-row justify-between">
               {/* <div className='text-xl-custom font-medium leading-none'>{resource.subjectName}</div> */}
               <div className="flex flex-row space-x-2 ">
-                <div className="rounded-2xl bg-[#F3FFC7] px-4 py-1.5 font-medium text-[#5B8506] items-center justify-center content-center">
+                <div className="rounded-2xl bg-[#F3FFC7] padding-custom font-medium text-[#5B8506] items-center justify-center content-center">
                   {resource.type}
                 </div>
-                <div className="rounded-2xl bg-[#FEDEEA] px-4 py-1 font-medium text-[#F8186E] items-center justify-center">
+                <div className="rounded-2xl bg-[#FEDEEA] padding-custom font-medium text-[#F8186E] items-center justify-center">
                   {resource.title}
                 </div>
               </div>
@@ -41,18 +41,20 @@ export default function Resources({ resource }) {
           </div>
           <div className="text-sm-custom">{truncatedDescription}</div>
         </div>
-        <button onClick={() => setExpand((prev) => !prev)}>
-          <img
-            className={`hover:scale-110 transition-transform duration-500 ease-out ${
-              expand && "rotate-180"
-            }`}
-            src={ExpandDown}
-            alt="down"
-          />
-        </button>
-        <button onClick={() => setEditResource((prev) => !prev)}>
-          <img className="hover:scale-110" src={Edit} alt="edit" />
-        </button>
+        <div className="flex gap-2 md:gap-4">
+          <button onClick={() => setExpand((prev) => !prev)}>
+            <img
+              className={`hover:scale-110 transition-transform duration-500 ease-out icon-size-sm ${
+                expand && "rotate-180"
+              }`}
+              src={ExpandDown}
+              alt="down"
+            />
+          </button>
+          <button onClick={() => setEditResource((prev) => !prev)}>
+            <img className="hover:scale-110 icon-size" src={Edit} alt="edit" />
+          </button>
+        </div>
       </div>
 
       {editResource && (

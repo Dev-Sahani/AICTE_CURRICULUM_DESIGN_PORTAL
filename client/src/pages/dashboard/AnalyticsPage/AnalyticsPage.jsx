@@ -13,12 +13,16 @@ const AnalyticsPage = () => {
   const [loading, setLoading] = useState(null);
 
   const search = useCallback(async () => {
-    return await axios.get(
-      `${BASE_URL}/api/v1/feedback/analysis/${course?.common_id}`,
-      {
-        withCredentials: true,
-      }
-    );
+    try{
+      return await axios.get(
+        `${BASE_URL}/api/v1/feedback/analysis/${course?.common_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+    }catch(err){
+      window.alert("Something went wrong!!!\nserver responded with " + err?.response?.status)
+    }
   }, [course]);
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const AnalyticsPage = () => {
           <div>
             {/* Heading of course */}
             <header className="my-8 w-full">
-              <h1 className="mt-4 mx-2 text-3xl text-primary-600 font-bold">
+              <h1 className="mt-4 mx-2 text-3xl-custom text-primary-600 font-bold">
                 {course.title?.cur}
               </h1>
               <h2 className="mx-2 inline text-xl-custom text-secondary-500">
@@ -65,7 +69,7 @@ const AnalyticsPage = () => {
             </header>
 
             {/* Analysis grid */}
-            <div className="w-full grid grid-cols-[1fr_1.5fr] gap-x-8 gap-y-10">
+            <div className="w-full grid grid-row-2 sm:grid-cols-[1fr_1.5fr] gap-x-8 gap-y-10">
               {/* Pie Chart */}
               <div className="bg-white shadow-lg rounded-xl p-4 grid grid-cols-[1fr_1fr] grid-rows-[1.5fr_1fr] gap-6">
                 <PieChart
