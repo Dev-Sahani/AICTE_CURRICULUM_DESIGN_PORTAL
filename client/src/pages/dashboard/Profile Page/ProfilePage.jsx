@@ -13,7 +13,6 @@ import ChangePasswordModal from "./ChangePasswordModal";
 
 const ProfilePage = () => {
   const { user, accessedCourses } = useUserContext();
-  console.log(accessedCourses)
   const [edit, setEdit] = useState(false);
   const [pass, setPass] = useState(false);
 
@@ -102,10 +101,11 @@ const ProfilePage = () => {
       <h1 className={sectionHeadingClass}>Accessed Curriculums</h1>
       <hr className="border-gray-400 border rounded-xl" />
       <div className={cardContainerClass}>
-        {
-          user.role==="administrator"?
-          <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl-custom font-black text-gray-500 uppercase"><h1>You are an administrator, you can access any courses</h1></div>
-          :
+        {user.role === "administrator" ? (
+          <div className="flex items-center justify-center text-center stroke-[2px] tracking-wider italic align-middle h-[80%] text-4xl-custom font-black text-gray-500 uppercase">
+            <h1>You are an administrator, you can access any courses</h1>
+          </div>
+        ) : (
           accessedCourses?.map((el, ind) => (
             <div key={ind} className="shadow-lg p-2 rounded-xl">
               <div className="flex justify-between mb-4 items-center">
@@ -128,7 +128,8 @@ const ProfilePage = () => {
                 </p>
               </div>
             </div>
-        ))}
+          ))
+        )}
       </div>
       {edit && <EditProfile onClose={() => setEdit(false)} />}
       {pass && <ChangePasswordModal onClose={() => setPass(false)} />}

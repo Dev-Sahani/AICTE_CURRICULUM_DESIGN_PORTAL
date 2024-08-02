@@ -151,7 +151,7 @@ exports.addCourseUser = async (req, res, next) => {
     message: `You are assing the ${access} access in the course by ${req.user._doc.name}.`,
     isCourse: false,
     target: id,
-    link: `${process.env.SERVER_URL}/curriculum/${course.common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${course.common_id}`,
   });
 
   res.status(200).send({
