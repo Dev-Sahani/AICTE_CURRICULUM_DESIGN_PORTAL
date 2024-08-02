@@ -514,7 +514,7 @@ exports.acceptUpdates = async function (req, res, next) {
           },
         }
       );
-      updatedIndex = course[prop].cur.length - 1;
+      updatedIndex = course[prop].cur.length;
     } catch (err) {
       if (prop === "subjects") {
         await Subject.deleteMany({ common_id: new_sub.common_id });

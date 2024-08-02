@@ -483,15 +483,15 @@ exports.acceptUpdates = async function (req, res, next) {
     }
   }
 
-  const course = await Course.find({
+  const course = await Course.findOne({
     common_id: sub.courseId,
   });
 
   pushNotification({
-    heading: `${sub.title.cur} subject of course ${course.title.cur} has some changes.`,
+    heading: `The ${course.title.cur} course has some changes.`,
     message: `${
       del ? "One of the value of " : "The"
-    } '${prop}' propery of the suject has ${
+    } '${prop}' propery of the ${sub.title.cur} suject has ${
       del ? "been deleted" : isnew ? "new value" : "been changed"
     }. Click to view changes.`,
     isCourse: true,
