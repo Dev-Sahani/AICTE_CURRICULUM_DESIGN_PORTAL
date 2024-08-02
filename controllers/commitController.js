@@ -46,7 +46,7 @@ exports.resetToCommit = async (req, res, next) => {
     message: `Click to see the new version.`,
     isCourse: true,
     target: course_common_id,
-    link: `${process.env.SERVER_URL}/curriculum/${course_common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${course_common_id}`,
   });
 
   res.status(200).send({
@@ -97,7 +97,7 @@ exports.save = async (req, res, next) => {
     message: `Click to see the new version.`,
     isCourse: true,
     target: lastCourse.common_id.toString(),
-    link: `${process.env.SERVER_URL}/curriculum/${lastCourse.common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${lastCourse.common_id}`,
   });
 
   res.status(200).send({

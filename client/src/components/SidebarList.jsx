@@ -15,6 +15,7 @@ const SidebarList = ({ data, isOpen }) => {
       data.name === "Notification" &&
         new Date(lastSeenNotification) < new Date(notifications[0]?.timestamp)
     );
+    // eslint-disable-next-line
   }, [notifications, lastSeenNotification]);
 
   const color = active ? "#BB6002" : data.color;

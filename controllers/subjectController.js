@@ -496,7 +496,7 @@ exports.acceptUpdates = async function (req, res, next) {
     }. Click to view changes.`,
     isCourse: true,
     target: sub.courseId.toString(),
-    link: `${process.env.SERVER_URL}/curriculum/${sub.courseId}/subjects/${sub.common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${sub.courseId}/subjects/${sub.common_id}`,
   });
 
   res.status(200).send({
@@ -668,7 +668,7 @@ exports.acceptModulesUpdates = async function (req, res, next) {
     }.`,
     isCourse: true,
     target: sub.courseId.toString(),
-    link: `${process.env.SERVER_URL}/curriculum/${sub.courseId}/subjects/${sub.common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${sub.courseId}/subjects/${sub.common_id}`,
   });
 
   res.status(200).send({

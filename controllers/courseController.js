@@ -443,7 +443,7 @@ exports.acceptUpdates = async function (req, res, next) {
   if (!course) return next(new BAD_REQUEST("Invalid Course Id"));
   if (!course[prop]) return next(new BAD_REQUEST("Field does not exists"));
 
-  let updatedIndex;
+  let subjectName;
   if (del) {
     if (!course[prop].del)
       return next(new BAD_REQUEST("cannot delete from a non array field"));
@@ -451,7 +451,7 @@ exports.acceptUpdates = async function (req, res, next) {
     if (index >= course[prop].del.length)
       return next(new BAD_REQUEST("index range out of bond"));
 
-    const delInd = (updatedIndex = course[prop].del[index].index * 1);
+    const delInd = course[prop].del[index].index * 1;
 
     course[prop].del = course[prop].del.filter(
       (update) => update?.index * 1 !== delInd
@@ -463,7 +463,10 @@ exports.acceptUpdates = async function (req, res, next) {
       }
     }
     let common_id = undefined;
-    if (prop === "subjects") common_id = course[prop].cur[delInd].cur.common_id;
+    if (prop === "subjects") {
+      common_id = course[prop].cur[delInd].cur.common_id;
+      subjectName = course[prop].cur[delInd].cur.title;
+    }
     course[prop].cur.splice(delInd, 1);
 
     await Course.findOneAndUpdate(
@@ -497,6 +500,7 @@ exports.acceptUpdates = async function (req, res, next) {
           courseId: courseCommonId,
         });
         current.cur.common_id = new_sub.common_id;
+        subjectName = new_sub.title.cur;
       } catch (err) {
         return res.status(500).send({ message: "Cannot create the subject." });
       }
@@ -514,7 +518,6 @@ exports.acceptUpdates = async function (req, res, next) {
           },
         }
       );
-      updatedIndex = course[prop].cur.length;
     } catch (err) {
       if (prop === "subjects") {
         await Subject.deleteMany({ common_id: new_sub.common_id });
@@ -532,7 +535,6 @@ exports.acceptUpdates = async function (req, res, next) {
       if (ind >= course[prop].cur.length)
         return next(new BAD_REQUEST("index range out of bond"));
 
-      updatedIndex = ind;
       const valueToRemove = course[prop].cur[ind].new[index];
       const val = JSON.parse(JSON.stringify(valueToRemove.value));
       if (typeof val === "object") {
@@ -540,6 +542,10 @@ exports.acceptUpdates = async function (req, res, next) {
           if (val[i] === undefined) {
             val[i] = course[prop].cur[ind].cur[i];
           }
+        }
+
+        if (prop === "subjects") {
+          subjectName = val.title;
         }
       }
 
@@ -558,7 +564,7 @@ exports.acceptUpdates = async function (req, res, next) {
       if (index >= course[prop].new.length)
         return next(new BAD_REQUEST("index range out of bond"));
 
-      await Course.findOneAndUpdate(
+      course = await Course.findOneAndUpdate(
         { _id: course._id },
         {
           $set: {
@@ -567,7 +573,8 @@ exports.acceptUpdates = async function (req, res, next) {
           $pull: {
             [`${prop}.new`]: course[prop].new[index],
           },
-        }
+        },
+        { new: true }
       );
     }
   }
@@ -579,7 +586,7 @@ exports.acceptUpdates = async function (req, res, next) {
   }.`;
 
   if (prop === "subjects") {
-    message = `The ${course.subjects.cur[updatedIndex].cur.title} subject ${
+    message = `The ${subjectName} subject ${
       isnew
         ? "has been added to the course"
         : del
@@ -593,7 +600,7 @@ exports.acceptUpdates = async function (req, res, next) {
     message,
     isCourse: true,
     target: course.common_id.toString(),
-    link: `${process.env.SERVER_URL}/curriculum/${course.common_id}`,
+    link: `${process.env.CLIENT_URL}/curriculum/${course.common_id}`,
   });
 
   res.status(200).send({
