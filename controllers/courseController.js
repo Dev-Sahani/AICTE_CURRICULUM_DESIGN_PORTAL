@@ -593,7 +593,7 @@ exports.acceptUpdates = async function (req, res, next) {
     message,
     isCourse: true,
     target: course.common_id.toString(),
-    link: `${process.env.CLIENT_URL}/curriculum/${course.common_id}`,
+    link: `${process.env.SERVER_URL}/curriculum/${course.common_id}`,
   });
 
   res.status(200).send({
