@@ -3,38 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --primary-50: '#EFF9FF';
-  --primary-100: '#DEF2FF';
-  --primary-200: '#B6E8FF';
+  --primary-50: "#EFF9FF";
+  --primary-100: "#DEF2FF";
+  --primary-200: "#B6E8FF";
   --primary-300: "#75D8FF";
-  --primary-400: '#2CC4FF';
-  --primary-500: '#00A6ED';
-  --primary-600: '#008AD4';
-  --primary-700: '#006EAB';
-  --primary-800: '#005D8D';
-  --primary-900: '#064D74';
+  --primary-400: "#2CC4FF";
+  --primary-500: "#00A6ED";
+  --primary-600: "#008AD4";
+  --primary-700: "#006EAB";
+  --primary-800: "#005D8D";
+  --primary-900: "#064D74";
   --primary-950: "#04314D";
-  --secondary-50: '#FBFFE5';
-  --secondary-100: '#F3FFC7';
-  --secondary-200: '#E6FF95';
+  --secondary-50: "#FBFFE5";
+  --secondary-100: "#F3FFC7";
+  --secondary-200: "#E6FF95";
   --secondary-300: "#D2FE58";
-  --secondary-400: '#BCF526';
-  --secondary-500: '#9DDC06';
-  --secondary-600: '#7FB800';
-  --secondary-700: '#5B8506';
-  --secondary-800: '#4A690B';
-  --secondary-900: '#3E580F';
+  --secondary-400: "#BCF526";
+  --secondary-500: "#9DDC06";
+  --secondary-600: "#7FB800";
+  --secondary-700: "#5B8506";
+  --secondary-800: "#4A690B";
+  --secondary-900: "#3E580F";
   --secondary-950: "#1F3201";
-  --accent-50: '#FFFEEA';
-  --accent-100: '#FFF9C5';
-  --accent-200: '#FFF285';
+  --accent-50: "#FFFEEA";
+  --accent-100: "#FFF9C5";
+  --accent-200: "#FFF285";
   --accent-300: "#FFE546";
-  --accent-400: '#FFD51B';
-  --accent-500: '#FFB400';
-  --accent-600: '#E28A00';
-  --accent-700: '#BB6002';
-  --accent-800: '#984A08';
-  --accent-900: '#7C3D0B';
+  --accent-400: "#FFD51B";
+  --accent-500: "#FFB400";
+  --accent-600: "#E28A00";
+  --accent-700: "#BB6002";
+  --accent-800: "#984A08";
+  --accent-900: "#7C3D0B";
   --accent-950: "#481F00";
 }
 
@@ -49,7 +49,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #2CC4FF; /* Color of the thumb */
+  background-color: #2cc4ff; /* Color of the thumb */
   border-radius: 10px; /* Rounded corners */
 }
 
@@ -61,10 +61,9 @@
 /* Note: Edge and IE currently don't support styling the scrollbar */
 /* You can still style the scrollbar but rounded corners won't apply */
 
-
 /* Conic Gradient for PIE Charts */
 .pie {
-  --w:150px;
+  --w: 150px;
   width: var(--w);
   aspect-ratio: 1;
   display: inline-grid;
@@ -75,10 +74,140 @@
   position: relative;
 }
 
-.pie::before{
+.pie::before {
   content: "";
   position: absolute;
   border-radius: 50%;
   inset: 0;
-  background: conic-gradient(var(--color1) calc(var(--percent)*1%),var(--color2) 0);
+  background: conic-gradient(
+    var(--color1) calc(var(--percent) * 1%),
+    var(--color2) 0
+  );
+}
+
+.text-xss {
+  font-size: 0.5rem;
+  line-height: 1rem;
+}
+
+.text-sm-custom {
+  @apply text-sm;
+}
+.text-base-custom {
+  @apply text-base;
+}
+.text-lg-custom {
+  @apply text-lg;
+}
+.text-xl-custom {
+  @apply text-xl;
+}
+.text-2xl-custom {
+  @apply text-2xl;
+}
+.text-3xl-custom {
+  @apply text-3xl;
+}
+.text-4xl-custom {
+  @apply text-4xl;
+}
+.text-5xl-custom {
+  @apply text-5xl;
+}
+.text-6xl-custom {
+  @apply text-6xl;
+}
+
+.icon-size{
+  width: 2rem;
+  height: 2rem
+}
+.icon-size-sm{
+  width: 1.5rem;
+  height: 1.5rem
+}
+.padding-custom{
+  padding-inline : 1rem;
+  padding-block : 0.25rem;
+}
+.padding-custom-sm{
+  padding-inline : 0.5rem;
+  padding-block : 0.25rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .text-sm-custom {
+    @apply text-xs;
+  }
+  .text-base-custom {
+    @apply text-sm;
+  }
+  .text-lg-custom {
+    @apply text-base;
+  }
+  .text-xl-custom {
+    @apply text-lg;
+  }
+  .text-2xl-custom {
+    @apply text-xl;
+  }
+  .text-3xl-custom {
+    @apply text-2xl;
+  }
+  .text-4xl-custom {
+    @apply text-3xl;
+  }
+  .text-5xl-custom {
+    @apply text-4xl;
+  }
+  .text-6xl-custom {
+    @apply text-5xl;
+  }
+
+  .padding-custom{
+    padding-inline : 0.5rem;
+    padding-block : 0.25rem;
+  }
+  .padding-custom-sm{
+    padding-inline : 0.25rem;
+    padding-block : 0.125rem;
+  }
+}
+@media screen and (max-width: 640px) {
+  .text-sm-custom {
+    @apply text-xss;
+  }
+  .text-base-custom {
+    @apply text-xs;
+  }
+  .text-lg-custom {
+    @apply text-sm;
+  }
+  .text-xl-custom {
+    @apply text-base;
+  }
+  .text-2xl-custom {
+    @apply text-lg;
+  }
+  .text-3xl-custom {
+    @apply text-xl;
+  }
+  .text-4xl-custom {
+    @apply text-2xl;
+  }
+  .text-5xl-custom {
+    @apply text-3xl;
+  }
+  .text-6xl-custom {
+    @apply text-4xl;
+  }
+
+  .icon-size{
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+  .icon-size-sm{
+    width: 1rem;
+    height: 1rem;
+  }
 }

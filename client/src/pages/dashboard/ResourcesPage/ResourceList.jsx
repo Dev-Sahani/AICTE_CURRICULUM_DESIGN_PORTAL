@@ -63,25 +63,25 @@ export default function ResourceList({ searchReqFunc }) {
   return (
     <>
       {/* Search Bar Section */}
-      <div className="w-full flex justify-evenly items-center my-2 rounded-xl">
-        <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
+      <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-x-2 md:gap-x-4 items-center my-2 rounded-xl text-base-custom">
+        <div className="col-span-2 border-2 border-gray-400 bg-white w-full h-fit flex rounded m-2 items-center">
+          <img src={SearchImg} alt="search" className="icon-size" />
           <input
             type="text"
             name="search"
             value={state.search}
             onChange={handleChange}
             placeholder=" Enter title or author..."
-            className="rounded focus:outline-none w-[28vw] h-8"
+            className="rounded focus:outline-none h-8 w-[90%]"
           />
         </div>
-        <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
+        <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center w-full">
+          <img src={SearchImg} alt="search" className="icon-size" />
           <select
             name="format"
             value={state.format}
             onChange={handleChange}
-            className="rounded px-4 h-8 focus:outline-none"
+            className="rounded sm:px-1 md:px-4 h-8 focus:outline-none w-[90%]"
           >
             <option value="Select format" className="text-base">Select format</option>
             <option value="book" className="text-base">book</option>
@@ -92,9 +92,9 @@ export default function ResourceList({ searchReqFunc }) {
   
         <SecondaryButton
           onClick={() => setAddResource(prev => !prev)}
-          className=""
+          className="text-sm lg:text-base px-2 py-1 lg:px-4 lg:py-2 justify-self-end mx-1"
         >
-          Add New Resource+
+          Add Resource
         </SecondaryButton>
       </div>
   

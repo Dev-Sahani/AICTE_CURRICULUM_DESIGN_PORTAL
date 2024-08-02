@@ -5,7 +5,7 @@ const {protect, restrictTo} = require('../controllers/authController')
 
 router.route('/')
     .get(userController.getAllUser) //get all user
-    .patch(restrictTo("administrator"), userController.patchUser)
+    .patch(userController.patchUser)
     
 router.route("/:id" )
     .get(userController.getUser) //getOne

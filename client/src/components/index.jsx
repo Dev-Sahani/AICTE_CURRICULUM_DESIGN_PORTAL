@@ -11,62 +11,55 @@ import NavButton from "./NavButton";
 import NavList from "./NavList";
 import NewAndDeletedSubjectsList from "./NewAndDeletedSubjectsList";
 import NewAndDeleteProperty from "./NewAndDeleteProperty";
-import {  
-    AddCourseInput, 
-    CourseDropdown, 
-    CourseInput, 
-    CourseMultiInput, 
-    CourseTextArea, 
-} from "./CourseInputComponents"; 
 import {
-    SubjectMultiInput, 
-    ModuleNewValues, 
-    ModuleInput,
-    Module, 
-} from "./SubjectInput"; 
+  AddCourseInput,
+  CourseDropdown,
+  CourseInput,
+  CourseMultiInput,
+  CourseTextArea,
+} from "./CourseInputComponents";
+import {
+  SubjectMultiInput,
+  ModuleNewValues,
+  ModuleInput,
+  Module,
+} from "./SubjectInput";
 import Instructions from "./Instructions";
 import Table from "./Table";
-import CardWrapper from "./CardWrapper"
+import CardWrapper from "./CardWrapper";
 import Loading from "./Loading";
-import Label from "./Label"
+import Label from "./Label";
 import Modal from "./Modal";
+import ConfirmationCard from "./ConfirmationCard";
 
 export {
-    AddSubject, 
-    AddCourseInput,
-
-    CardWrapper,
-    CourseMultiInput, 
-    CourseTextArea, 
-    CourseDropdown, 
-    CourseInput, 
-
-    FilterDropdown,
-    FilterSearch,
-    FullPageLoading, 
-    
-    Instructions,
-
-    Label,
-    Loading,
-
-    Modal, 
-    Module,
-    ModuleInput,
-    ModuleNewValues,
-    
-    NavBar,
-    NavButton,
-    NavList, 
-    NewAndDeletedSubjectsList, 
-    NewAndDeleteProperty, 
-
-    PrimaryButton,
-
-    SidebarList,
-    Sidebar,
-    SecondaryButton, 
-    SubjectMultiInput, 
-
-    Table,
-}
+  AddSubject,
+  AddCourseInput,
+  CardWrapper,
+  ConfirmationCard,
+  CourseMultiInput,
+  CourseTextArea,
+  CourseDropdown,
+  CourseInput,
+  FilterDropdown,
+  FilterSearch,
+  FullPageLoading,
+  Instructions,
+  Label,
+  Loading,
+  Modal,
+  Module,
+  ModuleInput,
+  ModuleNewValues,
+  NavBar,
+  NavButton,
+  NavList,
+  NewAndDeletedSubjectsList,
+  NewAndDeleteProperty,
+  PrimaryButton,
+  SidebarList,
+  Sidebar,
+  SecondaryButton,
+  SubjectMultiInput,
+  Table,
+};

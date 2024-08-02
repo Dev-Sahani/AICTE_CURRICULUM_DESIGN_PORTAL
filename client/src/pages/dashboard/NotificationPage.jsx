@@ -1,119 +1,75 @@
-import { useState, useEffect, useMemo } from "react";
-import Resource from "./ResourcesPage/Resources";
-// import AddResourceForm from "./ResourcesPage/AddResourceForm"
-import { Loading, SecondaryButton } from "./../../components";
-import axios from 'axios';
-import SearchImg from "./../../assets/Search.png"
+import { useEffect } from "react";
+import { useUserContext } from "../../context/UserContext";
+import { Link } from "react-router-dom";
 
-const BASE_URL = process.env.REACT_APP_URL
-
-const NotificationPage = () => {
-  const [Array, setArray] = useState([]);
-  const [state, setState] = useState({
-    search: "",
-    format: ""
-  })
-  const [loading, setLoading] = useState(false)
-
-  const axiosInstance = axios.create({
-    baseURL: BASE_URL+"/api/v1/resources",
-    withCredentials: true
-  })
-
-  const searchFunc = async ({ search, format }) => {
-    if (!search) search = "";
-    if (!format || format === "Select format") format = undefined;
-    try {
-      const res = await axiosInstance.get("", {
-        params: {
-          search,
-          type: format
-        }
-      })
-      if (res.status >= 400) throw new Error(res.data.message)
-      setArray(res.data.data)
-    } catch (err) {
-      window.alert(err.response?.data?.message || err.message)
-    }
-  }
-
+export default function NotificationPage() {
+  const { notifications, setLastSeenNotification } = useUserContext();
   useEffect(() => {
-    setLoading(true);
-    searchFunc({ search: "", format: "" })
-      .finally(() => setLoading(false))
-    //eslint-disable-next-line
-  }, [])
-
-  const debounce = () => {
-    let timeOutId;
-    return (e) => {
-      let stateTemp;
-      setState(prev => {
-        stateTemp = {
-          ...prev,
-          [e.target.name]: e.target.value
-        }
-        return stateTemp
-      });
-      clearTimeout(timeOutId);
-      timeOutId = setTimeout(() => {
-        searchFunc(stateTemp);
-      }, 900);
-    }
-  }
-  const handleChange = useMemo(() => debounce(),
+    setLastSeenNotification(notifications[0]?.timestamp || new Date("1979"));
     // eslint-disable-next-line
-    []);
-
-  if (loading) return <Loading count={5} cardClassName="!h-28" />
+  }, [notifications]);
 
   return (
-    <>
-      {/* Search Bar Section */}
-      <div className="w-full flex justify-evenly items-center my-2 rounded-xl">
-        <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
-          <input
-            type="text"
-            name="search"
-            value={state.search}
-            onChange={handleChange}
-            placeholder=" Search..."
-            className="rounded focus:outline-none w-[28vw] h-8"
+    <div className="p-4">
+      <h1 className="text-5xl-custom font-bold text-primary-500">
+        Notifications
+      </h1>
+      <ul className="w-full mt-8 flex flex-col gap-6">
+        {notifications.map((notification) => (
+          <NotificationCard
+            notification={notification}
+            key={notification._id}
           />
-        </div>
-
-        {/* Date Filter if aplicable */}
-        
-        {/* <div className="border-2 border-gray-400 bg-white h-fit flex rounded m-2 items-center">
-          <img src={SearchImg} alt="search" className="w-8 h-8" />
-          <select
-            name="format"
-            value={state.format}
-            onChange={handleChange}
-            className="rounded px-4 h-8 focus:outline-none"
-          >
-            <option value="Select format" className="text-base">Select format</option>
-            <option value="book" className="text-base">book</option>
-            <option value="video" className="text-base">video</option>
-            <option value="e-book" className="text-base">e-book</option>
-          </select>
-        </div> */}
-
-        <SecondaryButton
-          onClick={()=>{}}
-          className=""
-        >
-          Send New Notification+
-        </SecondaryButton>
-      </div>
-
-      {/* Resources List Section */}
-      {
-        Array.map((x, indx) => <Resource key={indx} resource={x} />)
-      }
-    </>
-  )
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-export default NotificationPage;
+function NotificationCard({ notification }) {
+  const { heading, message, link, _id, timestamp, image } = notification;
+  const { removeNotificationLocally, addNotificationLocally } =
+    useUserContext();
+
+  return (
+    <li className="bg-white rounded shadow relative flex justify-between gap-12 p-4 py-5">
+      <Link
+        to={link}
+        className="w-full flex justify-between gap-4 items-center"
+      >
+        <img
+          src={image || "/icons8-notification.png"}
+          className="h-12 w-12"
+          alt="notification"
+        />
+        <div className="w-full h-full flex flex-col gap-2">
+          <h4 className="text-xl-custom font-semibold text-accent-500">
+            {heading}
+          </h4>
+          <p>{message}</p>
+        </div>
+      </Link>
+      <img
+        src="/deleteButton2.svg"
+        className="w-5 h-5 mt-1 hover:cursor-pointer"
+        alt="del"
+        onClick={() => {
+          fetch(process.env.REACT_APP_URL + "/api/v1/notification", {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              notificationId: _id,
+            }),
+          }).catch((err) => addNotificationLocally(notification));
+          removeNotificationLocally(_id);
+        }}
+      />
+      <p className="absolute bottom-2 right-2 text-gray-300 text-sm-custom">
+        {new Date(timestamp).toUTCString().substring(5, 22)}
+      </p>
+    </li>
+  );
+}

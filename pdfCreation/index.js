@@ -78,6 +78,7 @@ exports.generatePDF = async function (commonId, res, next) {
     executablePath: '/usr/bin/chromium',
     args: ['--no-sandbox'],
   });
+  // const browser = await puppeteer.launch()
   const page = await browser.newPage();
 
   const html = await generateHTML(commonId, next);
