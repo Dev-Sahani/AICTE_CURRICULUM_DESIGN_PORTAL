@@ -1,5 +1,8 @@
 FROM node:18-alpine
 
+# Install Chromium browser, for puppeteer(used to create pdf).
+RUN apk add --no-cache chromium
+
 WORKDIR /app/client
 
 COPY client/package*.json ./
@@ -12,12 +15,11 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
-
+COPY client/ ./client
 RUN cd client && npm run build
 
-# Install Chromium browser, for puppeteer(used to create pdf) to work properly.
-RUN apk add --no-cache chromium
+COPY . .
+
 
 EXPOSE 8080
 
