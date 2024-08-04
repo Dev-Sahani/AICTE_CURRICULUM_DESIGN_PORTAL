@@ -98,7 +98,7 @@ const createCourse = async (req, res, next) => {
   }
   try {
     const res2 = await User.findOneAndUpdate(
-      { userId: req.user._doc._id },
+      { email: req.user._doc.email},
       {
         $push: {
           courses: {
