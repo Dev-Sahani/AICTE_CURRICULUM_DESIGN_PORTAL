@@ -88,26 +88,23 @@ exports.generateHTML = generateHTML;
 // Function to generate PDF from HTML using Puppeteer
 
 exports.generatePDF = async function (commonId, res, next) {
-  console.log("test-0");
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: "/usr/bin/chromium",
+    executablePath: "/usr/bin/chromium-browser",
     args: [
-      "--no-sandbox",
-      // "--disable-setuid-sandbox",
-      // "--disable-dev-shm-usage",
-      // "--single-process",
-      // "--no-zygote",
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+      '--no-zygote',
+      // '--single-process',
     ],
   });
-  // const browser = await puppeteer.launch()
-  console.log("test-0");
-  const page = await browser.newPage();
-  console.log("test1");
+
+  const page = await browser.newPage({ timeout: 60000 });
   const html = await generateHTML(commonId, next);
-  console.log("test2");
   await page.setContent(html);
-  console.log("test3");
 
   // Generate the PDF as a readable stream
   // const pdfStream = await page.createPDFStream({
@@ -118,29 +115,10 @@ exports.generatePDF = async function (commonId, res, next) {
     // path:"./course.pdf" ,
     format: "A4",
   });
-  console.log("test4");
   await browser.close();
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader("Content-Disposition", 'inline; filename="output.pdf"');
   res.status(200).type("pdf").send(pdf);
-
-  // Set headers for the response
-
-  // // Pipe the PDF stream to the response stream
-  // res.setHeader('Content-Type', 'application/pdf');
-  // res.setHeader('Content-Disposition', 'inline; filename="output.pdf"');
-
-  // pdfStream.on('data', (chunk) => {
-  //   res.write(chunk);
-  // });
-
-  // pdfStream.on('end', () => {
-  //   res.end();
-  // });
-
-  // pdfStream.on('error', (err) => {
-  //   throw new Error("Error while creating pdf")
-  // });
 };
 
 const STYLE = `
