@@ -27,7 +27,7 @@ const SearchBar = ({ setCourse }) => {
       clearTimeout(timeOutId);
       timeOutId = setTimeout(() => {
         searchFunc(stateTemp);
-      }, 900);
+      }, 800);
     };
   };
 
@@ -49,7 +49,9 @@ const SearchBar = ({ setCourse }) => {
       }
       setArray(response.data?.data);
     } catch (err) {
-      window.alert("Something went wrong\n server responded with " + err?.response?.status)
+      window.alert(
+        "Something went wrong\n server responded with " + err?.response?.status
+      );
     }
     return response;
   };
@@ -97,27 +99,23 @@ const SearchBar = ({ setCourse }) => {
         )}
 
         <div className="border-2 border-gray-400 bg-white h-fit w-full sm:w-auto sm:min-w-24 md:min-w-48 flex rounded my-2 items-center">
-          <img src={SearchImg} alt="search" className="icon-size hidden sm:block" />
+          <img
+            src={SearchImg}
+            alt="search"
+            className="icon-size hidden sm:block"
+          />
           <select
             name="level"
             value={state.level}
             onChange={handleSearch}
             onFocus={() => setFocus(true)}
-            onBlur={() => setTimeout(() => setFocus(false), 500)}
+            onBlur={() => setFocus(false)}
             className="w-full rounded px-4 h-8 focus:outline-none"
           >
-            <option value="Select level">
-              Select level
-            </option>
-            <option value="undergraduate">
-              undergraduate
-            </option>
-            <option value="postgraduate">
-              postgraduate
-            </option>
-            <option value="diploma">
-              diploma
-            </option>
+            <option value="Select level">Select level</option>
+            <option value="undergraduate">undergraduate</option>
+            <option value="postgraduate">postgraduate</option>
+            <option value="diploma">diploma</option>
           </select>
         </div>
       </div>
