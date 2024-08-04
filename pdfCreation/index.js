@@ -1,47 +1,55 @@
-const User = require('../models/userModel')
-const { findCourse, findCourseSubjects } = require("./../controllers/courseController")
+const User = require("../models/userModel");
+const {
+  findCourse,
+  findCourseSubjects,
+} = require("./../controllers/courseController");
 
-const puppeteer = require('puppeteer');
-const coverPage = require("./htmlComponents/coverpage")
-const msgPrefacePage = require("./htmlComponents/mesage-preface")
-const committeeContentPage = require("./htmlComponents/committee-content")
-const basicInfoPage = require("./htmlComponents/basicInfo")
-const categoriesPage = require('./htmlComponents/categories')
+const puppeteer = require("puppeteer");
+const coverPage = require("./htmlComponents/coverpage");
+const msgPrefacePage = require("./htmlComponents/mesage-preface");
+const committeeContentPage = require("./htmlComponents/committee-content");
+const basicInfoPage = require("./htmlComponents/basicInfo");
+const categoriesPage = require("./htmlComponents/categories");
 const semestersPage = require("./htmlComponents/semester");
-const Resource = require('../models/resourceModel');
-
+const Resource = require("../models/resourceModel");
 
 // Function to convert course data to HTML
 async function generateHTML(commonId, next) {
   const course = await findCourse({ commonId, next });
-  const committee = await User.find( 
-    {
-    "courses.id": { $in: [commonId] }
-    }
-  ).setOptions({ skipPostHook: true });
+  const committee = await User.find({
+    "courses.id": { $in: [commonId] },
+  }).setOptions({ skipPostHook: true });
 
-  const subjects = await findCourseSubjects({ commonId, next })
-  let referenceIds = await subjects.map(el => {
-    const ids = el.doc.referenceMaterial?.cur?.map(el => el.cur)
-    return ids
-  })
-  referenceIds = referenceIds.flat().filter(el => el)
-  const resourse = await Resource.find({ _id: { $in: referenceIds } }).select("title author")
+  const subjects = await findCourseSubjects({ commonId, next });
+  let referenceIds = await subjects.map((el) => {
+    const ids = el.doc.referenceMaterial?.cur?.map((el) => el.cur);
+    return ids;
+  });
+  referenceIds = referenceIds.flat().filter((el) => el);
+  const resourse = await Resource.find({ _id: { $in: referenceIds } }).select(
+    "title author"
+  );
 
-  const semesters = {}
+  const semesters = {};
   for (let semNo in course.semesters) {
-    semesters[semNo] = []
+    semesters[semNo] = [];
     for (let i in course.semesters[semNo]) {
       const sub = subjects.find(
-        sub => sub.doc.common_id?.toString() === course.semesters[semNo][i]?.cur?.common_id?.toString()
-      )
+        (sub) =>
+          sub.doc.common_id?.toString() ===
+          course.semesters[semNo][i]?.cur?.common_id?.toString()
+      );
 
       for (let i in sub.doc.referenceMaterial?.cur) {
-        sub.doc.referenceMaterial.cur[i] = resourse.find(r => r._id.toString() === sub.doc.referenceMaterial?.cur[i]?.cur.toString())
+        sub.doc.referenceMaterial.cur[i] = resourse.find(
+          (r) =>
+            r._id.toString() ===
+            sub.doc.referenceMaterial?.cur[i]?.cur.toString()
+        );
       }
-      semesters[semNo].push({})
-      semesters[semNo][i].cur = course.semesters[semNo][i].cur
-      semesters[semNo][i].sub = sub.doc
+      semesters[semNo].push({});
+      semesters[semNo][i].cur = course.semesters[semNo][i].cur;
+      semesters[semNo][i].sub = sub.doc;
     }
   }
   // console.log(semesters['1'])
@@ -53,15 +61,21 @@ async function generateHTML(commonId, next) {
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="AICTE" />
       <style>
-        ${STYLE
-    }
+        ${STYLE}
       </style>
     </head>
     <body>
         ${coverPage({ title: course.title, level: course.level })}
-        ${msgPrefacePage({ message: course?.message, preface: course?.preface })}
+        ${msgPrefacePage({
+          message: course?.message,
+          preface: course?.preface,
+        })}
         ${committeeContentPage({ committee })}
-        ${basicInfoPage({ definitionOfCredits: course.definitionOfCredits, codesAndDef: course.codesAndDef, rangeOfCredits: course.rangeOfCredits })}
+        ${basicInfoPage({
+          definitionOfCredits: course.definitionOfCredits,
+          codesAndDef: course.codesAndDef,
+          rangeOfCredits: course.rangeOfCredits,
+        })}
         ${categoriesPage({ categories: course?.categories })}
         ${semestersPage({ semesters })}
     </body>
@@ -69,18 +83,26 @@ async function generateHTML(commonId, next) {
     `;
   return html;
 }
-exports.generateHTML = generateHTML
+exports.generateHTML = generateHTML;
 
 // Function to generate PDF from HTML using Puppeteer
 
 exports.generatePDF = async function (commonId, res, next) {
   const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/chromium',
-    args: ['--no-sandbox'],
+    headless: true,
+    executablePath: "/usr/bin/chromium-browser",
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+      '--no-zygote',
+      // '--single-process',
+    ],
   });
-  // const browser = await puppeteer.launch()
-  const page = await browser.newPage();
 
+  const page = await browser.newPage({ timeout: 60000 });
   const html = await generateHTML(commonId, next);
   await page.setContent(html);
 
@@ -91,35 +113,15 @@ exports.generatePDF = async function (commonId, res, next) {
 
   const pdf = await page.pdf({
     // path:"./course.pdf" ,
-    format: 'A4' 
+    format: "A4",
   });
   await browser.close();
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'inline; filename="output.pdf"');
-  res.status(200).type('pdf').send(pdf)
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", 'inline; filename="output.pdf"');
+  res.status(200).type("pdf").send(pdf);
+};
 
-  // Set headers for the response
-
-  // // Pipe the PDF stream to the response stream
-  // res.setHeader('Content-Type', 'application/pdf');
-  // res.setHeader('Content-Disposition', 'inline; filename="output.pdf"');
-
-
-  // pdfStream.on('data', (chunk) => {
-  //   res.write(chunk);
-  // });
-
-  // pdfStream.on('end', () => {
-  //   res.end();
-  // });
-
-  // pdfStream.on('error', (err) => {
-  //   throw new Error("Error while creating pdf")
-  // });
-}
-
-const STYLE =
-  `
+const STYLE = `
 * {
     margin: 0;
     padding: 0;
@@ -518,4 +520,4 @@ const STYLE =
     padding-inline: 6pt;
     padding-block: 4pt;
   }
-`
+`;
