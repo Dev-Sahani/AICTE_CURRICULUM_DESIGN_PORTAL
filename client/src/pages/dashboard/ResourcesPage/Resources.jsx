@@ -15,8 +15,8 @@ export default function Resources({ resource }) {
 
   return (
     <li className="rounded-2xl overflow-hidden mx-1 my-2 flex flex-col w-full min-w-fit shadow text-base-custom">
-      <div className="flex flex-row p-5 pb-3 space-x-3 gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
-        <Link to={resource.url}>
+      <div className="flex flex-row padding-custom-lg space-x-3 gap-2 md:gap-5 h-full bg-white shadow-sm transform transition-transform duration-300 hover:scale-[1.01]">
+        <Link to={resource.url} className="hidden sm:block">
           <img
             src={resource.coverImageUrl}
             alt="book"
@@ -51,7 +51,10 @@ export default function Resources({ resource }) {
               alt="down"
             />
           </button>
-          <button onClick={() => setEditResource((prev) => !prev)}>
+          <button 
+            className="hidden md:block"
+            onClick={() => setEditResource((prev) => !prev)}
+          >
             <img className="hover:scale-110 icon-size" src={Edit} alt="edit" />
           </button>
         </div>

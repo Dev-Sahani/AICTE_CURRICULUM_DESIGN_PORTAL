@@ -126,6 +126,10 @@
   width: 1.5rem;
   height: 1.5rem;
 }
+.padding-custom-lg {
+  padding-inline: 1rem;
+  padding-block: 1rem;
+}
 .padding-custom {
   padding-inline: 1rem;
   padding-block: 0.25rem;
@@ -201,7 +205,10 @@
   .text-6xl-custom {
     @apply text-5xl;
   }
-
+  .padding-custom-lg {
+    padding-inline: 0.25rem;
+    padding-block: 0.5rem;
+  }
   .icon-size {
     width: 1.4rem;
     height: 1.4rem;

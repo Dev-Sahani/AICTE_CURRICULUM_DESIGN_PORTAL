@@ -73,7 +73,7 @@ const AnalyticsPage = () => {
               {/* Pie Chart */}
               <div className="bg-white shadow-lg rounded-xl p-4 grid grid-cols-[1fr_1fr] grid-rows-[1.5fr_1fr] gap-6">
                 <PieChart
-                  className="row-start-1 row-end-3"
+                  className="row-start-1 row-end-3 col-span-2 md:col-span-1"
                   yesPer={data[1]?.integersValues * 20}
                   width="180px"
                 />

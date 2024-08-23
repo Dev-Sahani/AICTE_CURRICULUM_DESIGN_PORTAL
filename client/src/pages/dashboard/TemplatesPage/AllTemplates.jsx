@@ -55,7 +55,7 @@ export default function AllTemplates({ templates, setTemplates }) {
           );
         })}
       </div>
-      <div aria-describedby="small-screen-view" className="grid md:hidden w-full grid-cols-2 my-4 gap-6 min-w-fit">
+      <div aria-describedby="small-screen-view" className="grid md:hidden w-full grid-cols-1 my-4 gap-6 min-w-fit">
         {templates.map((template, index) => {
           return (
             <button

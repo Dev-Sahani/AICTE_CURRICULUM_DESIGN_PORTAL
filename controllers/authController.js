@@ -167,13 +167,8 @@ module.exports.verifyByToken = async (req, res, next) => {
 
   if (!user || payload.role !== user.role) throw new UNAUTHORIZED_USER("");
 
-  const accessedCourses = await user.getAccessedCourses();
-
-  res.status(200).send({
-    status: "success",
-    user,
-    accessedCourses,
-  });
+  const newToken = createJWT(user);
+  sendRes(res, 200, newToken, user);
 };
 
 module.exports.login = async (req, res, next) => {
