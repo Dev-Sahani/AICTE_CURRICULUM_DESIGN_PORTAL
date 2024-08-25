@@ -3,7 +3,7 @@ const { NOT_FOUND } = require("../errors/index");
 const { pushNotification } = require("./notificationController");
 
 exports.getAllCommits = async (req, res, next) => {
-  const common_id = req.params.course_common_id;
+  const common_id = req.params.commonId;
   const commits = await Course.find({ common_id: common_id }).select({
     title: 1,
     version: 1,
@@ -17,7 +17,7 @@ exports.getAllCommits = async (req, res, next) => {
 };
 
 exports.getCommit = async (req, res, next) => {
-  const common_id = req.params.course_common_id;
+  const common_id = req.params.commonId;
   const ver = req.params.version;
   const course = await Course.findOne({ common_id: common_id, version: ver });
   res.status(200).send({
@@ -28,16 +28,14 @@ exports.getCommit = async (req, res, next) => {
 };
 
 exports.resetToCommit = async (req, res, next) => {
-  const { course_common_id, version } = req.params;
+  const { commonId, version } = req.params;
 
   let lastCourse = (
-    await Course.find({ common_id: course_common_id })
-      .sort({ version: -1 })
-      .limit(1)
+    await Course.find({ common_id: commonId }).sort({ version: -1 }).limit(1)
   )[0];
 
   await Course.deleteMany({
-    common_id: course_common_id,
+    common_id: commonId,
     version: { $gt: version },
   });
 
@@ -45,8 +43,8 @@ exports.resetToCommit = async (req, res, next) => {
     heading: `The course ${lastCourse.title.cur} has roll backed to its previous version.`,
     message: `Click to see the new version.`,
     isCourse: true,
-    target: course_common_id,
-    link: `${process.env.CLIENT_URL}/curriculum/${course_common_id}`,
+    target: commonId,
+    link: `${process.env.CLIENT_URL}/curriculum/${commonId}`,
   });
 
   res.status(200).send({
@@ -55,7 +53,7 @@ exports.resetToCommit = async (req, res, next) => {
 };
 
 exports.save = async (req, res, next) => {
-  const cId = req.params.course_common_id;
+  const cId = req.params.commonId;
   //finding last version
 
   let lastCourse = (
@@ -63,7 +61,7 @@ exports.save = async (req, res, next) => {
   )[0];
   // console.log(newCourse)
 
-  lastCourse = lastCourse._doc;
+  // lastCourse = lastCourse._doc;
   const newCourse = lastCourse._doc;
   if (!newCourse) {
     return next(new NOT_FOUND("course with common_id not found"));
